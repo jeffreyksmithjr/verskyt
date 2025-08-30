@@ -64,6 +64,13 @@ The library is organized into modular components:
 - **verskyt/utils/**: Utility functions
   - `initializers.py`: Custom weight initialization strategies
 
+## Documentation
+
+For detailed implementation guidance, see:
+- **[Implementation Requirements](docs/requirements/tnn-specification.md)**: Complete mathematical specifications
+- **[Implementation Plan](docs/implementation/plan.md)**: Development roadmap and testing strategy
+- **[API Documentation](docs/api/)**: Detailed API reference
+
 ## Key Implementation Details
 
 - Based on paper: "Tversky Neural Networks: Psychologically Plausible Deep Learning with Differentiable Tversky Similarity" (Doumbouya et al., 2025)
