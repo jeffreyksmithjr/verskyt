@@ -153,6 +153,7 @@ For detailed implementation guidance, see:
 - **Testing**: Confirm adequate coverage of mathematical correctness, gradient flow, and edge cases
 - **Type Safety**: Check for specific tensor shape annotations and correct type hints
 - **Code Style**: Validate PEP 8 compliance and consistency with project patterns
+- **File Organization**: Ensure root directory is clean with no debug scripts, test artifacts, or temporary files
 
 ### Reporting Format
 ```
@@ -175,6 +176,13 @@ Before writing code, always:
 2. **Understand testing strategy**: Review docs/implementation/plan.md for testing approach
 3. **Set up environment**: Run `pip install -e ".[dev]" && pre-commit install`
 4. **Validate setup**: Run `pre-commit run --all-files && pytest`
+
+### Critical Development Rules
+**NEVER create files in the root directory:**
+- No `debug_*.py`, `test_new_*.py`, `scratch_*.py`, or similar artifacts
+- Use `debug/` subdirectory or delete temporary files immediately
+- All test files belong in `tests/` with proper `test_*.py` naming
+- Always clean up development artifacts before committing
 
 ### Development Quality Gates
 
@@ -230,3 +238,9 @@ pytest && echo "Ready for PR"
 - Include equation numbers in docstrings
 - Test gradient flow for all differentiable operations
 - Validate parameter bounds (α ≥ 0, β ≥ 0 per paper)
+
+**Root Directory Pollution:**
+- NEVER create `debug_*.py`, `test_new_*.py`, `scratch_*.py` in root
+- Delete temporary debugging files immediately after use
+- Use `debug/` subdirectory or system temp locations for temporary files
+- All formal tests belong in `tests/` directory with proper naming

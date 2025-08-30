@@ -89,6 +89,38 @@ repos:
         files: \.py$
         stages: [pre-commit]
 
+  # Root directory cleanliness check
+  - repo: local
+    hooks:
+      - id: check-root-pollution
+        name: check-root-pollution
+        entry: |
+          python -c "
+          import sys
+          import glob
+          import os
+          
+          # Check for common debug/test file patterns in root
+          patterns = ['debug_*.py', 'test_new_*.py', '*_scratch.py', 'tmp_*.py', 'temp_*.py']
+          found_files = []
+          
+          for pattern in patterns:
+              matches = glob.glob(pattern)
+              found_files.extend(matches)
+          
+          if found_files:
+              print('ERROR: Development artifacts found in root directory:')
+              for f in found_files:
+                  print(f'  - {f}')
+              print('Solution: Move to debug/ subdirectory or delete temporary files')
+              sys.exit(1)
+          
+          print('✅ Root directory clean')
+          "
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
   # Basic test validation
   - repo: local
     hooks:

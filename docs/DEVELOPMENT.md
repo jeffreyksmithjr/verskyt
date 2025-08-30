@@ -70,6 +70,13 @@ git commit --no-verify
 - **Test categories**: Unit tests, integration tests, gradient flow validation
 - **Naming**: Test files `test_*.py`, test functions `test_*`
 
+#### File Organization Standards
+- **Root directory**: Keep clean - no debug/test scripts, temporary files, or development artifacts
+- **Debug files**: Use `debug/` subdirectory or delete after use
+- **Test scripts**: Place in `tests/` directory with proper `test_*.py` naming
+- **Temporary files**: Use `.gitignore`d directories or system temp locations
+- **Development artifacts**: Clean up before committing
+
 #### Documentation Standards
 - **Docstrings**: Include Args, Returns, tensor shapes
 - **Examples**: Provide usage examples for public APIs
@@ -135,6 +142,11 @@ isort verskyt tests
 
 # Fix import issues
 # Check that imports match exports in __init__.py files
+
+# Clean up root directory pollution
+find . -maxdepth 1 -name "debug_*.py" -delete
+find . -maxdepth 1 -name "test_new_*.py" -delete
+find . -maxdepth 1 -name "*_scratch.py" -delete
 
 # Fix test failures
 pytest -x  # Stop on first failure for debugging
