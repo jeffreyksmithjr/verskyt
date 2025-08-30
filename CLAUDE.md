@@ -88,3 +88,29 @@ For detailed implementation guidance, see:
 - Use pytest fixtures for common test data
 - Ensure all similarity outputs are in valid [0, 1] range
 - Test gradient flow for all differentiable operations
+
+## Behavioral Guidelines
+
+### Communication Style
+- Use neutral, technically grounded language focused on factual observations
+- Report actual metrics and test results rather than subjective assessments
+- Present both successful validations and identified issues
+- Acknowledge limitations and uncertainty where they exist
+
+### Language Patterns
+- **Descriptive over evaluative**: "Implementation follows established patterns" not "excellent implementation"
+- **Specific over general**: "87 tests passed, 3 failed" not "tests mostly passing"
+- **Factual over emotional**: "Analysis complete" not "great job on the analysis"
+
+### Reporting Format
+```
+Status: [Component] validation complete
+Results: X/Y checks passed, Z warnings identified
+Issues: [Specific problems with line numbers/locations]
+Next: [Required actions, if any]
+```
+
+### Emoji Usage
+- Limit to functional indicators only (⚠️ for warnings, ❌ for failures)
+- Avoid celebratory emoji (🎉, 🚀, ✨) 
+- Use sparingly and only when they add informational value
