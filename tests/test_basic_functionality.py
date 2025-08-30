@@ -29,9 +29,7 @@ class TestBasicSimilarity:
         prototypes = torch.randn(num_prototypes, in_features)
         features = torch.randn(num_features, in_features)
 
-        similarity = tversky_similarity(
-            x, prototypes, features, alpha=0.5, beta=0.5
-        )
+        similarity = tversky_similarity(x, prototypes, features, alpha=0.5, beta=0.5)
 
         assert similarity.shape == (batch_size, num_prototypes)
 
@@ -41,9 +39,7 @@ class TestBasicSimilarity:
         prototypes = torch.randn(2, 3)
         features = torch.randn(4, 3)
 
-        similarity = tversky_similarity(
-            x, prototypes, features, alpha=0.5, beta=0.5
-        )
+        similarity = tversky_similarity(x, prototypes, features, alpha=0.5, beta=0.5)
 
         assert torch.all(similarity >= 0)
         assert torch.all(similarity <= 1)
@@ -54,9 +50,7 @@ class TestBasicSimilarity:
         prototypes = x.clone()  # Identical
         features = torch.tensor([[1.0, 0.0], [0.0, 1.0]])
 
-        similarity = tversky_similarity(
-            x, prototypes, features, alpha=0.5, beta=0.5
-        )
+        similarity = tversky_similarity(x, prototypes, features, alpha=0.5, beta=0.5)
 
         # Should be close to 1 for identical objects
         assert similarity[0, 0] > 0.9
@@ -67,9 +61,7 @@ class TestTverskyProjectionLayer:
 
     def test_layer_creation(self):
         """Test layer can be created successfully."""
-        layer = TverskyProjectionLayer(
-            in_features=10, num_prototypes=5, num_features=8
-        )
+        layer = TverskyProjectionLayer(in_features=10, num_prototypes=5, num_features=8)
 
         assert layer.in_features == 10
         assert layer.num_prototypes == 5
@@ -79,9 +71,7 @@ class TestTverskyProjectionLayer:
 
     def test_forward_pass(self):
         """Test forward pass works and has correct output shape."""
-        layer = TverskyProjectionLayer(
-            in_features=6, num_prototypes=3, num_features=4
-        )
+        layer = TverskyProjectionLayer(in_features=6, num_prototypes=3, num_features=4)
 
         batch_size = 5
         x = torch.randn(batch_size, 6)
@@ -196,6 +186,65 @@ class TestSimpleXOR:
         assert not torch.isnan(loss)
         assert loss.item() > 0  # Loss should be positive
 
+    def test_xor_learning_capability(self):
+        """Test that single layer TNN can learn on XOR problem (validates trainability and non-linear potential)."""
+        # XOR problem setup
+        xor_inputs = torch.tensor(
+            [
+                [0.0, 0.0],
+                [0.0, 1.0], 
+                [1.0, 0.0],
+                [1.0, 1.0],
+            ]
+        )
+        xor_targets = torch.tensor([0, 1, 1, 0])
+
+        # Single layer TNN
+        torch.manual_seed(42)  # For reproducible test
+        layer = TverskyProjectionLayer(
+            in_features=2, 
+            num_prototypes=2, 
+            num_features=4,
+            learnable_ab=True,
+            alpha=0.5,
+            beta=0.5,
+            feature_init="uniform"
+        )
+
+        optimizer = optim.Adam(layer.parameters(), lr=0.1)
+        criterion = nn.CrossEntropyLoss()
+
+        # Record initial loss
+        with torch.no_grad():
+            initial_output = layer(xor_inputs)
+            initial_loss = criterion(initial_output, xor_targets).item()
+        
+        # Train for several epochs
+        for epoch in range(200):
+            optimizer.zero_grad()
+            output = layer(xor_inputs)
+            loss = criterion(output, xor_targets)
+            loss.backward()
+            optimizer.step()
+
+        # Validate that learning occurred
+        with torch.no_grad():
+            final_output = layer(xor_inputs)
+            final_loss = criterion(final_output, xor_targets).item()
+            predictions = torch.argmax(final_output, dim=1)
+            
+            # Check that learning occurred (loss decreased)
+            assert final_loss < initial_loss, f"No learning occurred: initial loss {initial_loss:.3f}, final loss {final_loss:.3f}"
+            
+            # Check that network shows non-trivial behavior (not just predicting one class)
+            unique_predictions = len(torch.unique(predictions))
+            assert unique_predictions > 1, f"Network collapsed to single prediction class: {predictions}"
+            
+            # Check that network achieves better than random performance (50% for 2-class)
+            correct = (predictions == xor_targets).sum().item()
+            accuracy = correct / len(xor_targets)
+            assert accuracy > 0.5, f"Accuracy {accuracy:.2f} not better than random (0.5)"
+
 
 class TestParameterLearning:
     """Test that parameters can be learned."""
@@ -221,9 +270,7 @@ class TestParameterLearning:
         # Training step with higher learning rate
         x = torch.randn(4, 3)
         targets = torch.randint(0, 2, (4,))
-        optimizer = optim.SGD(
-            layer.parameters(), lr=1.0
-        )  # Higher learning rate
+        optimizer = optim.SGD(layer.parameters(), lr=1.0)  # Higher learning rate
         criterion = nn.CrossEntropyLoss()
 
         # Multiple training steps to ensure parameter changes
@@ -244,9 +291,7 @@ class TestParameterLearning:
 
     def test_prototype_learning(self):
         """Test that prototypes update during training."""
-        layer = TverskyProjectionLayer(
-            in_features=4, num_prototypes=3, num_features=3
-        )
+        layer = TverskyProjectionLayer(in_features=4, num_prototypes=3, num_features=3)
 
         initial_prototypes = layer.prototypes.clone().detach()
 

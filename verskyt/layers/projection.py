@@ -38,9 +38,7 @@ class TverskySimilarityLayer(nn.Module):
         learnable_theta: bool = False,
         theta: float = 1e-7,
         intersection_reduction: Union[IntersectionReduction, str] = "product",
-        difference_reduction: Union[
-            DifferenceReduction, str
-        ] = "substractmatch",
+        difference_reduction: Union[DifferenceReduction, str] = "substractmatch",
         use_contrast_form: bool = False,
         feature_init: Literal[
             "uniform", "normal", "xavier_uniform", "xavier_normal"
@@ -71,9 +69,7 @@ class TverskySimilarityLayer(nn.Module):
         self.use_contrast_form = use_contrast_form
 
         # Initialize feature bank Ω
-        self.feature_bank = nn.Parameter(
-            torch.empty(num_features, in_features)
-        )
+        self.feature_bank = nn.Parameter(torch.empty(num_features, in_features))
 
         # Initialize Tversky parameters
         if learnable_ab:
@@ -174,9 +170,7 @@ class TverskyProjectionLayer(nn.Module):
         learnable_ab: bool = True,
         theta: float = 1e-7,
         intersection_reduction: Union[IntersectionReduction, str] = "product",
-        difference_reduction: Union[
-            DifferenceReduction, str
-        ] = "substractmatch",
+        difference_reduction: Union[DifferenceReduction, str] = "substractmatch",
         normalize_features: bool = False,
         normalize_prototypes: bool = False,
         prototype_init: Literal[
@@ -220,9 +214,7 @@ class TverskyProjectionLayer(nn.Module):
         self.normalize_prototypes = normalize_prototypes
 
         # Initialize prototypes Π
-        self.prototypes = nn.Parameter(
-            torch.empty(num_prototypes, in_features)
-        )
+        self.prototypes = nn.Parameter(torch.empty(num_prototypes, in_features))
 
         # Initialize or share feature bank Ω
         if shared_feature_bank is not None:
@@ -230,9 +222,7 @@ class TverskyProjectionLayer(nn.Module):
             self.feature_bank = shared_feature_bank
             self.shared_features = True
         else:
-            self.feature_bank = nn.Parameter(
-                torch.empty(num_features, in_features)
-            )
+            self.feature_bank = nn.Parameter(torch.empty(num_features, in_features))
             self.shared_features = False
 
         # Initialize Tversky parameters

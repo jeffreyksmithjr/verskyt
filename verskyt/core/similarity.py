@@ -30,9 +30,7 @@ class DifferenceReduction(str, Enum):
     SUBSTRACTMATCH = "substractmatch"  # Account for magnitude differences
 
 
-def compute_feature_membership(
-    x: torch.Tensor, features: torch.Tensor
-) -> torch.Tensor:
+def compute_feature_membership(x: torch.Tensor, features: torch.Tensor) -> torch.Tensor:
     """
     Compute feature membership scores for objects.
 
@@ -148,10 +146,7 @@ def _compute_difference(
         b_neg = b_mem <= 0
         mask = a_pos & b_neg
         difference_scores = F.relu(a_mem) * mask.float()
-    elif (
-        method == DifferenceReduction.SUBSTRACTMATCH
-        or method == "substractmatch"
-    ):
+    elif method == DifferenceReduction.SUBSTRACTMATCH or method == "substractmatch":
         # Account for magnitude differences (Equation 5)
         # Features present in both but greater in A
         diff = a_mem - b_mem
@@ -221,17 +216,11 @@ def tversky_similarity(
     p_mem_exp = p_membership.unsqueeze(0)
 
     # Step 3: Calculate intersection f(A ∩ B)
-    intersection = _compute_intersection(
-        x_mem_exp, p_mem_exp, intersection_reduction
-    )
+    intersection = _compute_intersection(x_mem_exp, p_mem_exp, intersection_reduction)
 
     # Step 4: Calculate differences f(A - B) and f(B - A)
-    x_minus_p = _compute_difference(
-        x_mem_exp, p_mem_exp, difference_reduction, True
-    )
-    p_minus_x = _compute_difference(
-        x_mem_exp, p_mem_exp, difference_reduction, False
-    )
+    x_minus_p = _compute_difference(x_mem_exp, p_mem_exp, difference_reduction, True)
+    p_minus_x = _compute_difference(x_mem_exp, p_mem_exp, difference_reduction, False)
 
     # Step 5: Compute final Tversky Index (normalized form used in paper)
     # Ensure alpha and beta are non-negative as per paper
@@ -293,15 +282,9 @@ def tversky_contrast_similarity(
     p_mem_exp = p_membership.unsqueeze(0)
 
     # Calculate components
-    intersection = _compute_intersection(
-        x_mem_exp, p_mem_exp, intersection_reduction
-    )
-    x_minus_p = _compute_difference(
-        x_mem_exp, p_mem_exp, difference_reduction, True
-    )
-    p_minus_x = _compute_difference(
-        x_mem_exp, p_mem_exp, difference_reduction, False
-    )
+    intersection = _compute_intersection(x_mem_exp, p_mem_exp, intersection_reduction)
+    x_minus_p = _compute_difference(x_mem_exp, p_mem_exp, difference_reduction, True)
+    p_minus_x = _compute_difference(x_mem_exp, p_mem_exp, difference_reduction, False)
 
     # Linear combination form
     similarity = theta * intersection - alpha * x_minus_p - beta * p_minus_x
