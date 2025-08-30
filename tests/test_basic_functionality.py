@@ -9,10 +9,7 @@ import torch.nn as nn
 import torch.optim as optim
 
 from verskyt.core.similarity import tversky_similarity
-from verskyt.layers.projection import (
-    TverskyProjectionLayer,
-    TverskySimilarityLayer,
-)
+from verskyt.layers.projection import TverskyProjectionLayer, TverskySimilarityLayer
 
 
 class TestBasicSimilarity:
@@ -187,12 +184,15 @@ class TestSimpleXOR:
         assert loss.item() > 0  # Loss should be positive
 
     def test_xor_learning_capability(self):
-        """Test that single layer TNN can learn on XOR problem (validates trainability and non-linear potential)."""
+        """Test that single layer TNN can learn on XOR problem.
+
+        Validates trainability and non-linear potential.
+        """
         # XOR problem setup
         xor_inputs = torch.tensor(
             [
                 [0.0, 0.0],
-                [0.0, 1.0], 
+                [0.0, 1.0],
                 [1.0, 0.0],
                 [1.0, 1.0],
             ]
@@ -202,13 +202,13 @@ class TestSimpleXOR:
         # Single layer TNN
         torch.manual_seed(42)  # For reproducible test
         layer = TverskyProjectionLayer(
-            in_features=2, 
-            num_prototypes=2, 
+            in_features=2,
+            num_prototypes=2,
             num_features=4,
             learnable_ab=True,
             alpha=0.5,
             beta=0.5,
-            feature_init="uniform"
+            feature_init="uniform",
         )
 
         optimizer = optim.Adam(layer.parameters(), lr=0.1)
@@ -218,7 +218,7 @@ class TestSimpleXOR:
         with torch.no_grad():
             initial_output = layer(xor_inputs)
             initial_loss = criterion(initial_output, xor_targets).item()
-        
+
         # Train for several epochs
         for epoch in range(200):
             optimizer.zero_grad()
@@ -232,18 +232,24 @@ class TestSimpleXOR:
             final_output = layer(xor_inputs)
             final_loss = criterion(final_output, xor_targets).item()
             predictions = torch.argmax(final_output, dim=1)
-            
+
             # Check that learning occurred (loss decreased)
-            assert final_loss < initial_loss, f"No learning occurred: initial loss {initial_loss:.3f}, final loss {final_loss:.3f}"
-            
-            # Check that network shows non-trivial behavior (not just predicting one class)
+            assert (
+                final_loss < initial_loss
+            ), f"No learning: initial {initial_loss:.3f}, final {final_loss:.3f}"
+
+            # Check non-trivial behavior (not just predicting one class)
             unique_predictions = len(torch.unique(predictions))
-            assert unique_predictions > 1, f"Network collapsed to single prediction class: {predictions}"
-            
-            # Check that network achieves better than random performance (50% for 2-class)
+            assert (
+                unique_predictions > 1
+            ), f"Network collapsed to single class: {predictions}"
+
+            # Check better than random performance (50% for 2-class)
             correct = (predictions == xor_targets).sum().item()
             accuracy = correct / len(xor_targets)
-            assert accuracy > 0.5, f"Accuracy {accuracy:.2f} not better than random (0.5)"
+            assert (
+                accuracy > 0.5
+            ), f"Accuracy {accuracy:.2f} not better than random (0.5)"
 
 
 class TestParameterLearning:

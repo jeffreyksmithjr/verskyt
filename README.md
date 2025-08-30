@@ -1,5 +1,9 @@
 # Verskyt
 
+[![CI](https://github.com/jeffreyksmithjr/verskyt/workflows/CI/badge.svg)](https://github.com/jeffreyksmithjr/verskyt/actions/workflows/ci.yml)
+[![Pre-commit](https://github.com/jeffreyksmithjr/verskyt/workflows/Pre-commit/badge.svg)](https://github.com/jeffreyksmithjr/verskyt/actions/workflows/pre-commit.yml)
+[![codecov](https://codecov.io/gh/jeffreyksmithjr/verskyt/branch/main/graph/badge.svg)](https://codecov.io/gh/jeffreyksmithjr/verskyt)
+
 A comprehensive Python library implementing Tversky Neural Networks (TNNs) - psychologically plausible deep learning models based on differentiable Tversky similarity.
 
 ## Overview

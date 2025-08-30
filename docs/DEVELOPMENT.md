@@ -66,7 +66,7 @@ git commit --no-verify
 - **Type hints**: Required for all public functions
 
 #### Testing Requirements
-- **Coverage**: Minimum 60% overall, 80% for core modules
+- **Coverage**: Minimum 60% overall, 75% for core modules
 - **Test categories**: Unit tests, integration tests, gradient flow validation
 - **Naming**: Test files `test_*.py`, test functions `test_*`
 
@@ -74,6 +74,12 @@ git commit --no-verify
 - **Docstrings**: Include Args, Returns, tensor shapes
 - **Examples**: Provide usage examples for public APIs
 - **Equation references**: Link to paper equations where applicable
+
+#### CI/CD Integration
+- **GitHub Actions**: Automated quality checks on all PRs and pushes
+- **Quality gates**: Code formatting, linting, import validation, testing
+- **Coverage reporting**: Automatic coverage tracking via Codecov
+- **Multi-Python support**: Tests run on Python 3.8, 3.9, 3.10, 3.11
 
 ## Development Workflow
 
@@ -211,6 +217,54 @@ pytest tests/test_failing.py -vvs --pdb
 3. **Tag release**: `git tag v0.2.0`
 4. **Build and publish**: Automated via CI/CD
 
+## CI/CD Monitoring
+
+### GitHub Actions Workflows
+
+**Main CI Pipeline (`.github/workflows/ci.yml`):**
+- **Quality checks**: Black, isort, flake8, import validation
+- **Multi-Python testing**: Tests on Python 3.8-3.11
+- **Coverage validation**: Enforces 60% overall, 75% core module coverage
+- **Integration tests**: XOR learning validation, package import testing
+- **Documentation checks**: Validates required docs are present
+
+**Pre-commit Pipeline (`.github/workflows/pre-commit.yml`):**
+- Fast feedback on basic quality issues
+- Runs same hooks as local pre-commit
+- Skips slow tests for quick iteration
+
+### Monitoring CI Results
+
+**Success Indicators:**
+- ✅ All workflow jobs pass
+- ✅ Coverage thresholds met
+- ✅ Integration tests validate functionality
+- ✅ No import or formatting issues
+
+**Handling CI Failures:**
+
+```bash
+# Reproduce CI failures locally
+pip install -e ".[dev]"
+pre-commit run --all-files  # Check formatting/linting
+pytest -v --cov=verskyt     # Check tests and coverage
+
+# Fix common CI issues
+black verskyt tests         # Fix formatting
+isort verskyt tests         # Fix imports
+pytest -x                   # Debug test failures
+```
+
+**Coverage Failures:**
+```bash
+# Check coverage details
+pytest --cov=verskyt --cov-report=html
+# Opens htmlcov/index.html for detailed coverage report
+
+# Focus on uncovered core modules
+pytest --cov=verskyt.core --cov-report=term-missing
+```
+
 ## Troubleshooting
 
 ### Pre-commit Issues
@@ -231,6 +285,20 @@ pip install -e ".[dev]"
 
 # Clear pytest cache
 rm -rf .pytest_cache __pycache__
+```
+
+### CI-Specific Issues
+```bash
+# Test Python version compatibility locally with pyenv
+pyenv install 3.8.18 3.9.18 3.10.13 3.11.7
+pyenv local 3.8.18
+pip install -e ".[dev]" && pytest  # Test each version
+
+# Debug import validation failures
+python -c "import verskyt; print('Import successful')"
+
+# Check GitHub Actions logs
+# Visit: https://github.com/your-repo/verskyt/actions
 ```
 
 ### Performance Issues

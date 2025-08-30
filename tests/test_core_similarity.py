@@ -64,7 +64,9 @@ class TestTverskySimilarity:
         prototypes = torch.tensor([[1.0, 0.0, 0.0]])
         features = torch.tensor([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0]])
 
-        similarity = tversky_similarity(x, prototypes, features, alpha=0.5, beta=0.5, theta=1e-7)
+        similarity = tversky_similarity(
+            x, prototypes, features, alpha=0.5, beta=0.5, theta=1e-7
+        )
 
         # Identical objects should have similarity close to 1
         assert similarity[0, 0] > 0.99
@@ -82,7 +84,7 @@ class TestTverskySimilarity:
             alpha=0.5,
             beta=0.5,
             theta=1e-7,
-            difference_reduction="ignorematch",  # Use ignorematch for intuitive orthogonal behavior
+            difference_reduction="ignorematch",  # For orthogonal behavior
         )
 
         # Orthogonal objects should have low similarity
@@ -92,7 +94,9 @@ class TestTverskySimilarity:
         """Test that similarity can be asymmetric with different α and β."""
         # Create case with asymmetric differences to show asymmetry
         x = torch.tensor([[1.0, 0.2]])  # Strong in first feature, weak in second
-        prototypes = torch.tensor([[0.3, 0.8]])  # Weak in first feature, strong in second
+        prototypes = torch.tensor(
+            [[0.3, 0.8]]
+        )  # Weak in first feature, strong in second
         features = torch.tensor([[1.0, 0.0], [0.0, 1.0]])  # Identity features
 
         # This creates asymmetric differences:
@@ -107,7 +111,7 @@ class TestTverskySimilarity:
             alpha=0.9,
             beta=0.1,
             theta=1e-7,
-            difference_reduction="substractmatch",  # Use substractmatch for magnitude differences
+            difference_reduction="substractmatch",  # Use substractmatch for magnitudes
         )
 
         sim_beta_high = tversky_similarity(
@@ -241,7 +245,9 @@ class TestNumericalStability:
         prototypes = torch.zeros(1, 3)
         features = torch.randn(5, 3)
 
-        similarity = tversky_similarity(x, prototypes, features, alpha=0.5, beta=0.5, theta=1e-7)
+        similarity = tversky_similarity(
+            x, prototypes, features, alpha=0.5, beta=0.5, theta=1e-7
+        )
 
         assert not torch.isnan(similarity).any()
         assert not torch.isinf(similarity).any()
@@ -252,7 +258,9 @@ class TestNumericalStability:
         prototypes = torch.randn(2, 3) * 1000
         features = torch.randn(5, 3) * 1000
 
-        similarity = tversky_similarity(x, prototypes, features, alpha=0.5, beta=0.5, theta=1e-7)
+        similarity = tversky_similarity(
+            x, prototypes, features, alpha=0.5, beta=0.5, theta=1e-7
+        )
 
         assert not torch.isnan(similarity).any()
         assert not torch.isinf(similarity).any()

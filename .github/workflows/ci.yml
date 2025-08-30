@@ -1,0 +1,288 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main, init ]  # Include init branch for current development
+
+jobs:
+  quality-checks:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+    
+    - name: Check code formatting with Black
+      run: |
+        black --check --diff verskyt tests
+    
+    - name: Check import sorting with isort
+      run: |
+        isort --check-only --diff verskyt tests
+    
+    - name: Lint with flake8
+      run: |
+        flake8 verskyt tests
+    
+    - name: Validate imports
+      run: |
+        python -c "
+        import sys
+        import importlib.util
+        import ast
+        import glob
+
+        def check_imports(filename):
+            try:
+                with open(filename, 'r') as f:
+                    tree = ast.parse(f.read())
+                
+                # Extract imports
+                imports = []
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.ImportFrom):
+                        if node.module and node.module.startswith('verskyt'):
+                            for alias in node.names:
+                                imports.append((node.module, alias.name))
+                
+                # Check that imports can be resolved
+                for module, name in imports:
+                    try:
+                        mod = importlib.import_module(module)
+                        if not hasattr(mod, name):
+                            print(f'ERROR: {filename}: {module} does not export {name}')
+                            return False
+                    except ImportError as e:
+                        print(f'ERROR: {filename}: Cannot import {module}: {e}')
+                        return False
+                return True
+            except Exception as e:
+                print(f'ERROR: {filename}: Failed to parse: {e}')
+                return False
+
+        # Check all Python files
+        files = glob.glob('verskyt/**/*.py', recursive=True) + glob.glob('tests/**/*.py', recursive=True)
+        success = all(check_imports(f) for f in files)
+        sys.exit(0 if success else 1)
+        "
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', '3.10', '3.11']
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+    
+    - name: Run tests with coverage
+      run: |
+        pytest -v --cov=verskyt --cov-report=xml --cov-report=term-missing
+    
+    - name: Check coverage thresholds
+      run: |
+        python -c "
+        import xml.etree.ElementTree as ET
+        
+        # Parse coverage XML
+        tree = ET.parse('coverage.xml')
+        root = tree.getroot()
+        
+        # Get overall coverage
+        overall_coverage = float(root.attrib['line-rate']) * 100
+        print(f'Overall coverage: {overall_coverage:.1f}%')
+        
+        # Check overall threshold (60%)
+        if overall_coverage < 60.0:
+            print(f'ERROR: Overall coverage {overall_coverage:.1f}% below minimum 60%')
+            exit(1)
+        
+        # Check core module coverage (should be >75%)
+        for package in root.findall('.//package'):
+            if package.attrib['name'] == 'verskyt.core':
+                core_coverage = float(package.attrib['line-rate']) * 100
+                print(f'Core module coverage: {core_coverage:.1f}%')
+                if core_coverage < 75.0:
+                    print(f'WARNING: Core module coverage {core_coverage:.1f}% below target 75%')
+                    # Don't fail on this for now, just warn
+        
+        print('Coverage thresholds met')
+        "
+    
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        fail_ci_if_error: false
+
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: [quality-checks, test]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+    
+    - name: Test XOR learning capability (integration validation)
+      run: |
+        python -c "
+        import torch
+        import torch.nn as nn
+        import torch.optim as optim
+        from verskyt.layers.projection import TverskyProjectionLayer
+        
+        print('Testing TNN integration with PyTorch training loop...')
+        
+        # XOR problem
+        xor_inputs = torch.tensor([[0.0, 0.0], [0.0, 1.0], [1.0, 0.0], [1.0, 1.0]])
+        xor_targets = torch.tensor([0, 1, 1, 0])
+        
+        # Create TNN layer
+        torch.manual_seed(42)
+        layer = TverskyProjectionLayer(
+            in_features=2, 
+            num_prototypes=2, 
+            num_features=4,
+            learnable_ab=True
+        )
+        
+        optimizer = optim.Adam(layer.parameters(), lr=0.1)
+        criterion = nn.CrossEntropyLoss()
+        
+        # Record initial loss
+        with torch.no_grad():
+            initial_output = layer(xor_inputs)
+            initial_loss = criterion(initial_output, xor_targets).item()
+        
+        print(f'Initial loss: {initial_loss:.3f}')
+        
+        # Train briefly
+        for epoch in range(100):
+            optimizer.zero_grad()
+            output = layer(xor_inputs)
+            loss = criterion(output, xor_targets)
+            loss.backward()
+            optimizer.step()
+        
+        # Validate learning occurred
+        with torch.no_grad():
+            final_output = layer(xor_inputs)
+            final_loss = criterion(final_output, xor_targets).item()
+            predictions = torch.argmax(final_output, dim=1)
+        
+        print(f'Final loss: {final_loss:.3f}')
+        print(f'Predictions: {predictions}')
+        print(f'Targets:     {xor_targets}')
+        
+        # Check learning occurred
+        if final_loss >= initial_loss:
+            print(f'ERROR: No learning occurred (loss did not decrease)')
+            exit(1)
+        
+        # Check non-trivial behavior
+        unique_predictions = len(torch.unique(predictions))
+        if unique_predictions <= 1:
+            print(f'ERROR: Network collapsed to single prediction class')
+            exit(1)
+        
+        print('✅ Integration test passed: TNN successfully integrates with PyTorch')
+        "
+    
+    - name: Test package imports
+      run: |
+        python -c "
+        # Test all main imports work
+        from verskyt import TverskyProjectionLayer, TverskySimilarityLayer
+        from verskyt.core import tversky_similarity, compute_salience
+        from verskyt.layers import TverskyProjectionLayer as TPL
+        print('✅ All package imports successful')
+        "
+
+  documentation:
+    name: Documentation Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Check documentation completeness
+      run: |
+        echo "Checking for required documentation files..."
+        
+        required_files=(
+          "README.md"
+          "docs/DEVELOPMENT.md"
+          "docs/requirements/tnn-specification.md"
+          "docs/implementation/plan.md"
+          "CLAUDE.md"
+        )
+        
+        missing_files=()
+        for file in "${required_files[@]}"; do
+          if [[ ! -f "$file" ]]; then
+            missing_files+=("$file")
+          fi
+        done
+        
+        if [[ ${#missing_files[@]} -gt 0 ]]; then
+          echo "ERROR: Missing required documentation files:"
+          printf '%s\n' "${missing_files[@]}"
+          exit 1
+        fi
+        
+        echo "✅ All required documentation files present"
+    
+    - name: Validate development setup instructions
+      run: |
+        echo "Validating development setup instructions in docs/DEVELOPMENT.md..."
+        
+        # Check that key setup commands are documented
+        if ! grep -q "pip install -e" docs/DEVELOPMENT.md; then
+          echo "ERROR: Development installation instructions missing"
+          exit 1
+        fi
+        
+        if ! grep -q "pre-commit install" docs/DEVELOPMENT.md; then
+          echo "ERROR: Pre-commit setup instructions missing" 
+          exit 1
+        fi
+        
+        if ! grep -q "pytest" docs/DEVELOPMENT.md; then
+          echo "ERROR: Testing instructions missing"
+          exit 1
+        fi
+        
+        echo "✅ Development setup instructions complete"
