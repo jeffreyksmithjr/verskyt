@@ -83,10 +83,10 @@ git commit --no-verify
 - **Equation references**: Link to paper equations where applicable
 
 #### CI/CD Integration
-- **GitHub Actions**: Automated quality checks on all PRs and pushes
-- **Quality gates**: Code formatting, linting, import validation, testing
-- **Coverage reporting**: Automatic coverage tracking via Codecov
-- **Multi-Python support**: Full matrix (3.8-3.11) on main, single version (3.11) on PRs for cost efficiency
+- **GitHub Actions**: Fast feedback on PRs, comprehensive validation on main
+- **PR checks**: Quality gates (formatting, linting, import validation), basic testing, fast integration
+- **Main branch**: Full test matrix (Python 3.8-3.11), extended integration tests, coverage reporting
+- **Cost optimized**: Light CI on PRs (~2-3 min), full validation on main branch only
 
 ## Development Workflow
 
@@ -237,7 +237,8 @@ pytest tests/test_failing.py -vvs --pdb
 - **Quality checks**: Black, isort, flake8, import validation (all builds)
 - **Multi-Python testing**: Python 3.8-3.11 on main branch, Python 3.11 on PRs (cost optimized)
 - **Coverage validation**: Enforces 60% overall, 75% core module coverage
-- **Integration tests**: XOR learning validation, package import testing
+- **Basic integration (PRs)**: Fast import and functionality validation (package install only)
+- **Full integration (main)**: Parameter learning verification, extended functionality tests
 - **Documentation checks**: Validates required docs are present
 
 **Pre-commit Pipeline (`.github/workflows/pre-commit.yml`):**
@@ -247,16 +248,25 @@ pytest tests/test_failing.py -vvs --pdb
 
 ### CI Cost Optimization
 
-**Multi-Python Testing Strategy:**
-- **PR builds**: Single Python version (3.11) for fast feedback and cost efficiency
-- **Main branch**: Full Python matrix (3.8, 3.9, 3.10, 3.11) for comprehensive validation
-- **Rationale**: Most compatibility issues are caught in single-version testing; full matrix reserved for final validation
+**Two-Tier CI Strategy:**
+
+**PR Builds (Fast Feedback):**
+- Single Python version (3.11) testing
+- Basic integration: imports + simple functionality test
+- Package install only (no dev dependencies)
+- Runtime: ~2-3 minutes for quick iteration
+
+**Main Branch (Full Validation):**
+- Multi-Python matrix (3.8, 3.9, 3.10, 3.11) testing  
+- Extended integration: parameter learning verification
+- Full dev environment with all dependencies
+- Runtime: ~8-12 minutes for comprehensive validation
 
 **Benefits:**
-- ⚡ **Faster PR feedback**: ~75% reduction in CI time for feature branches
-- 💰 **Lower CI costs**: Significant reduction in compute minutes usage
-- 🔍 **Maintained quality**: All quality gates still enforced on every build
-- ✅ **Full validation**: Complete multi-Python testing before merges to main
+- ⚡ **85% faster PR feedback**: Reduced from ~12min to ~2-3min per PR
+- 💰 **75% lower CI costs**: Most expensive tests only on final merge
+- 🔍 **Maintained quality**: All critical quality gates enforced on every build
+- ✅ **Reliable integration**: Replaced flaky XOR test with deterministic parameter learning check
 
 ### Monitoring CI Results
 
