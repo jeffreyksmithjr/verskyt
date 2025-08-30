@@ -6,11 +6,11 @@
 
 **Core Mission**: Provide a research-grade library for TNNs with full introspection, intervention capabilities, and verifiable accuracy against paper specifications.
 
-## Current Status (Phase 1 🟡 NEARLY COMPLETE)
+## Current Status (Phase 1 ✅ COMPLETE, Phase 2 🟡 IN PROGRESS)
 
 ### 🎯 **Phase 1: Core Mathematical Foundation**
-**Status**: 🟡 **NEARLY COMPLETE** (Week 1)
-**Branch**: `init` → **PR #1 CREATED** (awaiting merge)
+**Status**: ✅ **COMPLETE** 
+**Branch**: `init` → **PR #1 MERGED**
 
 #### ✅ Implemented Components
 
@@ -66,50 +66,90 @@
 - [ ] **Merge PR #1** to complete Phase 1
 - [ ] Any final cleanup or documentation updates
 
-### 🎯 **Phase 2: Verification Suite & Research Tools**
-**Status**: ⏳ **AWAITING PHASE 1 COMPLETION**
-**Target**: Week 2
-**Branch**: `research-tools` (to be created after merge)
+### 🎯 **Phase 2: Research Tools & Verification Suite**
+**Status**: 🟡 **IN PROGRESS** - Feature Branch Development
+**Strategy**: Each priority = separate feature branch + PR
 
-#### 🔧 **Priority 1: Core Validation (Week 2)**
+## Phase 2 Feature Stories
 
-**XOR Benchmark Suite**
+### **Story 1: XOR Benchmark Suite** 
+**Branch**: `phase-2` ← **CURRENT BRANCH**  
+**PR**: `#2` (to be created)  
+**Status**: 🟡 IN PROGRESS
+
+**Scope**:
 - [ ] Complete XOR learning test (reproduce Figure 1 from paper)
 - [ ] Parameter sensitivity analysis (Appendix D test matrix)
 - [ ] Convergence probability tracking across configurations
 - [ ] Feature count sensitivity: {1, 2, 4, 8, 16, 32}
 - [ ] Initialization comparison: uniform vs normal vs orthogonal
 
-**Missing Intersection Methods**
-- [ ] Implement remaining methods: `max`, `gmean`, `softmin`
-- [ ] Performance comparison across all 6 methods
-- [ ] Numerical stability testing for gmean
+**Success Criteria**: >90% XOR convergence rate with optimal settings
+**Files**: `tests/test_xor_benchmark.py`, `verskyt/benchmarks/xor_suite.py`
 
-**Performance Benchmarks**
-- [ ] MNIST integration test
-- [ ] Parameter efficiency measurement
-- [ ] Convergence rate analysis
+---
 
-#### 🔧 **Priority 2: Research Toolkit (Week 2-3)**
+### **Story 2: Intervention Manager API**
+**Branch**: `feature/intervention-manager` (from main after Story 1 merged)  
+**PR**: `#3` (future)  
+**Status**: ⏳ AWAITING STORY 1
 
-**Intervention Manager (`verskyt/interventions/manager.py`)**
+**Scope**:
 - [ ] Prototype inspection and modification API
-- [ ] Feature grounding to semantic concepts
+- [ ] Feature grounding to semantic concepts  
 - [ ] Counterfactual analysis capabilities
 - [ ] Prototype editing with impact assessment
 
-**Visualization Suite (`verskyt/visualizations/plotting.py`)**
+**Success Criteria**: Functional prototype editing with impact measurement
+**Files**: `verskyt/interventions/manager.py`, `verskyt/interventions/analysis.py`
+
+---
+
+### **Story 3: Visualization Suite**
+**Branch**: `feature/visualization-suite` (from main after Story 2 merged)  
+**PR**: `#4` (future)  
+**Status**: ⏳ AWAITING STORY 2
+
+**Scope**:
 - [ ] Data-domain parameter visualization (Section 2.5)
 - [ ] Feature interpretability plots
 - [ ] Prototype visualization
 - [ ] Similarity landscape mapping
 - [ ] Decision boundary visualization
 
-**Advanced Analysis Tools**
-- [ ] Salience computation utilities
-- [ ] Feature importance ranking
-- [ ] Asymmetry analysis tools
+**Success Criteria**: Interpretable feature plots demonstrating TNN advantages
+**Files**: `verskyt/visualizations/plotting.py`, `examples/visualization_demo.py`
+
+---
+
+### **Story 4: MNIST Integration**
+**Branch**: `feature/mnist-benchmark` (from main after Story 3 merged)  
+**PR**: `#5` (future)  
+**Status**: ⏳ AWAITING STORY 3
+
+**Scope**:
+- [ ] MNIST baseline implementation with TverskyProjectionLayer
+- [ ] ResNet integration test (drop-in replacement)
+- [ ] Performance benchmarking vs standard architectures
+
+**Success Criteria**: >95% MNIST accuracy, ResNet integration functional
+**Files**: `verskyt/benchmarks/mnist.py`, `verskyt/models/resnet_tnn.py`
+
+---
+
+### **Story 5: Advanced Analysis Tools**
+**Branch**: `feature/analysis-tools` (from main after Story 4 merged)  
+**PR**: `#6` (future)  
+**Status**: ⏳ AWAITING STORY 4
+
+**Scope**:
 - [ ] Model introspection dashboard
+- [ ] Causal analysis framework
+- [ ] Feature evolution tracking
+- [ ] Asymmetry analysis tools
+
+**Success Criteria**: Functional analysis dashboard with real-time monitoring
+**Files**: `verskyt/analysis/introspection.py`, `verskyt/analysis/causal.py`
 
 ## Future Phases (Phase 3-5)
 
@@ -231,18 +271,20 @@
 ## Current Branch Strategy
 
 ```
-main (stable, baseline)
-├── init (🟡 current, PR #1 pending) - Core implementation
-├── research-tools (⏳ future) - Phase 2 development
-├── advanced-models (⏳ future) - Phase 3 development
-└── performance (⏳ future) - Phase 4 optimization
+main (stable, merged PRs)
+├── phase-2 (🟡 current) - Story 1: XOR Benchmark Suite → PR #2
+├── feature/intervention-manager (⏳ future) - Story 2 → PR #3  
+├── feature/visualization-suite (⏳ future) - Story 3 → PR #4
+├── feature/mnist-benchmark (⏳ future) - Story 4 → PR #5
+└── feature/analysis-tools (⏳ future) - Story 5 → PR #6
 ```
 
 **Development Workflow:**
-1. Feature branches from main
-2. Comprehensive testing required
-3. PR review with validation against paper
-4. Documentation updates with each merge
+1. **One story per branch**: Each feature story gets its own branch + PR
+2. **Sequential development**: Next branch created from main after previous PR merged
+3. **Comprehensive testing**: Each PR must include full test coverage
+4. **Paper validation**: All implementations validated against paper specifications
+5. **Documentation updates**: Each merge includes updated docs
 
 ## Key Metrics Dashboard
 
@@ -261,27 +303,31 @@ main (stable, baseline)
 - **Visualization**: 0% (awaiting Phase 1 completion)
 - **XOR validation**: Setup complete, validation pending
 
-## Next Actions (Phase 1 Completion)
+## Next Actions (Current: Story 1 - XOR Benchmark Suite)
 
-### Immediate (Current)
-1. **Complete PR #1 review and merge** - Core implementation to main
-2. **Final documentation review** - Ensure completeness
-3. **Any remaining test fixes or cleanup**
+### Current Branch: `phase-2` 
+**Implementing Story 1**: XOR Benchmark Suite for PR #2
 
-### After Phase 1 Merge
-4. **Create `research-tools` branch for Phase 2**
-5. **Implement complete XOR validation test**
-6. **Add missing intersection methods (max, gmean, softmin)**
+### Immediate Tasks
+1. ✅ **Phase 1 Complete** - PR #1 merged to main
+2. 🟡 **Story 1 Implementation** - XOR benchmark suite development
+3. **Create comprehensive XOR tests** - Reproduce Figure 1 from paper
+4. **Parameter sensitivity analysis** - Test all method combinations
+5. **Convergence probability tracking** - Multiple initialization strategies
 
-### Week 2 (Phase 2)
-7. **Design and implement Intervention Manager API**
-8. **Create basic visualization utilities**
-9. **MNIST integration and baseline measurement**
+### After Story 1 (PR #2) Merged
+6. **Create `feature/intervention-manager` branch** - Story 2 development
+7. **Implement Intervention Manager API** - Prototype modification capabilities
+8. **Continue sequential story development** - Stories 3-5 in order
 
-### Following Week
-7. **Advanced visualization features**
-8. **Performance optimization pass**
-9. **Documentation completion for Phase 2**
+### Story Completion Target
+- **Story 1**: Week 2 completion  
+- **Story 2**: Week 3 completion
+- **Story 3**: Week 4 completion  
+- **Stories 4-5**: Week 5+ completion
+
+### Current Focus
+**ONLY Story 1**: XOR Benchmark Suite implementation and testing
 
 ---
 
