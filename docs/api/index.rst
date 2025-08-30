@@ -59,7 +59,7 @@ Advanced Usage
 .. code-block:: python
 
    from verskyt.core.similarity import (
-       IntersectionReduction, 
+       IntersectionReduction,
        DifferenceReduction,
        tversky_contrast_similarity
    )

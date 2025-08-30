@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "verskyt"
@@ -39,6 +39,12 @@ dev = [
     "pre-commit>=3.0.0",
     "jupyter>=1.0.0",
     "torchvision>=0.11.0",
+    # Documentation dependencies
+    "sphinx>=5.0.0",
+    "furo>=2022.6.21",
+    "myst-parser>=0.18.0",
+    "myst-nb>=0.17.0",
+    "sphinx-autodoc-typehints>=1.19.0",
 ]
 
 visualization = [
@@ -56,10 +62,33 @@ benchmarks = [
 "Homepage" = "https://github.com/verskyt/verskyt"
 "Bug Tracker" = "https://github.com/verskyt/verskyt/issues"
 "Documentation" = "https://verskyt.readthedocs.io"
+"Source" = "https://github.com/verskyt/verskyt"
 
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["verskyt*"]
+# Hatch configuration
+[tool.hatch.build.targets.wheel]
+packages = ["verskyt"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "/verskyt",
+  "/tests",
+  "/docs",
+  "/scripts",
+  "*.md",
+  "*.toml",
+  "*.txt",
+]
+
+# Development scripts
+[tool.hatch.scripts]
+test = "pytest {args}"
+test-cov = "pytest --cov=verskyt --cov-report=term-missing {args}"
+lint = "pre-commit run --all-files"
+lint-fix = "black verskyt tests && isort verskyt tests"
+docs = "cd docs && make html"
+docs-serve = "python -m http.server 8000 -d docs/_build/html"
+benchmark-fast = "python scripts/run_xor_fast_benchmark.py"
+benchmark-full = "python scripts/run_xor_full_replication.py"
 
 [tool.black]
 line-length = 88

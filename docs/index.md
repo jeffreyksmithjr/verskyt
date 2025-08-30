@@ -42,7 +42,7 @@ PROJECT_STATUS
 ## Key Features
 
 - **🧠 Psychologically-Plausible Similarity**: Based on Tversky's feature-based similarity theory
-- **🔥 Non-linear Capability**: Single layer can solve XOR (impossible for linear layers)  
+- **🔥 Non-linear Capability**: Single layer can solve XOR (impossible for linear layers)
 - **📈 Performance Gains**: Up to 24.7% accuracy improvement on complex datasets
 - **⚡ Parameter Efficiency**: Fewer parameters with better performance
 - **🔍 Interpretability**: Learned prototypes and features are human-recognizable

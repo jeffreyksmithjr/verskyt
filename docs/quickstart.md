@@ -38,7 +38,7 @@ from verskyt import TverskyProjectionLayer
 class TverskyNet(nn.Module):
     def __init__(self, input_dim, hidden_dim, num_classes):
         super().__init__()
-        
+
         # Replace linear layers with Tversky layers
         self.layer1 = TverskyProjectionLayer(
             in_features=input_dim,
@@ -46,14 +46,14 @@ class TverskyNet(nn.Module):
             num_features=hidden_dim * 2,  # larger feature space
             learnable_ab=True
         )
-        
+
         self.layer2 = TverskyProjectionLayer(
             in_features=hidden_dim,
             num_prototypes=num_classes,
             num_features=hidden_dim,
             learnable_ab=True
         )
-        
+
     def forward(self, x):
         x = F.relu(self.layer1(x))
         x = self.layer2(x)  # logits for classification
@@ -98,7 +98,7 @@ for epoch in range(1000):
     loss = criterion(output, y)
     loss.backward()
     optimizer.step()
-    
+
     if epoch % 100 == 0:
         print(f'Epoch {epoch}, Loss: {loss.item():.4f}')
 
@@ -173,7 +173,7 @@ layer = TverskyProjectionLayer(10, 5, 20)
 prototypes = layer.prototypes.detach()
 print(f"Prototype 0: {prototypes[0]}")
 
-# Get learned features (basis for similarity computation)  
+# Get learned features (basis for similarity computation)
 features = layer.feature_bank.detach()
 print(f"Feature 0: {features[0]}")
 
@@ -194,7 +194,7 @@ layer.set_prototype(0, torch.zeros(10))  # zero out prototype 0
 # Before
 self.classifier = nn.Linear(512, 10)
 
-# After  
+# After
 self.classifier = TverskyProjectionLayer(512, 10, 1024)
 ```
 

@@ -61,7 +61,7 @@ surgery.apply_interventions(interventions)
 **Why Not Now**: Requires mature core library, extensive validation, and domain expertise
 
 #### Interpretability & Visualization
-- **Prototype Visualization**: 2D/3D embedding projections  
+- **Prototype Visualization**: 2D/3D embedding projections
 - **Feature Evolution Tracking**: Training dynamics visualization
 - **Attention-style Heatmaps**: Similarity score visualizations
 - **Interactive Dashboards**: Web-based exploration tools
@@ -108,7 +108,7 @@ surgery.apply_interventions(interventions)
 3. **Contributing Guide**: Clear guidelines for contributors
 4. **Code of Conduct**: Establish community standards
 
-### Quality & Stability  
+### Quality & Stability
 1. **Extended Testing**: More edge cases and error conditions
 2. **Performance Benchmarking**: Memory and speed profiling
 3. **Documentation Review**: User experience improvements
@@ -124,7 +124,7 @@ surgery.apply_interventions(interventions)
 
 ### Too Advanced for Current Stage
 - **AutoML Integration**: Automated architecture search
-- **Federated Learning**: Distributed training protocols  
+- **Federated Learning**: Distributed training protocols
 - **Edge Deployment**: Mobile/embedded optimization
 - **Commercial Features**: Licensing and enterprise support
 
@@ -148,7 +148,7 @@ surgery.apply_interventions(interventions)
 - [ ] Documentation satisfaction > 4/5 (user feedback)
 - [ ] Zero critical bugs (stability)
 
-### Phase 2 Success Criteria  
+### Phase 2 Success Criteria
 - [ ] Published reproduction of paper results
 - [ ] 3+ domain applications (vision, NLP, etc.)
 - [ ] Performance parity with optimized baselines
@@ -168,7 +168,7 @@ surgery.apply_interventions(interventions)
 - **Extend Theory**: Propose new similarity formulations
 - **Write Papers**: Cite and build upon this implementation
 
-### For Practitioners  
+### For Practitioners
 - **Report Issues**: Help improve stability and usability
 - **Request Features**: Guide development priorities
 - **Share Integrations**: Contribute framework adapters

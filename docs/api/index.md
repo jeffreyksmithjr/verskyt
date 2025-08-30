@@ -46,7 +46,7 @@ from verskyt.core import tversky_similarity, compute_salience
 ### Advanced Usage
 ```python
 from verskyt.core.similarity import (
-    IntersectionReduction, 
+    IntersectionReduction,
     DifferenceReduction,
     tversky_contrast_similarity
 )

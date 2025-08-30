@@ -8,21 +8,21 @@ import sys
 
 # -- Path setup --------------------------------------------------------------
 # Add the project root to the Python path so Sphinx can import the module
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath(".."))
 
 # -- Project information -----------------------------------------------------
-project = 'Verskyt'
-copyright = '2025, Verskyt Contributors'
-author = 'Verskyt Contributors'
-release = '0.1.0'
-version = '0.1.0'
+project = "Verskyt"
+copyright = "2025, Verskyt Contributors"
+author = "Verskyt Contributors"
+release = "0.1.0"
+version = "0.1.0"
 
 # -- General configuration ---------------------------------------------------
 extensions = [
-    'sphinx.ext.autodoc',           # Core library to pull in docstring documentation
-    'sphinx.ext.napoleon',          # Support for NumPy and Google style docstrings
-    'sphinx.ext.viewcode',          # Add links to highlighted source code
-    'sphinx.ext.intersphinx',       # Link to other project documentation
+    "sphinx.ext.autodoc",  # Core library to pull in docstring documentation
+    "sphinx.ext.napoleon",  # Support for NumPy and Google style docstrings
+    "sphinx.ext.viewcode",  # Add links to highlighted source code
+    "sphinx.ext.intersphinx",  # Link to other project documentation
     # 'myst_parser',                  # Parse Markdown files - commented out due to compatibility issues
     # 'myst_nb',                      # Parse Jupyter notebooks - commented out due to compatibility issues
     # 'sphinx_autodoc_typehints',     # Better type hint handling - commented out due to compatibility issues
@@ -46,20 +46,20 @@ nb_execution_mode = "off"  # Don't execute notebooks during build
 
 # Source file suffixes
 source_suffix = {
-    '.rst': None,
+    ".rst": None,
     # '.md': 'myst_parser',
     # '.ipynb': 'myst_nb',
 }
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '.ipynb_checkpoints']
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", ".ipynb_checkpoints"]
 
 # -- Options for HTML output -------------------------------------------------
-html_theme = 'furo'
+html_theme = "furo"
 
 html_theme_options = {
     "sidebar_hide_name": True,
@@ -75,15 +75,15 @@ html_title = f"Verskyt {version}"
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]
 
 # -- Autodoc configuration ---------------------------------------------------
 autodoc_default_options = {
-    'members': True,
-    'member-order': 'bysource',
-    'special-members': '__init__',
-    'undoc-members': True,
-    'exclude-members': '__weakref__'
+    "members": True,
+    "member-order": "bysource",
+    "special-members": "__init__",
+    "undoc-members": True,
+    "exclude-members": "__weakref__",
 }
 
 # Don't show module names before class/function names
@@ -107,7 +107,7 @@ napoleon_attr_annotations = True
 
 # -- Intersphinx mapping -----------------------------------------------------
 intersphinx_mapping = {
-    'python': ('https://docs.python.org/3', None),
-    'torch': ('https://pytorch.org/docs/stable/', None),
-    'numpy': ('https://numpy.org/doc/stable/', None),
+    "python": ("https://docs.python.org/3", None),
+    "torch": ("https://pytorch.org/docs/stable/", None),
+    "numpy": ("https://numpy.org/doc/stable/", None),
 }

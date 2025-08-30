@@ -13,7 +13,7 @@ interpretability_tutorial
 ## Coming Soon
 
 - **XOR Tutorial**: Step-by-step guide to solving XOR with a single Tversky layer
-- **Classification Tutorial**: Building complete classifiers with Tversky layers  
+- **Classification Tutorial**: Building complete classifiers with Tversky layers
 - **Interpretability Tutorial**: Understanding and visualizing learned prototypes
 - **Advanced Tutorial**: Custom similarity functions and multi-layer architectures
 

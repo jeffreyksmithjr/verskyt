@@ -24,7 +24,7 @@ If you only need the core functionality:
 
 ```bash
 git clone https://github.com/verskyt/verskyt.git
-cd verskyt  
+cd verskyt
 pip install -e .
 ```
 
@@ -36,7 +36,7 @@ For enhanced plotting and visualization capabilities:
 pip install -e ".[visualization]"
 ```
 
-### Benchmarks  
+### Benchmarks
 For running paper benchmarks and comparisons:
 ```bash
 pip install -e ".[benchmarks]"
@@ -59,7 +59,7 @@ from verskyt import TverskyProjectionLayer
 # Create a simple layer
 layer = TverskyProjectionLayer(
     in_features=4,
-    num_prototypes=2, 
+    num_prototypes=2,
     num_features=8
 )
 
