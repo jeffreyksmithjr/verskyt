@@ -83,7 +83,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.8', '3.9', '3.10', '3.11']
+        # Multi-Python testing only on main branch (expensive)
+        # PR builds use single Python version for cost efficiency
+        python-version: ${{ github.ref == 'refs/heads/main' && fromJSON('["3.8", "3.9", "3.10", "3.11"]') || fromJSON('["3.11"]') }}
     
     steps:
     - uses: actions/checkout@v4
@@ -131,6 +133,15 @@ jobs:
         
         print('Coverage thresholds met')
         "
+        
+    - name: Display Python version context
+      run: |
+        echo "Running on Python ${{ matrix.python-version }}"
+        if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+          echo "✅ Full multi-Python testing (main branch)"
+        else
+          echo "⚡ Fast single-Python testing (PR build)"
+        fi
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3

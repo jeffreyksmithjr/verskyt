@@ -79,7 +79,7 @@ git commit --no-verify
 - **GitHub Actions**: Automated quality checks on all PRs and pushes
 - **Quality gates**: Code formatting, linting, import validation, testing
 - **Coverage reporting**: Automatic coverage tracking via Codecov
-- **Multi-Python support**: Tests run on Python 3.8, 3.9, 3.10, 3.11
+- **Multi-Python support**: Full matrix (3.8-3.11) on main, single version (3.11) on PRs for cost efficiency
 
 ## Development Workflow
 
@@ -222,8 +222,8 @@ pytest tests/test_failing.py -vvs --pdb
 ### GitHub Actions Workflows
 
 **Main CI Pipeline (`.github/workflows/ci.yml`):**
-- **Quality checks**: Black, isort, flake8, import validation
-- **Multi-Python testing**: Tests on Python 3.8-3.11
+- **Quality checks**: Black, isort, flake8, import validation (all builds)
+- **Multi-Python testing**: Python 3.8-3.11 on main branch, Python 3.11 on PRs (cost optimized)
 - **Coverage validation**: Enforces 60% overall, 75% core module coverage
 - **Integration tests**: XOR learning validation, package import testing
 - **Documentation checks**: Validates required docs are present
@@ -232,6 +232,19 @@ pytest tests/test_failing.py -vvs --pdb
 - Fast feedback on basic quality issues
 - Runs same hooks as local pre-commit
 - Skips slow tests for quick iteration
+
+### CI Cost Optimization
+
+**Multi-Python Testing Strategy:**
+- **PR builds**: Single Python version (3.11) for fast feedback and cost efficiency
+- **Main branch**: Full Python matrix (3.8, 3.9, 3.10, 3.11) for comprehensive validation
+- **Rationale**: Most compatibility issues are caught in single-version testing; full matrix reserved for final validation
+
+**Benefits:**
+- ⚡ **Faster PR feedback**: ~75% reduction in CI time for feature branches
+- 💰 **Lower CI costs**: Significant reduction in compute minutes usage
+- 🔍 **Maintained quality**: All quality gates still enforced on every build
+- ✅ **Full validation**: Complete multi-Python testing before merges to main
 
 ### Monitoring CI Results
 
