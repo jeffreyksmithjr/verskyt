@@ -151,7 +151,7 @@ jobs:
 
   # Fast integration check for PRs - only basic functionality
   basic-integration:
-    name: Basic Integration 
+    name: Basic Integration
     runs-on: ubuntu-latest
     needs: [quality-checks]
     if: github.event_name == 'pull_request'
@@ -177,15 +177,15 @@ jobs:
         from verskyt.core import tversky_similarity, compute_salience
         from verskyt.layers import TverskyProjectionLayer as TPL
         print('✅ All package imports successful')
-        
+
         # Basic functionality test - just create layers, no training
         import torch
         torch.manual_seed(42)
-        
+
         layer = TverskyProjectionLayer(in_features=2, num_prototypes=2, num_features=4)
         test_input = torch.randn(1, 2)
         output = layer(test_input)
-        
+
         print(f'✅ Layer creation and forward pass successful: {output.shape}')
         print('✅ Basic integration test passed')
         "
@@ -223,40 +223,40 @@ jobs:
         import torch
         import torch.nn as nn
         import torch.optim as optim
-        
+
         torch.manual_seed(42)
         layer = TverskyProjectionLayer(in_features=2, num_prototypes=2, num_features=4, learnable_ab=True)
-        
+
         # Store initial parameters
         initial_alpha = layer.alpha.clone()
         initial_beta = layer.beta.clone()
         initial_prototypes = layer.prototypes.clone()
-        
+
         # Simple training step
         optimizer = optim.SGD(layer.parameters(), lr=0.1)
         criterion = nn.MSELoss()
-        
+
         inputs = torch.randn(4, 2)
         targets = torch.randn(4, 2)  # Use same shape as output
-        
+
         output = layer(inputs)
         loss = criterion(output, targets)
         loss.backward()
         optimizer.step()
-        
+
         # Verify parameters changed (basic learning capability)
         alpha_changed = not torch.equal(layer.alpha, initial_alpha)
         beta_changed = not torch.equal(layer.beta, initial_beta)
         prototypes_changed = not torch.equal(layer.prototypes, initial_prototypes)
-        
+
         print(f'✅ Alpha parameters updated: {alpha_changed}')
-        print(f'✅ Beta parameters updated: {beta_changed}') 
+        print(f'✅ Beta parameters updated: {beta_changed}')
         print(f'✅ Prototype parameters updated: {prototypes_changed}')
-        
+
         if not (alpha_changed and beta_changed and prototypes_changed):
             print('ERROR: Some parameters did not update during training')
             exit(1)
-            
+
         print('✅ Full integration test passed: Parameter learning verified')
         "
 

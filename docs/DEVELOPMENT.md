@@ -257,7 +257,7 @@ pytest tests/test_failing.py -vvs --pdb
 - Runtime: ~2-3 minutes for quick iteration
 
 **Main Branch (Full Validation):**
-- Multi-Python matrix (3.8, 3.9, 3.10, 3.11) testing  
+- Multi-Python matrix (3.8, 3.9, 3.10, 3.11) testing
 - Extended integration: parameter learning verification
 - Full dev environment with all dependencies
 - Runtime: ~8-12 minutes for comprehensive validation
