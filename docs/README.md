@@ -43,7 +43,7 @@ Research tools and experimental features.
 - Start with [TNN Specification](requirements/tnn-specification.md) for complete mathematical formulations
 - See [Experiments](research/) for reproducing paper results
 
-### For Developers  
+### For Developers
 - Begin with [Implementation Plan](implementation/plan.md) for development roadmap
 - Check [API Reference](api/) for component details
 
@@ -57,7 +57,7 @@ Research tools and experimental features.
 verskyt/
 ├── verskyt/                 # Main package
 │   ├── core/               # Core similarity functions
-│   ├── layers/             # Neural network layers  
+│   ├── layers/             # Neural network layers
 │   ├── utils/              # Utility functions
 │   └── research/           # Research tools
 ├── tests/                  # Test suite

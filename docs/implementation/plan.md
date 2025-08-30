@@ -36,7 +36,7 @@
 - Learnable parameters: Ω (feature bank), α, β, θ
 - Output: scalar similarity between two objects
 
-#### 2.2 TverskyProjectionLayer  
+#### 2.2 TverskyProjectionLayer
 - Implements Equation 7 from paper
 - Replaces traditional linear layers
 - Parameters: prototypes (Π), feature bank (Ω), α, β
@@ -59,7 +59,7 @@
 
 **Test Matrix (from Appendix D):**
 - 6 intersection reduction methods
-- 2 difference reduction methods  
+- 2 difference reduction methods
 - Multiple feature counts: {1, 2, 4, 8, 16, 32}
 - 3 initialization distributions
 - Convergence probability tracking
@@ -129,7 +129,7 @@
 
 ### Validation Metrics
 
-1. **XOR Test**: 
+1. **XOR Test**:
    - Must solve with single layer
    - Convergence rate > 40% with optimal settings
 
@@ -184,7 +184,7 @@
 
 ### Risk Mitigation
 
-1. **Numerical Instability**: 
+1. **Numerical Instability**:
    - Add θ parameter for stability (default 1e-7)
    - Clamp α, β to non-negative values
    - ReLU for membership computation

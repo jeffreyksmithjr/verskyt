@@ -21,7 +21,6 @@ repos:
     rev: 7.1.1
     hooks:
       - id: flake8
-        args: [--max-line-length=88, --extend-ignore=E203,W503]
 
   # General file checks
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -48,46 +47,47 @@ repos:
     hooks:
       - id: validate-imports
         name: validate-imports
-        entry: python -c "
-import sys
-import importlib.util
-import ast
+        entry: |
+          python -c "
+          import sys
+          import importlib.util
+          import ast
 
-def check_imports(filename):
-    try:
-        with open(filename, 'r') as f:
-            tree = ast.parse(f.read())
-        
-        # Extract imports
-        imports = []
-        for node in ast.walk(tree):
-            if isinstance(node, ast.ImportFrom):
-                if node.module and node.module.startswith('verskyt'):
-                    for alias in node.names:
-                        imports.append((node.module, alias.name))
-        
-        # Check that imports can be resolved
-        for module, name in imports:
-            try:
-                mod = importlib.import_module(module)
-                if not hasattr(mod, name):
-                    print(f'ERROR: {filename}: {module} does not export {name}')
-                    return False
-            except ImportError as e:
-                print(f'ERROR: {filename}: Cannot import {module}: {e}')
-                return False
-        return True
-    except Exception as e:
-        print(f'ERROR: {filename}: Failed to parse: {e}')
-        return False
+          def check_imports(filename):
+              try:
+                  with open(filename, 'r') as f:
+                      tree = ast.parse(f.read())
 
-if __name__ == '__main__':
-    success = all(check_imports(f) for f in sys.argv[1:])
-    sys.exit(0 if success else 1)
-"
+                  # Extract imports
+                  imports = []
+                  for node in ast.walk(tree):
+                      if isinstance(node, ast.ImportFrom):
+                          if node.module and node.module.startswith('verskyt'):
+                              for alias in node.names:
+                                  imports.append((node.module, alias.name))
+
+                  # Check that imports can be resolved
+                  for module, name in imports:
+                      try:
+                          mod = importlib.import_module(module)
+                          if not hasattr(mod, name):
+                              print(f'ERROR: {filename}: {module} does not export {name}')
+                              return False
+                      except ImportError as e:
+                          print(f'ERROR: {filename}: Cannot import {module}: {e}')
+                          return False
+                  return True
+              except Exception as e:
+                  print(f'ERROR: {filename}: Failed to parse: {e}')
+                  return False
+
+          if __name__ == '__main__':
+              success = all(check_imports(f) for f in sys.argv[1:])
+              sys.exit(0 if success else 1)
+          "
         language: system
         files: \.py$
-        stages: [commit]
+        stages: [pre-commit]
 
   # Basic test validation
   - repo: local
@@ -97,4 +97,4 @@ if __name__ == '__main__':
         entry: pytest tests/ -x --tb=short
         language: system
         pass_filenames: false
-        stages: [push]  # Only run on push, not every commit
+        stages: [pre-push]  # Only run on push, not every commit

@@ -15,7 +15,7 @@ Research tools, experimental features, and analysis capabilities for Tversky Neu
 
 **Experiment framework:**
 - Standardized experimental protocols
-- Automated hyperparameter sweeps  
+- Automated hyperparameter sweeps
 - Statistical significance testing
 - Result reproduction verification
 
@@ -192,7 +192,7 @@ def build_prototype_hierarchy(model):
 
 ### Computer Vision
 - **Object recognition**: Understand how humans recognize objects
-- **Medical imaging**: Interpretable diagnostic systems  
+- **Medical imaging**: Interpretable diagnostic systems
 - **Artistic style**: Model artistic similarity and style transfer
 
 ### Natural Language Processing

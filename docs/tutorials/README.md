@@ -44,7 +44,7 @@ Complex scenarios and optimizations
 - **Feature Learning**: Interpretable feature discovery
 - **Transfer Learning**: Adapting pre-trained models with Tversky layers
 
-### Natural Language Processing  
+### Natural Language Processing
 - **Language Modeling**: Replacing linear layers in transformers
 - **Text Classification**: Similarity-based text understanding
 - **Attention Mechanisms**: Asymmetric attention with Tversky similarity
@@ -94,7 +94,7 @@ sim = tversky_similarity(
 
 ### Model Design
 - Start with proven architectures (ResNet + TverskyHead)
-- Use parameter sharing for efficiency  
+- Use parameter sharing for efficiency
 - Monitor convergence carefully with Tversky layers
 
 ### Training
@@ -118,5 +118,5 @@ sim = tversky_similarity(
 
 We welcome tutorial contributions! Please see our [contribution guidelines](../../README.md) for:
 - Tutorial format and style
-- Code example standards  
+- Code example standards
 - Review process

@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
+
 from verskyt.layers.projection import TverskyProjectionLayer
 
 # Debug the parameter learning issue
@@ -10,7 +11,7 @@ layer = TverskyProjectionLayer(
     num_features=2,
     learnable_ab=True,
     alpha=0.5,
-    beta=0.5
+    beta=0.5,
 )
 
 print(f"Initial alpha: {layer.alpha}")

@@ -9,7 +9,7 @@ Complete API documentation for all Verskyt components.
 
 **Key functions:**
 - `tversky_similarity()` - Main similarity computation
-- `compute_feature_membership()` - Feature membership scoring  
+- `compute_feature_membership()` - Feature membership scoring
 - `compute_salience()` - Salience weighting calculations
 - `intersection_measures()` - Various intersection reduction methods
 - `difference_measures()` - Various difference reduction methods
@@ -65,7 +65,7 @@ class TverskyClassifier(nn.Module):
             num_prototypes=num_classes,
             num_features=num_features
         )
-    
+
     def forward(self, x):
         features = self.backbone(x)
         return self.classifier(features)
@@ -92,13 +92,13 @@ layer2 = TverskyProjectionLayer(..., shared_features=shared_features)
 
 ### Default Values
 - **alpha**: 0.5 (distinctive features of object a)
-- **beta**: 0.5 (distinctive features of object b)  
+- **beta**: 0.5 (distinctive features of object b)
 - **theta**: 1.0 (common features weight)
 - **intersection_method**: 'product'
 - **difference_method**: 'ignorematch'
 
 ### Initialization Strategies
-- **Prototypes**: Uniform distribution (-1, 1) recommended  
+- **Prototypes**: Uniform distribution (-1, 1) recommended
 - **Features**: Uniform distribution (-1, 1) recommended
 - **Alpha, Beta, Theta**: Small positive values (0.1-1.0)
 
@@ -145,7 +145,7 @@ validate_similarity(similarity_fn, test_cases)
 - **Recommended**: PyTorch 2.0+
 - **GPU Support**: CUDA 11.0+
 
-### Python Versions  
+### Python Versions
 - **Minimum**: Python 3.8
 - **Recommended**: Python 3.9+
 - **Type Hints**: Full support for static analysis

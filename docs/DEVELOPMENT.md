@@ -53,7 +53,7 @@ git commit --no-verify
 **Hooks include:**
 - **Black**: Code formatting (88 char line length)
 - **isort**: Import organization
-- **flake8**: Linting and style checking  
+- **flake8**: Linting and style checking
 - **Import validation**: Ensures all imports resolve correctly
 - **Basic tests**: Run core test suite on push
 
@@ -104,7 +104,7 @@ git push origin feature/your-feature-name
 
 **Code Quality:**
 - [ ] Code formatted with Black (pre-commit enforces this)
-- [ ] Imports organized with isort  
+- [ ] Imports organized with isort
 - [ ] All flake8 checks pass
 - [ ] Type hints added for public functions
 - [ ] No import errors or missing exports

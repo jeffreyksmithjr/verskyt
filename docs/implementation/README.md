@@ -26,7 +26,7 @@ This section provides detailed guidance for implementing and extending Verskyt.
 - Differentiability validation and gradient verification
 - **Success criteria**: All mathematical operations match paper specifications
 
-### Phase 2: Neural Network Layers  
+### Phase 2: Neural Network Layers
 - TverskySimilarityLayer and TverskyProjectionLayer
 - Parameter initialization strategies
 - **Success criteria**: XOR test passes with single layer
@@ -81,6 +81,6 @@ verskyt/
 ## Architecture Principles
 
 - **Modularity**: Clean separation between mathematical operations, layers, and tools
-- **Introspection**: Full access to internal states, features, and prototypes  
+- **Introspection**: Full access to internal states, features, and prototypes
 - **Extensibility**: Easy integration with existing PyTorch architectures
 - **Verifiability**: Every component tested against paper specifications

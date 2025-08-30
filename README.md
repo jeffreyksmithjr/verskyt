@@ -11,7 +11,7 @@ A comprehensive Python library implementing Tversky Neural Networks (TNNs) - psy
 Verskyt provides PyTorch-compatible implementations of Tversky similarity functions and neural network layers that can serve as drop-in replacements for traditional linear layers, offering improved interpretability and performance in many scenarios.
 
 **Key Features:**
-- **Differentiable Tversky similarity** with multiple aggregation methods  
+- **Differentiable Tversky similarity** with multiple aggregation methods
 - **Neural network layers** compatible with existing PyTorch architectures
 - **Research tools** for interpretability and intervention studies
 - **Comprehensive testing** with paper result reproduction
@@ -38,7 +38,7 @@ layer = TverskyProjectionLayer(
 
 ### Quick Links
 - **[Implementation Requirements](docs/requirements/tnn-specification.md)** - Complete mathematical specifications
-- **[Implementation Plan](docs/implementation/plan.md)** - Development roadmap and testing strategy  
+- **[Implementation Plan](docs/implementation/plan.md)** - Development roadmap and testing strategy
 - **[API Reference](docs/api/)** - Detailed API documentation
 - **[Tutorials](docs/tutorials/)** - Step-by-step usage guides
 - **[Research Tools](docs/research/)** - Experimental and analysis capabilities
@@ -48,7 +48,7 @@ layer = TverskyProjectionLayer(
 Based on "Tversky Neural Networks" (Doumbouya et al., 2025):
 
 - **🔥 Non-linear capability**: Single layer can solve XOR (impossible for linear layers)
-- **📈 ResNet-50 improvement**: Up to 24.7% accuracy gain on NABirds dataset  
+- **📈 ResNet-50 improvement**: Up to 24.7% accuracy gain on NABirds dataset
 - **⚡ Parameter efficiency**: 34.8% fewer parameters in GPT-2 with 7.5% perplexity reduction
 - **🔍 Interpretability**: Learned prototypes and features are human-recognizable
 

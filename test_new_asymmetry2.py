@@ -1,4 +1,5 @@
 import torch
+
 from verskyt.core.similarity import tversky_similarity
 
 # Create an asymmetric test case where x and prototypes have different profiles
@@ -11,8 +12,8 @@ print(f"x: {x}")
 print(f"prototypes: {prototypes}")
 
 # Compute memberships manually
-x_membership = torch.einsum('bi,fi->bf', x, features)  # [1.0, 0.0]
-p_membership = torch.einsum('pi,fi->pf', prototypes, features)  # [0.2, 0.8]
+x_membership = torch.einsum("bi,fi->bf", x, features)  # [1.0, 0.0]
+p_membership = torch.einsum("pi,fi->pf", prototypes, features)  # [0.2, 0.8]
 
 print(f"x_membership: {x_membership}")
 print(f"p_membership: {p_membership}")
@@ -30,8 +31,8 @@ print(f"\nNew test case:")
 print(f"x: {x}")
 print(f"prototypes: {prototypes}")
 
-x_membership = torch.einsum('bi,fi->bf', x, features)  # [1.0, 0.1]
-p_membership = torch.einsum('pi,fi->pf', prototypes, features)  # [0.1, 1.0]
+x_membership = torch.einsum("bi,fi->bf", x, features)  # [1.0, 0.1]
+p_membership = torch.einsum("pi,fi->pf", prototypes, features)  # [0.1, 1.0]
 
 print(f"x_membership: {x_membership}")
 print(f"p_membership: {p_membership}")
@@ -41,16 +42,16 @@ print(f"p_membership: {p_membership}")
 # Still symmetric!
 
 # Let me try a truly asymmetric case with different magnitudes
-x = torch.tensor([[1.0, 0.2]])  
-prototypes = torch.tensor([[0.3, 0.8]])  
+x = torch.tensor([[1.0, 0.2]])
+prototypes = torch.tensor([[0.3, 0.8]])
 features = torch.tensor([[1.0, 0.0], [0.0, 1.0]])
 
 print(f"\nAsymmetric test case:")
 print(f"x: {x}")
 print(f"prototypes: {prototypes}")
 
-x_membership = torch.einsum('bi,fi->bf', x, features)  # [1.0, 0.2]
-p_membership = torch.einsum('pi,fi->pf', prototypes, features)  # [0.3, 0.8]
+x_membership = torch.einsum("bi,fi->bf", x, features)  # [1.0, 0.2]
+p_membership = torch.einsum("pi,fi->pf", prototypes, features)  # [0.3, 0.8]
 
 print(f"x_membership: {x_membership}")
 print(f"p_membership: {p_membership}")
@@ -60,15 +61,23 @@ print(f"p_membership: {p_membership}")
 # NOW it's asymmetric!
 
 sim_alpha_high = tversky_similarity(
-    x, prototypes, features,
-    alpha=0.9, beta=0.1, theta=1e-7,
-    difference_reduction="substractmatch"
+    x,
+    prototypes,
+    features,
+    alpha=0.9,
+    beta=0.1,
+    theta=1e-7,
+    difference_reduction="substractmatch",
 )
 
 sim_beta_high = tversky_similarity(
-    x, prototypes, features,
-    alpha=0.1, beta=0.9, theta=1e-7,
-    difference_reduction="substractmatch"
+    x,
+    prototypes,
+    features,
+    alpha=0.1,
+    beta=0.9,
+    theta=1e-7,
+    difference_reduction="substractmatch",
 )
 
 print(f"\nSimilarity (α=0.9, β=0.1): {sim_alpha_high}")

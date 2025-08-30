@@ -1,14 +1,19 @@
 import torch
-from verskyt.core.similarity import tversky_similarity, _compute_intersection, _compute_difference
+
+from verskyt.core.similarity import (
+    _compute_difference,
+    _compute_intersection,
+    tversky_similarity,
+)
 
 # Exact test case
 x = torch.tensor([[1.0, 0.3]])
-prototypes = torch.tensor([[0.3, 1.0]]) 
+prototypes = torch.tensor([[0.3, 1.0]])
 features = torch.tensor([[1.0, 0.0], [0.0, 1.0]])
 
 # Compute memberships
-x_membership = torch.einsum('bi,fi->bf', x, features)
-p_membership = torch.einsum('pi,fi->pf', prototypes, features)
+x_membership = torch.einsum("bi,fi->bf", x, features)
+p_membership = torch.einsum("pi,fi->pf", prototypes, features)
 
 print(f"x: {x}")
 print(f"prototypes: {prototypes}")
@@ -34,7 +39,7 @@ print(f"p - x (substractmatch): {p_minus_x}")
 #   Feature 0: ReLU(1.0 - 0.3) = 0.7
 #   Feature 1: ReLU(0.3 - 1.0) = 0.0
 #   Sum: 0.7
-# - p_minus_x: ReLU(p_mem - x_mem) where both positive  
+# - p_minus_x: ReLU(p_mem - x_mem) where both positive
 #   Feature 0: ReLU(0.3 - 1.0) = 0.0
 #   Feature 1: ReLU(1.0 - 0.3) = 0.7
 #   Sum: 0.7
@@ -57,15 +62,23 @@ print(f"Total p-x: 0.0 + 0.7 = 0.7")
 
 # Test similarity
 sim_alpha_high = tversky_similarity(
-    x, prototypes, features,
-    alpha=0.9, beta=0.1, theta=1e-7,
-    difference_reduction="substractmatch"
+    x,
+    prototypes,
+    features,
+    alpha=0.9,
+    beta=0.1,
+    theta=1e-7,
+    difference_reduction="substractmatch",
 )
 
 sim_beta_high = tversky_similarity(
-    x, prototypes, features,
-    alpha=0.1, beta=0.9, theta=1e-7,
-    difference_reduction="substractmatch"
+    x,
+    prototypes,
+    features,
+    alpha=0.1,
+    beta=0.9,
+    theta=1e-7,
+    difference_reduction="substractmatch",
 )
 
 print(f"\nSimilarity (α=0.9, β=0.1): {sim_alpha_high}")

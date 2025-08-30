@@ -23,7 +23,7 @@ Where:
 ### 1.2 Dual Object Representation
 
 Objects have dual representation:
-1. **Vector form**: `x ∈ ℝᵈ` 
+1. **Vector form**: `x ∈ ℝᵈ`
 2. **Set form**: `X = {fₖ ∈ Ω | x · fₖ > 0}` (features with positive dot product)
 
 Where `Ω` is the learnable finite universe of feature vectors `fₖ ∈ ℝᵈ`.
@@ -44,7 +44,7 @@ f(A ∩ B) = Σₖ₌₁|Ω| Ψ(a · fₖ, b · fₖ) * 𝟙[a · fₖ > 0 ∧ b
 
 **Intersection Reduction Methods** (Ψ function options):
 - `min`: min(a·fₖ, b·fₖ)
-- `max`: max(a·fₖ, b·fₖ) 
+- `max`: max(a·fₖ, b·fₖ)
 - `product`: (a·fₖ) * (b·fₖ)
 - `mean`: (a·fₖ + b·fₖ) / 2
 - `gmean`: √((a·fₖ) * (b·fₖ))
@@ -75,7 +75,7 @@ f(A - B) = Σₖ₌₁|Ω| (a · fₖ - b · fₖ) * 𝟙[a · fₖ > 0 ∧ b ·
 **Purpose**: Compute similarity between two objects
 **Input**: Two vectors a, b ∈ ℝᵈ
 **Output**: Scalar similarity value
-**Parameters**: 
+**Parameters**:
 - Feature bank Ω (shape: [num_features, d])
 - Scalar parameters α, β, θ
 
@@ -88,11 +88,11 @@ def tversky_similarity(a, b, features, alpha, beta, theta):
 ### 2.2 Tversky Projection Layer
 
 **Purpose**: Replace linear/fully-connected layers
-**Input**: Vector a ∈ ℝᵈ  
+**Input**: Vector a ∈ ℝᵈ
 **Output**: Vector ∈ ℝᵖ (similarities to p prototypes)
 **Parameters**:
 - Feature bank Ω (shape: [num_features, d])
-- Prototype bank Π (shape: [num_prototypes, d]) 
+- Prototype bank Π (shape: [num_prototypes, d])
 - Scalar parameters α, β, θ
 
 **Function**:
@@ -110,7 +110,7 @@ def tversky_projection(a, prototypes, features, alpha, beta, theta):
 ### 3.1 Shape Conventions
 
 - **Objects/inputs**: [batch_size, in_features]
-- **Prototypes**: [num_prototypes, in_features]  
+- **Prototypes**: [num_prototypes, in_features]
 - **Features**: [num_features, in_features]
 - **Similarity outputs**: Must be in range [0, 1] (normalized)
 
@@ -151,7 +151,7 @@ Tversky Projection layers can directly replace:
 - Language model layers processing tokens can share token feature banks
 - Attention layers can share attention feature banks
 
-**Prototype Sharing**: 
+**Prototype Sharing**:
 - Language modeling heads can use token embeddings as prototypes (weight tying)
 - Similar to existing weight tying in transformer language models
 
@@ -238,9 +238,9 @@ class TverskySimilarity(nn.Module):
     def __init__(self, num_features, feature_dim):
         self.features = nn.Parameter(torch.randn(num_features, feature_dim))
         self.alpha = nn.Parameter(torch.tensor(0.5))
-        self.beta = nn.Parameter(torch.tensor(0.5)) 
+        self.beta = nn.Parameter(torch.tensor(0.5))
         self.theta = nn.Parameter(torch.tensor(1.0))
-    
+
     def forward(self, a, b):
         # Implement similarity computation
         pass
@@ -250,7 +250,7 @@ class TverskyProjectionLayer(nn.Module):
     def __init__(self, in_features, num_prototypes, num_features):
         self.prototypes = nn.Parameter(torch.randn(num_prototypes, in_features))
         self.similarity = TverskySimilarity(num_features, in_features)
-    
+
     def forward(self, x):
         # Compute similarities to all prototypes
         pass
@@ -295,7 +295,7 @@ class TverskyProjectionLayer(nn.Module):
 - More complex forward pass computation
 - Data-domain parameter visualization increases parameter count
 
-### 10.2 Training Sensitivity  
+### 10.2 Training Sensitivity
 
 - More sensitive to initialization than linear layers
 - Some hyperparameter combinations may not converge
@@ -304,7 +304,7 @@ class TverskyProjectionLayer(nn.Module):
 ### 10.3 Implementation Complexity
 
 - More complex than standard linear layers
-- Requires careful implementation of differentiable set operations  
+- Requires careful implementation of differentiable set operations
 - Parameter sharing requires architectural consideration
 
 ## 11. Future Extensions

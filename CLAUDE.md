@@ -140,7 +140,7 @@ For detailed implementation guidance, see:
 - [Specific confirmations with file:line references]
 - [Adherence to project standards]
 
-### ❌ Issues Requiring Action  
+### ❌ Issues Requiring Action
 - [Specific problems with file:line locations]
 - [Clear remediation steps]
 
@@ -164,7 +164,7 @@ Next: [Required actions, if any]
 
 ### Emoji Usage
 - Limit to functional indicators only (⚠️ for warnings, ❌ for failures)
-- Avoid celebratory emoji (🎉, 🚀, ✨) 
+- Avoid celebratory emoji (🎉, 🚀, ✨)
 - Use sparingly and only when they add informational value
 
 ## Proactive Development Guidelines
@@ -172,7 +172,7 @@ Next: [Required actions, if any]
 ### Pre-Development Checklist
 Before writing code, always:
 1. **Review specifications**: Check docs/requirements/tnn-specification.md for mathematical requirements
-2. **Understand testing strategy**: Review docs/implementation/plan.md for testing approach  
+2. **Understand testing strategy**: Review docs/implementation/plan.md for testing approach
 3. **Set up environment**: Run `pip install -e ".[dev]" && pre-commit install`
 4. **Validate setup**: Run `pre-commit run --all-files && pytest`
 

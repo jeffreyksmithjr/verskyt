@@ -58,7 +58,7 @@ benchmarks = [
 "Documentation" = "https://verskyt.readthedocs.io"
 
 [tool.setuptools.packages.find]
-where = ["."]  
+where = ["."]
 include = ["verskyt*"]
 
 [tool.black]
