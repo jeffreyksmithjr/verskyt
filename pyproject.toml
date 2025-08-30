@@ -84,3 +84,7 @@ testpaths = ["tests"]
 python_files = "test_*.py"
 python_functions = "test_*"
 addopts = "-v --cov=verskyt --cov-report=term-missing"
+markers = [
+    "slow: marks tests as slow (training-intensive, excluded from CI)",
+    "benchmark: marks tests related to benchmark functionality",
+]
