@@ -40,8 +40,14 @@ python -c "import verskyt; print('All imports OK')"
 
 ### Testing
 ```bash
-# Run all tests with coverage
+# Run fast tests only (excludes training-intensive tests, CI default)
+pytest -v --cov=verskyt --cov-report=term-missing -m "not slow"
+
+# Run all tests including slow ones (local development/validation)
 pytest -v --cov=verskyt --cov-report=term-missing
+
+# Run only slow tests (benchmark validation)
+pytest -v -m "slow"
 
 # Run specific test file
 pytest tests/test_basic_functionality.py -v

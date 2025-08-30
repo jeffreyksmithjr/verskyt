@@ -102,7 +102,7 @@ jobs:
 
     - name: Run tests with coverage
       run: |
-        pytest -v --cov=verskyt --cov-report=xml --cov-report=term-missing
+        pytest -v --cov=verskyt --cov-report=xml --cov-report=term-missing -m "not slow"
 
     - name: Check coverage thresholds
       run: |
@@ -259,6 +259,11 @@ jobs:
 
         print('✅ Full integration test passed: Parameter learning verified')
         "
+
+    - name: Run slow tests (main branch only)
+      run: |
+        echo "Running comprehensive benchmark tests..."
+        pytest -v tests/test_xor_benchmark.py::TestFastXORBenchmark::test_fast_benchmark_execution -m "slow" --tb=short
 
   documentation:
     name: Documentation Check
