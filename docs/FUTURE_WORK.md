@@ -22,14 +22,14 @@ This document outlines pending infrastructure improvements for documentation, de
 - Implement documentation link checking
 - Add documentation build artifacts to GitHub Actions
 
-## Deployment Infrastructure  
+## Deployment Infrastructure
 
 ### Read the Docs Integration (Blocked)
 **Current Issue**: Repository is private, Read the Docs free tier requires public repositories
 
 **Planned Work When Repository Goes Public**:
 - Set up Read the Docs project integration
-- Configure automatic builds on main branch pushes  
+- Configure automatic builds on main branch pushes
 - Update documentation URLs in `pyproject.toml`
 
 **Alternative**: GitHub Pages workflow is documented in `docs/DEPLOYMENT.md:47-74`
@@ -44,7 +44,7 @@ This document outlines pending infrastructure improvements for documentation, de
 
 ## Build System Infrastructure
 
-### Development Scripts Enhancement  
+### Development Scripts Enhancement
 **Current Status**: Basic scripts configured in `pyproject.toml:82-91`
 
 **Potential Improvements**:
