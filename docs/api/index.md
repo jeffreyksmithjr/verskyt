@@ -9,6 +9,7 @@ Complete reference for all Verskyt functions, classes, and modules.
 
 core
 layers
+interventions
 utils
 benchmarks
 ```

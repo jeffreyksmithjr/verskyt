@@ -142,7 +142,10 @@ def _compute_intersection(
         # softmin(a,b) = -log(exp(-a) + exp(-b))
         neg_x = -x_pos
         neg_p = -p_pos
-        stacked = torch.stack([neg_x, neg_p], dim=-1)
+        # Broadcast to ensure same shape before stacking
+        broadcasted_neg_x = neg_x.expand_as(x_pos * p_pos)
+        broadcasted_neg_p = neg_p.expand_as(x_pos * p_pos)
+        stacked = torch.stack([broadcasted_neg_x, broadcasted_neg_p], dim=-1)
         intersection_scores = -torch.logsumexp(stacked, dim=-1)
     else:
         raise ValueError(f"Unknown intersection reduction method: {method}")

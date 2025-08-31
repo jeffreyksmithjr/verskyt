@@ -12,6 +12,14 @@ from verskyt.benchmarks import (
     run_full_xor_replication,
 )
 from verskyt.core import tversky_similarity
+from verskyt.interventions import (
+    ConceptGrounding,
+    ConceptLibrary,
+    CounterfactualAnalyzer,
+    FeatureGrounder,
+    ImpactAssessment,
+    InterventionManager,
+)
 from verskyt.layers import TverskyProjectionLayer, TverskySimilarityLayer
 
 __all__ = [
@@ -21,4 +29,10 @@ __all__ = [
     "run_fast_xor_benchmark",
     "run_full_xor_replication",
     "XORBenchmark",
+    "InterventionManager",
+    "CounterfactualAnalyzer",
+    "ImpactAssessment",
+    "FeatureGrounder",
+    "ConceptGrounding",
+    "ConceptLibrary",
 ]
