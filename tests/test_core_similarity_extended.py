@@ -8,10 +8,7 @@ with hand-calculated examples to verify implementation against paper specificati
 import pytest
 import torch
 
-from verskyt.core.similarity import (
-    tversky_contrast_similarity,
-    tversky_similarity,
-)
+from verskyt.core.similarity import tversky_contrast_similarity, tversky_similarity
 
 
 class TestMissingIntersectionReductions:
@@ -347,9 +344,9 @@ class TestMathematicalCorrectness:
         # Verify the result is reasonable (similarity should be high since both
         # have same pattern)
         # With x=[3,0] and p=[2,0] having similar structure, similarity should be high
-        assert 0.8 <= similarity[0, 0] <= 1.0, (
-            f"Expected high similarity, got {similarity[0, 0]}"
-        )
+        assert (
+            0.8 <= similarity[0, 0] <= 1.0
+        ), f"Expected high similarity, got {similarity[0, 0]}"
         assert torch.isfinite(similarity[0, 0]), "Similarity should be finite"
 
     def test_asymmetry_verification(self):
@@ -391,9 +388,9 @@ class TestMathematicalCorrectness:
         # strong asymmetry). Test that extreme parameter values produce different
         # results than moderate ones
         sim_extreme = tversky_similarity(x, prototypes, features, alpha=10.0, beta=0.0)
-        assert not torch.allclose(sim_extreme, sim_equal, atol=1e-3), (
-            "Extreme parameters should differ from equal weights"
-        )
+        assert not torch.allclose(
+            sim_extreme, sim_equal, atol=1e-3
+        ), "Extreme parameters should differ from equal weights"
 
     def test_boundary_conditions(self):
         """Test boundary conditions and edge cases."""

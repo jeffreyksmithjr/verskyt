@@ -285,9 +285,9 @@ class TestTverskyProjectionLayerExtended:
 
         # Parameters should be different from modified values (reset to new random
         # values)
-        assert not torch.allclose(layer.prototypes.data, original_prototypes + 1.0), (
-            "Prototypes should have been reset"
-        )
+        assert not torch.allclose(
+            layer.prototypes.data, original_prototypes + 1.0
+        ), "Prototypes should have been reset"
 
     def test_get_prototype_functionality(self, sample_data):
         """Test get_prototype utility method."""
@@ -427,9 +427,9 @@ class TestTverskyProjectionLayerExtended:
                 ), f"Beta should not have gradients for config {config}"
 
             if layer.bias is not None:
-                assert layer.bias.grad is not None, (
-                    f"Bias should have gradients when present for config {config}"
-                )
+                assert (
+                    layer.bias.grad is not None
+                ), f"Bias should have gradients when present for config {config}"
 
     def test_different_reduction_methods_compatibility(self, sample_data):
         """Test layer compatibility with different reduction methods."""

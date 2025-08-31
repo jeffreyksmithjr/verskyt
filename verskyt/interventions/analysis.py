@@ -125,9 +125,7 @@ class ImpactAssessment:
                 corrcoef = torch.corrcoef(torch.stack([orig_flat, mod_flat]))
                 output_correlation = corrcoef[0, 1].item()
             else:
-                output_correlation = (
-                    1.0 if torch.allclose(orig_flat, mod_flat) else 0.0
-                )
+                output_correlation = 1.0 if torch.allclose(orig_flat, mod_flat) else 0.0
 
             prediction_change_rate = (
                 (original_predictions != modified_predictions).float().mean().item()
@@ -217,9 +215,7 @@ class ImpactAssessment:
                 corrcoef = torch.corrcoef(torch.stack([orig_flat, mod_flat]))
                 output_correlation = corrcoef[0, 1].item()
             else:
-                output_correlation = (
-                    1.0 if torch.allclose(orig_flat, mod_flat) else 0.0
-                )
+                output_correlation = 1.0 if torch.allclose(orig_flat, mod_flat) else 0.0
 
             prediction_change_rate = (
                 (original_predictions != modified_predictions).float().mean().item()
