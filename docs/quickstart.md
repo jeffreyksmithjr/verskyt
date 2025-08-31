@@ -15,9 +15,9 @@ from verskyt import TverskyProjectionLayer
 
 # Instead of: nn.Linear(128, 10)
 layer = TverskyProjectionLayer(
-    in_features=128,
+    in_features=128,      # Dimensionality of the input vector
     num_prototypes=10,    # equivalent to out_features
-    num_features=64       # internal feature space size
+    num_features=64       # Dimensionality of the internal learned feature space (Ω)
 )
 
 # Works exactly like nn.Linear
@@ -114,11 +114,15 @@ with torch.no_grad():
 
 ### TverskyProjectionLayer Parameters
 
-- **`in_features`**: Input dimension (like `nn.Linear`)
+- **`in_features`**: Dimensionality of the input vector (like `nn.Linear`)
 - **`num_prototypes`**: Output dimension (like `out_features` in `nn.Linear`)
-- **`num_features`**: Size of internal feature space (key hyperparameter)
+- **`num_features`**: Dimensionality of the internal learned feature space (Ω) - key hyperparameter
 - **`alpha, beta`**: Tversky asymmetry parameters (0.5, 0.5 = symmetric)
 - **`learnable_ab`**: Whether α, β are trainable (usually `True`)
+
+**Note**: The term "features" has two meanings here:
+- `in_features`: The dimensionality of your input data
+- `num_features`: The size of the internal feature space (Ω) that TNNs learn for similarity computation
 
 ### Choosing `num_features`
 

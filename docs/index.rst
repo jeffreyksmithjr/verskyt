@@ -1,8 +1,11 @@
 Verskyt: Tversky Neural Networks
 ==================================
 
-A comprehensive Python library implementing Tversky Neural Networks (TNNs) -
+*Pronounced "ver-SKIT"*
+
+A Python library implementing Tversky Neural Networks (TNNs) -
 psychologically plausible deep learning models based on differentiable Tversky similarity.
+TNNs operate by projecting inputs into a learned feature space (Ω), where similarity to explicit prototypes (Π) is computed.
 
 **Key Features:**
 
@@ -23,9 +26,9 @@ Quick Start
 
    # Create a layer (replaces nn.Linear(128, 10))
    layer = TverskyProjectionLayer(
-       in_features=128,
-       num_prototypes=10,
-       num_features=256
+       in_features=128,      # Dimensionality of the input vector
+       num_prototypes=10,    # Corresponds to output classes
+       num_features=256      # Dimensionality of the internal learned feature space (Ω)
    )
 
    # Forward pass
@@ -62,6 +65,10 @@ Contents
 Citation
 ========
 
+If you use Verskyt in your research, please cite both the original Tversky Neural Network paper and this library.
+
+**1. Foundational Paper:**
+
 .. code-block:: bibtex
 
    @article{doumbouya2025tversky,
@@ -70,6 +77,25 @@ Citation
      journal={arXiv preprint arXiv:2506.11035},
      year={2025}
    }
+
+**2. This Library (Verskyt):**
+
+We recommend citing the specific version of the software you used. You can get a persistent DOI for each version from `Zenodo <https://zenodo.org>`_.
+
+.. code-block:: bibtex
+
+   @software{smith_jr_2025_verskyt,
+     author       = {Smith Jr., Jeffrey K.},
+     title        = {{Verskyt: A versatile toolkyt for Tversky Neural Networks}},
+     month        = jan,
+     year         = 2025,
+     publisher    = {Zenodo},
+     version      = {v0.1.2},
+     doi          = {10.5281/zenodo.PENDING},
+     url          = {https://doi.org/10.5281/zenodo.PENDING}
+   }
+
+*Note: DOI will be updated upon the next release. For now, you can cite the current version using the GitHub repository URL.*
 
 * :ref:`genindex`
 * :ref:`modindex`
