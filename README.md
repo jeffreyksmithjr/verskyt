@@ -3,7 +3,7 @@
 
 [![CI](https://github.com/jeffreyksmithjr/verskyt/workflows/CI/badge.svg)](https://github.com/jeffreyksmithjr/verskyt/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/jeffreyksmithjr/verskyt/branch/main/graph/badge.svg)](https://codecov.io/gh/jeffreyksmithjr/verskyt) [![PyPI version](https://badge.fury.io/py/verskyt.svg)](https://badge.fury.io/py/verskyt)
 
-**Verskyt** is a comprehensive Python library that implements Tversky Neural Networks (TNNs) with advanced research and analysis capabilities. Beyond providing faithful PyTorch-compatible TNN layers, Verskyt offers a complete toolkit for model introspection, causal intervention, and prototype analysis—making it a foundational platform for researchers exploring interpretable deep learning.
+**Verskyt** is a Python library that implements Tversky Neural Networks (TNNs) with advanced research and analysis capabilities. Beyond providing faithful PyTorch-compatible TNN layers, Verskyt offers a complete toolkit for model introspection, causal intervention, and prototype analysis, making it a foundational platform for researchers exploring interpretable deep learning.
 
 ## What are Tversky Neural Networks?
 
@@ -23,13 +23,13 @@ While TNNs define the mathematical framework, **Verskyt delivers the implementat
 
 **Production-Ready PyTorch Integration:**
 - **Drop-in Compatibility**: Replace `torch.nn.Linear` layers with `verskyt.TverskyProjectionLayer` in existing models
-- **Full Parameter Control**: All TNN components—prototypes (Π), features (Ω), and asymmetry parameters (α, β)—are learnable and accessible
+- **Full Parameter Control**: All TNN components (prototypes (Π), features (Ω), and asymmetry parameters (α, β)) are learnable and accessible
 - **Complete Specification**: All 6 intersection reduction methods and 2 difference methods from the original paper
 - **Validated Implementation**: Passes all mathematical correctness tests, including the XOR non-linearity benchmark
 
 ### 🔬 Advanced Research Toolkit
 
-**Verskyt's unique contribution** is a comprehensive suite of analysis tools not available elsewhere:
+**Verskyt's unique contribution** is a suite of analysis tools not available elsewhere:
 
 **Model Introspection:**
 - **Prototype Analysis**: Examine learned prototype vectors and their semantic meanings
@@ -42,7 +42,7 @@ While TNNs define the mathematical framework, **Verskyt delivers the implementat
 - **Concept Grafting**: Transfer learned concepts between different models
 
 **Experimental Infrastructure:**
-- **Benchmark Suites**: Comprehensive testing against paper specifications
+- **Benchmark Suites**: Testing against paper specifications
 - **Reproducible Research**: Tools for systematic hyperparameter exploration and results validation
 
 ## Quick Start
@@ -52,7 +52,7 @@ Install from PyPI:
 
 ### Basic Usage: Drop-in Replacement
 
-`verskyt` layers are designed to be a seamless replacement for standard PyTorch layers.
+`verskyt` layers are designed as drop-in replacements for standard PyTorch layers.
 
 ```python
 import torch
@@ -99,7 +99,7 @@ manager.reset_to_original()
 
 ## Library Implementation Status
 
-Verskyt provides a complete, production-ready implementation of TNNs with extensive research capabilities:
+Verskyt provides a complete, production-ready implementation of TNNs with research capabilities:
 
 | Implementation Area | Component | Status |
 | :--- | :--- | :--- |
@@ -114,17 +114,15 @@ Verskyt provides a complete, production-ready implementation of TNNs with extens
 | | Prototype Analysis | ✅ **Complete** - Introspection APIs |
 | **Development** | Comprehensive Testing | ✅ **Complete** - 60+ tests, 75% coverage |
 | | CI/CD Pipeline | ✅ **Complete** - Automated quality & releases |
+| | Documentation Site | ✅ **Complete** - Automated docs building and publishing |
 
-## 🚀 Research Roadmap
+## 🚀 Future Work
 
 Verskyt continues expanding its research toolkit capabilities:
 
-### Next Release (v0.2.0)
   * [ ] **Interactive Visualization Suite**: Tools for prototype visualization, similarity landscapes, and intervention impact analysis
-  * [ ] **Extended Benchmark Suite**: Comprehensive evaluation across more datasets and TNN configurations
+  * [ ] **Extended Benchmark Suite**: Evaluation across more datasets and TNN configurations
   * [ ] **Performance Profiling**: Optimization for large-scale models and training efficiency
-
-### Future Releases
   * [ ] **TverskyResNet Implementation**: Pre-built architecture demonstrating TNN integration in complex models
   * [ ] **Concept Transfer Tools**: Framework for moving learned concepts between different TNN models
   * [ ] **Uncertainty Quantification**: Tools for measuring confidence in TNN predictions and prototype assignments
