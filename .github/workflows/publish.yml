@@ -50,21 +50,21 @@ jobs:
       run: |
         # Clean any existing build artifacts
         rm -rf dist/ build/ *.egg-info/
-        
+
         # Show environment info
         echo "🔍 Environment info:"
         python --version
         pip --version
         pip list | grep -E "(setuptools|build|wheel)"
-        
+
         # Show pyproject.toml content
         echo "🔍 pyproject.toml content:"
         cat pyproject.toml
-        
+
         # Build with explicit setuptools backend
         echo "🔧 Building with python -m build..."
         python -m build --wheel --sdist --no-isolation
-        
+
         # Verify build succeeded
         echo "📦 Build artifacts:"
         ls -la dist/
@@ -81,20 +81,20 @@ jobs:
         import zipfile
         import glob
         import sys
-        
+
         wheel_files = glob.glob('dist/*.whl')
         if not wheel_files:
             print('❌ No wheel files found')
             sys.exit(1)
-            
+
         wheel_path = wheel_files[0]
         print(f'📦 Inspecting: {wheel_path}')
-        
+
         with zipfile.ZipFile(wheel_path, 'r') as z:
             print('📁 All files in wheel:')
             for name in sorted(z.namelist()):
                 print(f'  {name}')
-            
+
             print()
             for name in z.namelist():
                 if name.endswith('METADATA'):
