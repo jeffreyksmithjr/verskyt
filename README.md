@@ -4,53 +4,118 @@
 [![Pre-commit](https://github.com/jeffreyksmithjr/verskyt/workflows/Pre-commit/badge.svg)](https://github.com/jeffreyksmithjr/verskyt/actions/workflows/pre-commit.yml)
 [![codecov](https://codecov.io/gh/jeffreyksmithjr/verskyt/branch/main/graph/badge.svg)](https://codecov.io/gh/jeffreyksmithjr/verskyt)
 
-A comprehensive Python library implementing Tversky Neural Networks (TNNs) - psychologically plausible deep learning models based on differentiable Tversky similarity.
+An independent, research-focused Python library implementing Tversky Neural Networks (TNNs) with emphasis on **modularity**, **introspection**, and **extensibility**. Based on the psychologically plausible deep learning approach described in "Tversky Neural Networks" (Doumbouya et al., 2025).
 
-## Overview
+> **Note**: This is not the official implementation by the paper authors, but rather an independent library designed to make Tversky similarity concepts accessible and extensible for researchers and practitioners.
 
-Verskyt provides PyTorch-compatible implementations of Tversky similarity functions and neural network layers that can serve as drop-in replacements for traditional linear layers, offering improved interpretability and performance in many scenarios.
+## Why Verskyt?
 
-**Key Features:**
-- **Differentiable Tversky similarity** with multiple aggregation methods
-- **Neural network layers** compatible with existing PyTorch architectures
-- **Research tools** for interpretability and intervention studies
-- **Comprehensive testing** with paper result reproduction
+Tversky Neural Networks represent a breakthrough in psychologically-motivated deep learning, offering non-linear capabilities that surpass traditional linear layers while maintaining interpretability. Verskyt makes these concepts accessible through a modular, research-friendly implementation.
+
+**🔬 Research-First Design:**
+- **Modular Architecture**: Clean separation between similarity computation, neural layers, and utilities
+- **Deep Introspection**: Access and modify learned prototypes, features, and similarity parameters
+- **Extensible Framework**: Easy to experiment with new similarity measures and reduction methods
+- **Reproducible Science**: Comprehensive benchmarks validating paper results
+
+**🚀 Practical Benefits:**
+- **Non-linear Single Layers**: Solve XOR and complex patterns with one layer (impossible for linear layers)
+- **Drop-in Compatibility**: Replace `nn.Linear` with `TverskyProjectionLayer` in existing models
+- **Interpretable Representations**: Human-recognizable learned prototypes and features
+- **Performance Gains**: Demonstrated improvements on vision and NLP tasks
 
 ## Quick Start
 
+### Installation
+
 ```bash
-# Install from source (recommended for development)
+# Clone the repository
+git clone https://github.com/your-username/verskyt.git
+cd verskyt
+
+# Install for development and research
 pip install -e ".[dev]"
 
-# Basic usage
-from verskyt.layers import TverskyProjectionLayer
+# Verify installation
+python -c "from verskyt import TverskyProjectionLayer; print('✅ Ready for research!')"
+```
 
+### Drop-in Replacement for Linear Layers
+
+```python
+import torch
+import torch.nn as nn
+from verskyt import TverskyProjectionLayer
+
+# Instead of: nn.Linear(128, 10)
 layer = TverskyProjectionLayer(
     in_features=128,
-    num_prototypes=10,
-    num_features=64
+    num_prototypes=10,    # equivalent to output classes
+    num_features=256,     # internal feature space size
+    learnable_ab=True     # learn asymmetry parameters
+)
+
+# Works exactly like nn.Linear
+x = torch.randn(32, 128)
+output = layer(x)  # shape: [32, 10]
+```
+
+### Research-Focused: Introspection & Modification
+
+```python
+# Access learned representations (introspection)
+prototypes = layer.prototypes.detach()          # what the model recognizes
+features = layer.feature_bank.detach()         # basis for similarity
+alpha, beta = layer.alpha.item(), layer.beta.item()  # asymmetry params
+
+print(f"Learned {len(prototypes)} prototypes in {len(features)}-dim feature space")
+print(f"Asymmetry: α={alpha:.3f} (input focus), β={beta:.3f} (prototype focus)")
+
+# Intervention studies (extensibility)
+layer.set_prototype(0, torch.zeros_like(prototypes[0]))  # zero out class 0
+modified_output = layer(x)  # see how predictions change
+
+# Custom similarity experiments
+from verskyt.core import tversky_similarity
+custom_sim = tversky_similarity(
+    x, prototypes, features,
+    alpha=0.8, beta=0.2,  # highly asymmetric
+    intersection_reduction="max",  # try different aggregations
+    difference_reduction="ignorematch"
 )
 ```
+
+## Research Capabilities & Validation
+
+### 🔬 Modular Experimentation
+- **Similarity Variants**: 6 intersection methods × 2 difference methods = 12 combinations to explore
+- **Parameter Studies**: Learnable vs. fixed α, β asymmetry parameters
+- **Architecture Flexibility**: Drop-in replacement for linear layers in any PyTorch model
+- **Intervention Analysis**: Modify prototypes and observe behavioral changes
+
+### 🧪 Validated Benchmarks
+This implementation includes comprehensive validation against the paper's key findings:
+- **✅ XOR Solvability**: Verified single-layer non-linear capability (impossible for linear layers)
+- **✅ Convergence Analysis**: 11,664 configuration parameter sweep reproducing paper results
+- **✅ Mathematical Correctness**: All similarity computations validated against paper equations
+
+### 🎯 Potential Applications
+Based on capabilities demonstrated in "Tversky Neural Networks" (Doumbouya et al., 2025):
+- **Vision Tasks**: ResNet architectures with Tversky final layers
+- **NLP Models**: Attention mechanisms using similarity-based projections
+- **Few-shot Learning**: Prototype-based classification with interpretable features
+- **Causal Analysis**: Intervention studies on learned representations
 
 ## Documentation
 
 📚 **[Complete Documentation](docs/)** - Comprehensive guides and API reference
 
 ### Quick Links
-- **[Implementation Requirements](docs/requirements/tnn-specification.md)** - Complete mathematical specifications
-- **[Implementation Plan](docs/implementation/plan.md)** - Development roadmap and testing strategy
-- **[API Reference](docs/api/)** - Detailed API documentation
-- **[Tutorials](docs/tutorials/)** - Step-by-step usage guides
-- **[Research Tools](docs/research/)** - Experimental and analysis capabilities
-
-## Performance Highlights
-
-Based on "Tversky Neural Networks" (Doumbouya et al., 2025):
-
-- **🔥 Non-linear capability**: Single layer can solve XOR (impossible for linear layers)
-- **📈 ResNet-50 improvement**: Up to 24.7% accuracy gain on NABirds dataset
-- **⚡ Parameter efficiency**: 34.8% fewer parameters in GPT-2 with 7.5% perplexity reduction
-- **🔍 Interpretability**: Learned prototypes and features are human-recognizable
+- **[API Reference](docs/api/)** - Complete function and class documentation
+- **[Mathematical Specifications](docs/requirements/tnn-specification.md)** - Paper equations and implementations
+- **[Development Guide](docs/implementation/plan.md)** - Testing strategy and contribution guidelines
+- **[Deployment Guide](docs/DEPLOYMENT.md)** - Documentation and package publishing
+- **[Benchmarks](docs/research/)** - Validation studies and reproduction results
 
 ## Contributing
 

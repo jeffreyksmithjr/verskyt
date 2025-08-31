@@ -13,7 +13,19 @@ import torch.nn.functional as F
 
 
 class IntersectionReduction(str, Enum):
-    """Methods for reducing feature intersections (A ∩ B)."""
+    """Methods for reducing feature intersections (A ∩ B).
+
+    These methods determine how to aggregate feature membership scores when
+    computing the intersection between two objects in the feature space.
+
+    Attributes:
+        PRODUCT: Element-wise product of membership scores (default in paper).
+        MIN: Element-wise minimum of membership scores.
+        MAX: Element-wise maximum of membership scores.
+        MEAN: Element-wise arithmetic mean of membership scores.
+        GMEAN: Element-wise geometric mean of membership scores.
+        SOFTMIN: Differentiable soft minimum using LogSumExp.
+    """
 
     PRODUCT = "product"
     MIN = "min"
@@ -24,41 +36,64 @@ class IntersectionReduction(str, Enum):
 
 
 class DifferenceReduction(str, Enum):
-    """Methods for reducing feature differences (A - B)."""
+    """Methods for reducing feature differences (A - B).
+
+    These methods determine how to compute the distinctive features of one
+    object compared to another, implementing Equations 4 and 5 from the paper.
+
+    Attributes:
+        IGNOREMATCH: Only count features present in A but not in B (Equation 4).
+        SUBSTRACTMATCH: Account for magnitude differences in shared features
+            (Equation 5).
+    """
 
     IGNOREMATCH = "ignorematch"  # Only features in A but not in B
     SUBSTRACTMATCH = "substractmatch"  # Account for magnitude differences
 
 
 def compute_feature_membership(x: torch.Tensor, features: torch.Tensor) -> torch.Tensor:
-    """
-    Compute feature membership scores for objects.
+    """Compute feature membership scores for objects.
+
+    This function computes how much each feature from the feature bank is
+    present in each object. The membership score is computed as the dot
+    product between object vectors and feature vectors.
 
     Args:
-        x: Object vectors of shape [batch_size, in_features] or
-            [num_objects, in_features]
-        features: Feature bank of shape [num_features, in_features]
+        x (torch.Tensor): Object vectors of shape [batch_size, in_features] or
+            [num_objects, in_features].
+        features (torch.Tensor): Feature bank of shape [num_features, in_features].
 
     Returns:
-        Membership scores of shape [batch_size, num_features] or
-            [num_objects, num_features]
+        torch.Tensor: Membership scores of shape [batch_size, num_features] or
+            [num_objects, num_features]. Higher values indicate stronger presence
+            of the feature in the object.
+
+    Note:
+        Implementation uses Einstein summation for efficient computation:
+        x·fₖ represents the measure of feature fₖ in object x (from paper).
     """
     # Equation from paper: x·fₖ represents measure of feature fₖ in x
     return torch.einsum("bi,fi->bf", x, features)
 
 
 def compute_salience(x: torch.Tensor, features: torch.Tensor) -> torch.Tensor:
-    """
-    Compute salience of objects (Equation 2 from paper).
+    """Compute salience of objects (Equation 2 from paper).
 
-    Salience is the sum of measures of all features present in the object.
+    Salience measures the total amount of features present in an object.
+    It is computed as the sum of all positive feature membership scores,
+    representing the psychological notion of an object's perceptual prominence.
 
     Args:
-        x: Object vectors of shape [batch_size, in_features]
-        features: Feature bank of shape [num_features, in_features]
+        x (torch.Tensor): Object vectors of shape [batch_size, in_features].
+        features (torch.Tensor): Feature bank of shape [num_features, in_features].
 
     Returns:
-        Salience scores of shape [batch_size]
+        torch.Tensor: Salience scores of shape [batch_size]. Higher values
+            indicate objects with more prominent features.
+
+    Note:
+        Only positive memberships are summed, as negative values indicate
+        absence of features. Implements Equation 2: salience(x) = Σᵢ max(0, x·fᵢ).
     """
     membership = compute_feature_membership(x, features)
     # Only sum positive memberships (features present in object)
@@ -172,29 +207,59 @@ def tversky_similarity(
     normalize_features: bool = False,
     normalize_prototypes: bool = False,
 ) -> torch.Tensor:
-    """
-    Compute Tversky similarity between inputs and prototypes.
+    """Compute Tversky similarity between inputs and prototypes.
 
-    Implements the differentiable Tversky similarity function from Equation 1:
-    S(a,b) = θf(A∩B) - αf(A-B) - βf(B-A)
+    This is the core function implementing differentiable Tversky similarity
+    for neural networks. It computes psychologically-motivated similarity
+    scores that account for both common and distinctive features.
 
-    The Tversky Index formulation (used in the paper) is:
+    The function implements the Tversky Index formulation (Equation 1):
     TI(a,b) = f(A∩B) / (f(A∩B) + αf(A-B) + βf(B-A))
 
+    Where:
+    - f(A∩B): Intersection - features common to both objects
+    - f(A-B): Features distinctive to object A
+    - f(B-A): Features distinctive to object B
+    - α, β: Asymmetry parameters (α=β=0.5 gives Jaccard similarity)
+
     Args:
-        x: Input tensor of shape [batch_size, in_features]
-        prototypes: Prototype tensor of shape [num_prototypes, in_features]
-        feature_bank: Feature bank tensor of shape [num_features, in_features]
-        alpha: Weight for x's distinctive features (x - prototype)
-        beta: Weight for prototype's distinctive features (prototype - x)
-        theta: Small constant for numerical stability
-        intersection_reduction: Method for reducing intersection measures
-        difference_reduction: Method for reducing difference measures
-        normalize_features: Whether to normalize feature vectors
-        normalize_prototypes: Whether to normalize prototype vectors
+        x (torch.Tensor): Input tensor of shape [batch_size, in_features].
+        prototypes (torch.Tensor): Prototype tensor of shape
+            [num_prototypes, in_features].
+        feature_bank (torch.Tensor): Feature bank tensor of shape
+            [num_features, in_features].
+        alpha (Union[torch.Tensor, float]): Weight for x's distinctive features.
+            Higher values make the similarity more sensitive to features in x
+            but not in prototypes. Must be ≥ 0.
+        beta (Union[torch.Tensor, float]): Weight for prototype's distinctive
+            features. Higher values make the similarity more sensitive to features
+            in prototypes but not in x. Must be ≥ 0.
+        theta (float, optional): Small constant for numerical stability.
+            Defaults to 1e-7.
+        intersection_reduction (Union[IntersectionReduction, str], optional):
+            Method for computing feature intersections. Defaults to "product".
+        difference_reduction (Union[DifferenceReduction, str], optional):
+            Method for computing feature differences. Defaults to "substractmatch".
+        normalize_features (bool, optional): Whether to L2-normalize feature vectors.
+            Defaults to False.
+        normalize_prototypes (bool, optional): Whether to L2-normalize input and
+            prototype vectors. Defaults to False.
 
     Returns:
-        Similarity scores of shape [batch_size, num_prototypes]
+        torch.Tensor: Similarity scores of shape [batch_size, num_prototypes].
+            Values are in [0, 1] range, with 1 indicating perfect similarity.
+
+    Raises:
+        ValueError: If alpha or beta are negative, or if reduction methods are invalid.
+
+    Example:
+        >>> import torch
+        >>> x = torch.randn(2, 4)  # 2 samples, 4 dimensions
+        >>> prototypes = torch.randn(3, 4)  # 3 prototypes
+        >>> features = torch.randn(8, 4)  # 8 features
+        >>> similarity = tversky_similarity(x, prototypes, features, 0.5, 0.5)
+        >>> similarity.shape
+        torch.Size([2, 3])
     """
     # Optionally normalize vectors (shown to help in some cases per paper)
     if normalize_features:
@@ -251,27 +316,39 @@ def tversky_contrast_similarity(
     intersection_reduction: Union[IntersectionReduction, str] = "product",
     difference_reduction: Union[DifferenceReduction, str] = "substractmatch",
 ) -> torch.Tensor:
-    """
-    Compute Tversky contrast model similarity (alternative formulation).
+    """Compute Tversky contrast model similarity (alternative formulation).
 
-    Uses the linear combination form from Equation 1:
+    This function implements the linear combination form of Tversky similarity
+    rather than the normalized ratio form. It may be preferred when working
+    with raw similarity scores or when the denominator normalization is
+    handled elsewhere in the model.
+
+    Uses the linear combination from Equation 1:
     S(a,b) = θf(A∩B) - αf(A-B) - βf(B-A)
 
-    This is an alternative to the ratio (Tversky Index) form and may be
-    useful for certain applications.
-
     Args:
-        x: Input tensor of shape [batch_size, in_features]
-        prototypes: Prototype tensor of shape [num_prototypes, in_features]
-        feature_bank: Feature bank tensor of shape [num_features, in_features]
-        alpha: Weight for x's distinctive features
-        beta: Weight for prototype's distinctive features
-        theta: Weight for common features
-        intersection_reduction: Method for reducing intersection measures
-        difference_reduction: Method for reducing difference measures
+        x (torch.Tensor): Input tensor of shape [batch_size, in_features].
+        prototypes (torch.Tensor): Prototype tensor of shape
+            [num_prototypes, in_features].
+        feature_bank (torch.Tensor): Feature bank tensor of shape
+            [num_features, in_features].
+        alpha (Union[torch.Tensor, float]): Weight for x's distinctive features.
+        beta (Union[torch.Tensor, float]): Weight for prototype's distinctive features.
+        theta (Union[torch.Tensor, float], optional): Weight for common features.
+            Defaults to 1.0.
+        intersection_reduction (Union[IntersectionReduction, str], optional):
+            Method for computing intersections. Defaults to "product".
+        difference_reduction (Union[DifferenceReduction, str], optional):
+            Method for computing differences. Defaults to "substractmatch".
 
     Returns:
-        Similarity scores of shape [batch_size, num_prototypes]
+        torch.Tensor: Similarity scores of shape [batch_size, num_prototypes].
+            Unlike the Tversky Index, these scores are not bounded to [0,1]
+            and can be negative.
+
+    Note:
+        This formulation is useful when you want the raw contrast scores
+        without normalization, or when combining with other similarity measures.
     """
     # Compute feature memberships
     x_membership = torch.einsum("bi,fi->bf", x, feature_bank)
