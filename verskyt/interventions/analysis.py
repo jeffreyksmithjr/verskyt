@@ -16,7 +16,26 @@ from .manager import InterventionManager
 
 @dataclass
 class ImpactMetrics:
-    """Metrics quantifying the impact of an intervention."""
+    """Metrics quantifying the impact of an intervention.
+
+    Comprehensive metrics for evaluating how parameter modifications
+    affect model behavior, including output changes, prediction shifts,
+    and statistical significance measures.
+
+    Attributes:
+        output_distance (float): L2 distance between original and modified outputs.
+        output_correlation (float): Pearson correlation between original
+            and modified outputs.
+        prediction_change_rate (float): Fraction of samples with changed predictions.
+        confidence_change (float): Average change in prediction confidence scores.
+        feature_activation_change (Optional[torch.Tensor]): Changes in feature
+            activation patterns, if computed.
+        similarity_score_change (Optional[torch.Tensor]): Changes in similarity
+            scores, if computed.
+        effect_size (float): Cohen's d or similar standardized effect size measure.
+        significance (Optional[float]): p-value from statistical significance test,
+            if performed.
+    """
 
     # Output-level metrics
     output_distance: float  # L2 distance between original and modified outputs
@@ -35,7 +54,25 @@ class ImpactMetrics:
 
 @dataclass
 class CounterfactualResult:
-    """Result of a counterfactual analysis."""
+    """Result of a counterfactual analysis.
+
+    Contains the complete record of a successful counterfactual generation,
+    including original and modified states, intervention details, and
+    quantitative measures of the change achieved.
+
+    Attributes:
+        original_input (torch.Tensor): Original input sample.
+        original_output (torch.Tensor): Model output for original input.
+        original_prediction (int): Predicted class for original input.
+        modified_input (torch.Tensor): Input after intervention (may be unchanged).
+        modified_output (torch.Tensor): Model output after intervention.
+        modified_prediction (int): Predicted class after intervention.
+        intervention_description (str): Human-readable description of the intervention.
+        success (bool): Whether intervention achieved the desired outcome.
+        input_perturbation_norm (float): L2 norm of input perturbation.
+        output_change_norm (float): L2 norm of output change.
+        confidence_change (float): Change in prediction confidence.
+    """
 
     original_input: torch.Tensor
     original_output: torch.Tensor
@@ -55,19 +92,33 @@ class CounterfactualResult:
 
 
 class ImpactAssessment:
-    """
-    Assess the impact of interventions on model behavior.
+    """Assess the impact of interventions on model behavior.
 
-    Provides methods to quantify how prototype or feature modifications
-    affect model outputs across different inputs.
+    Provides comprehensive methods to quantify how prototype or feature
+    modifications affect model outputs, enabling systematic evaluation
+    of intervention effectiveness and model interpretability.
+
+    This class works in conjunction with InterventionManager to provide
+    safe, temporary modifications with automatic restoration, allowing
+    researchers to explore counterfactual scenarios without permanent
+    model changes.
+
+    Note:
+        All interventions are automatically reverted after assessment,
+        ensuring the model state remains unchanged unless explicitly
+        modified through the InterventionManager.
     """
 
     def __init__(self, intervention_manager: InterventionManager):
-        """
-        Initialize ImpactAssessment.
+        """Initialize ImpactAssessment.
 
         Args:
-            intervention_manager: InterventionManager instance to analyze
+            intervention_manager (InterventionManager): InterventionManager
+                instance to analyze. Must be initialized with a TNN model.
+
+        Note:
+            The impact assessor uses the manager's model directly and
+            leverages its intervention tracking capabilities.
         """
         self.manager = intervention_manager
         self.model = intervention_manager.model
@@ -80,18 +131,32 @@ class ImpactAssessment:
         test_inputs: torch.Tensor,
         test_targets: Optional[torch.Tensor] = None,
     ) -> ImpactMetrics:
-        """
-        Assess impact of modifying a prototype.
+        """Assess impact of modifying a prototype on model behavior.
+
+        Temporarily modifies a prototype vector and quantifies the resulting
+        changes in model outputs, predictions, and confidence scores across
+        a set of test inputs. The original prototype is automatically restored.
 
         Args:
-            layer_name: Name of layer containing the prototype
-            prototype_index: Index of prototype to modify
-            new_vector: New prototype vector to test
-            test_inputs: Input data to test impact on
-            test_targets: Optional target labels for computing accuracy changes
+            layer_name (str): Name of the layer containing the prototype.
+                Must be one of the manager's discovered layer names.
+            prototype_index (int): Index of the prototype to modify.
+                Must be in range [0, num_prototypes).
+            new_vector (torch.Tensor): New prototype vector to test.
+                Must match the shape of the existing prototype.
+            test_inputs (torch.Tensor): Input data to evaluate impact on.
+                Shape should be [batch_size, in_features].
+            test_targets (Optional[torch.Tensor], optional): Target labels
+                for computing accuracy-based metrics. Defaults to None.
 
         Returns:
-            ImpactMetrics quantifying the intervention's effects
+            ImpactMetrics: Comprehensive metrics quantifying the intervention's
+                effects including output distance, correlation, prediction changes,
+                confidence shifts, and statistical effect size.
+
+        Note:
+            The prototype is automatically restored to its original value
+            after assessment, regardless of success or failure.
         """
         # Get original outputs
         self.model.eval()
@@ -171,18 +236,32 @@ class ImpactAssessment:
         test_inputs: torch.Tensor,
         test_targets: Optional[torch.Tensor] = None,
     ) -> ImpactMetrics:
-        """
-        Assess impact of modifying a feature.
+        """Assess impact of modifying a feature on model behavior.
+
+        Temporarily modifies a feature vector and quantifies the resulting
+        changes in model outputs, predictions, and confidence scores across
+        a set of test inputs. The original feature is automatically restored.
 
         Args:
-            layer_name: Name of layer containing the feature
-            feature_index: Index of feature to modify
-            new_vector: New feature vector to test
-            test_inputs: Input data to test impact on
-            test_targets: Optional target labels for computing accuracy changes
+            layer_name (str): Name of the layer containing the feature.
+                Must be one of the manager's discovered layer names.
+            feature_index (int): Index of the feature to modify within
+                the layer's feature bank. Must be in range [0, num_features).
+            new_vector (torch.Tensor): New feature vector to test.
+                Must match the shape of the existing feature.
+            test_inputs (torch.Tensor): Input data to evaluate impact on.
+                Shape should be [batch_size, in_features].
+            test_targets (Optional[torch.Tensor], optional): Target labels
+                for computing accuracy-based metrics. Defaults to None.
 
         Returns:
-            ImpactMetrics quantifying the intervention's effects
+            ImpactMetrics: Comprehensive metrics quantifying the intervention's
+                effects including output distance, correlation, prediction changes,
+                confidence shifts, and statistical effect size.
+
+        Note:
+            The feature is automatically restored to its original value
+            after assessment, regardless of success or failure.
         """
         # Get original outputs
         self.model.eval()
@@ -307,16 +386,28 @@ class ImpactAssessment:
 
 
 class CounterfactualAnalyzer:
-    """
-    Perform counterfactual analysis on TNN models.
+    """Perform counterfactual analysis on TNN models.
 
-    Generates counterfactual examples by finding minimal interventions
-    that change model predictions.
+    Generates counterfactual examples by finding minimal parameter interventions
+    that change model predictions for specific inputs. Uses gradient-based
+    optimization to discover how prototype or feature modifications can
+    achieve desired prediction outcomes.
+
+    This class enables researchers to understand model decision boundaries
+    and generate explanations for model behavior through systematic
+    parameter space exploration.
+
+    Note:
+        All interventions are temporary and automatically restored,
+        allowing safe exploration of counterfactual scenarios.
     """
 
     def __init__(self, intervention_manager: InterventionManager):
-        """
-        Initialize CounterfactualAnalyzer.
+        """Initialize CounterfactualAnalyzer.
+
+        Args:
+            intervention_manager (InterventionManager): InterventionManager
+                instance to use for parameter modifications and model access.
 
         Args:
             intervention_manager: InterventionManager instance to use

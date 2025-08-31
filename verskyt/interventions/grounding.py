@@ -18,7 +18,26 @@ from .manager import InterventionManager
 
 @dataclass
 class ConceptGrounding:
-    """Associates a TNN parameter with a semantic concept."""
+    """Associates a TNN parameter with a semantic concept.
+
+    Records the association between a learned parameter (prototype or feature)
+    and a human-interpretable concept, including confidence measures and
+    supporting evidence for the grounding.
+
+    Attributes:
+        layer_name (str): Name of the layer containing the parameter.
+        parameter_type (str): Type of parameter ('feature' or 'prototype').
+        parameter_index (int): Index of the parameter within the layer.
+        concept_name (str): Name of the associated semantic concept.
+        concept_description (str): Human-readable description of the concept.
+        confidence (float): Confidence in the grounding, range [0, 1].
+        activation_correlation (Optional[float]): Correlation with concept activations.
+        visual_similarity (Optional[float]): Visual similarity to concept examples.
+        semantic_coherence (Optional[float]): Semantic coherence measure.
+        grounding_method (str): Method used for grounding
+            ('manual', 'activation_based', etc.).
+        validation_samples (Optional[List[Any]]): Samples used for validation.
+    """
 
     layer_name: str
     parameter_type: str  # 'feature' or 'prototype'
@@ -39,7 +58,16 @@ class ConceptGrounding:
 
 @dataclass
 class ConceptLibrary:
-    """Library of semantic concepts for grounding."""
+    """Library of semantic concepts for grounding.
+
+    Maintains a collection of semantic concepts with their descriptions,
+    examples, and associated groundings for systematic interpretability analysis.
+
+    Attributes:
+        concepts (Dict[str, Dict[str, Any]]): Dictionary mapping concept names
+            to concept metadata including description, examples, properties,
+            and list of associated groundings.
+    """
 
     concepts: Dict[str, Dict[str, Any]] = field(default_factory=dict)
 
@@ -68,19 +96,32 @@ class ConceptLibrary:
 
 
 class FeatureGrounder:
-    """
-    Ground TNN features and prototypes to semantic concepts.
+    """Ground TNN features and prototypes to semantic concepts.
 
-    Provides various methods for associating learned parameters with
-    human-interpretable concepts.
+    Provides comprehensive methods for associating learned parameters
+    with human-interpretable concepts, enabling semantic understanding
+    of TNN internals through both manual and automatic grounding approaches.
+
+    The grounder maintains a concept library and supports multiple grounding
+    methods including manual assignment, activation-based analysis, and
+    similarity-based matching. All groundings include confidence measures
+    and can be validated against held-out data.
+
+    Note:
+        The grounder works in conjunction with InterventionManager to
+        access model parameters and layer information for grounding analysis.
     """
 
     def __init__(self, intervention_manager: InterventionManager):
-        """
-        Initialize FeatureGrounder.
+        """Initialize FeatureGrounder.
 
         Args:
-            intervention_manager: InterventionManager to ground features for
+            intervention_manager (InterventionManager): InterventionManager
+                instance providing access to TNN model and layer information.
+
+        Note:
+            Initializes an empty concept library and grounding dictionary.
+            Concepts must be added before grounding can be performed.
         """
         self.manager = intervention_manager
         self.model = intervention_manager.model
