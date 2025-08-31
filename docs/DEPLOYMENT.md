@@ -2,6 +2,25 @@
 
 This guide covers deploying Verskyt documentation and Python packages.
 
+## 🔒 **IMPORTANT: Private Repository Status**
+
+**Current Status**: This repository is **PRIVATE** until deemed ready for publication.
+
+This affects deployment options significantly:
+
+### Available Now (Private Repo)
+- ✅ **Local documentation builds** (`cd docs && make html`)
+- ✅ **PyPI package publishing** (GitHub Actions work on private repos)
+- ✅ **GitHub releases** (private releases work)
+
+### Requires Public Repository
+- ❌ **Read the Docs** (free tier requires public repos)
+- ❌ **Public documentation hosting** 
+- ❌ **Community discovery** (PyPI package won't be discoverable via GitHub)
+
+### Pre-Publication Setup
+Before making the repository public, several URLs need updating in `pyproject.toml`.
+
 ## 📚 Documentation Deployment
 
 ### Read the Docs (Recommended)
