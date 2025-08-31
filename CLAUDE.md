@@ -10,14 +10,27 @@ Verskyt is a Python library implementing Tversky Neural Networks (TNNs) - psycho
 
 ### Environment Setup
 ```bash
-# Install in development mode with all dependencies
+# RECOMMENDED: Use enhanced setup script (prevents formatting issues)
+chmod +x scripts/setup-dev.sh
+./scripts/setup-dev.sh
+
+# OR manual setup:
 pip install -e ".[dev]"
-
-# Install and activate pre-commit hooks (REQUIRED)
 pre-commit install
-
-# Verify setup
 pre-commit run --all-files
+```
+
+### Enhanced Development Tools
+The setup script creates helpful commands to prevent formatting issues:
+```bash
+./format-check.sh         # Run all formatting checks
+./safe-commit.sh "msg"    # Format check + commit
+./safe-push.sh            # Format check + push
+
+# Git aliases (available after setup):
+git cfmt                  # Run formatting checks
+git safe-commit "msg"     # Safe commit with checks
+git safe-push             # Safe push with checks
 ```
 
 ### Quality Assurance (Automated via Pre-commit)
@@ -85,8 +98,31 @@ The library is organized into modular components:
 - **verskyt/utils/**: Utility functions
   - `initializers.py`: Custom weight initialization strategies
 
-## Documentation
+## Documentation Standards (Mandatory for All Features)
 
+### Comprehensive Documentation Requirements
+Every feature must include complete documentation before merging:
+
+#### Google Style Docstrings (Required)
+- **All public functions and classes** must have comprehensive docstrings
+- **Args**: All parameters with types and tensor shapes where applicable
+- **Returns**: Return type and description with shapes for tensors
+- **Raises**: Exceptions that may be raised
+- **Note**: Implementation details, mathematical context, equation references
+- **Example**: Usage examples for complex functions
+
+#### API Documentation Infrastructure (Required)
+- New modules must be added to `docs/api/index.rst` and `docs/api/index.md`
+- Create corresponding `docs/api/module_name.rst` and `docs/api/module_name.md` files
+- Follow existing autodoc patterns for consistency
+- Ensure Sphinx builds without warnings
+
+#### Integration Examples (Required)
+- Create or update examples in `examples/` directory
+- Demonstrate integration with existing functionality
+- Follow established patterns from `examples/research_tutorial.py`
+
+### Reference Documentation
 For detailed implementation guidance, see:
 - **[Implementation Requirements](docs/requirements/tnn-specification.md)**: Complete mathematical specifications
 - **[Implementation Plan](docs/implementation/plan.md)**: Development roadmap and testing strategy
@@ -182,6 +218,7 @@ Before writing code, always:
 2. **Understand testing strategy**: Review docs/implementation/plan.md for testing approach
 3. **Set up environment**: Run `pip install -e ".[dev]" && pre-commit install`
 4. **Validate setup**: Run `pre-commit run --all-files && pytest`
+5. **Plan documentation**: Identify API docs and examples that will need updates
 
 ### Critical Development Rules
 **NEVER create files in the root directory:**
@@ -196,7 +233,11 @@ Before writing code, always:
 1. **Automated checks pass**: Pre-commit hooks handle formatting, linting, imports
 2. **Tests validate actual functionality**: Not just setup - test claimed capabilities
 3. **Imports properly exported**: Add new functions to appropriate `__init__.py` files
-4. **Documentation complete**: Include tensor shapes, equation references
+4. **Documentation complete**: [MANDATORY FOR ALL FEATURES]
+   - Google Style docstrings for all public functions/classes
+   - Mathematical context and equation references where applicable
+   - Type hints with tensor shapes (e.g., `torch.Tensor[batch_size, features]`)
+   - Usage examples in docstrings for complex functions
 
 #### Before Creating PR
 1. **Full test suite passes**: `pytest -v --cov=verskyt`
@@ -204,6 +245,10 @@ Before writing code, always:
 3. **No manual quality issues**: `black verskyt tests && isort verskyt tests && flake8 verskyt tests`
 4. **Mathematical correctness**: Implementation matches paper specifications
 5. **Integration validated**: New code works with existing PyTorch patterns
+6. **Documentation infrastructure updated**: [MANDATORY]
+   - New modules added to `docs/api/index.rst` and `docs/api/index.md`
+   - Created `docs/api/module_name.rst` and `docs/api/module_name.md` files
+   - Examples created/updated in `examples/` directory following existing patterns
 
 ### Development Workflow Integration
 ```bash
@@ -234,10 +279,12 @@ pytest && echo "Ready for PR"
 - XOR tests should verify learning capability, not just training steps
 - Include negative tests (edge cases, expected failures)
 
-**Code Quality Issues:**
+**Code Quality Issues (Zero Tolerance Policy):**
 - Pre-commit hooks prevent most formatting/linting issues
-- Manual run: `pre-commit run --all-files` before pushing
-- For urgent fixes: `git commit --no-verify` (document reason in commit message)
+- **MANDATORY**: Run `pre-commit run --all-files` before every push
+- **NEVER use `git commit --no-verify`** except for emergencies (document reason)
+- **CI formatting failures indicate local setup issues** - fix your environment
+- Use safe commands: `pre-commit run --all-files && git push`
 
 **Mathematical Implementation Issues:**
 - Cross-reference all implementations with paper equations
