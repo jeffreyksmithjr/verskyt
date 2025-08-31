@@ -7,7 +7,7 @@ Use this checklist to ensure complete documentation for any new feature before m
 ### Google Style Docstrings (Required)
 - [ ] All public functions have comprehensive docstrings with:
   - [ ] **Args**: All parameters with types and tensor shapes where applicable
-  - [ ] **Returns**: Return type and description with shapes for tensors  
+  - [ ] **Returns**: Return type and description with shapes for tensors
   - [ ] **Raises**: Exceptions that may be raised
   - [ ] **Note**: Implementation details, mathematical context
   - [ ] **Example**: Usage examples for complex functions

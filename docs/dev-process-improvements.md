@@ -7,7 +7,7 @@
 - No clear checklist for what constitutes "complete" documentation
 - Documentation is treated as optional rather than mandatory for feature completion
 
-### Code Formatting Issues  
+### Code Formatting Issues
 - Despite pre-commit hooks and CI checks, improperly formatted code reaches remote repos
 - Developers bypass local checks with `--no-verify` or don't install pre-commit properly
 - Results in noisy CI failures that should be caught locally
@@ -24,7 +24,7 @@ Add comprehensive documentation requirements to the standard development process
 
 #### Before Each Commit
 1. **Automated checks pass**: Pre-commit hooks handle formatting, linting, imports
-2. **Tests validate actual functionality**: Not just setup - test claimed capabilities  
+2. **Tests validate actual functionality**: Not just setup - test claimed capabilities
 3. **Imports properly exported**: Add new functions to appropriate `__init__.py` files
 4. **Documentation complete**: [EXPANDED SECTION]
    - Google Style docstrings for all public functions/classes
@@ -33,7 +33,7 @@ Add comprehensive documentation requirements to the standard development process
    - Type hints with tensor shapes (e.g., `torch.Tensor[batch_size, features]`)
    - Update relevant API documentation files (`docs/api/*.rst`, `docs/api/*.md`)
 
-#### Before Creating PR  
+#### Before Creating PR
 1. **Full test suite passes**: `pytest -v --cov=verskyt`
 2. **Coverage maintained**: Core modules >80%, overall >60%
 3. **No manual quality issues**: `black verskyt tests && isort verskyt tests && flake8 verskyt tests`
@@ -58,7 +58,7 @@ Create a standard checklist that must be completed for any feature:
 - [ ] Complex functions include usage examples in docstrings
 - [ ] Type hints include tensor shapes where applicable
 
-### API Documentation  
+### API Documentation
 - [ ] Module added to appropriate `docs/api/*.rst` and `docs/api/*.md` files
 - [ ] API index files updated to include new module
 - [ ] Sphinx autodoc can build without warnings
@@ -123,7 +123,7 @@ git config alias.safe-push '!pre-commit run --all-files && git push'
 
 # Usage:
 git cfmt        # Run all formatting checks
-git cmt -m "msg" # Format then commit  
+git cmt -m "msg" # Format then commit
 git safe-push   # Format then push
 ```
 
@@ -136,7 +136,7 @@ name: Auto-format
 on:
   push:
     branches-ignore: [main]
-    
+
 jobs:
   format:
     if: contains(github.event.head_commit.message, '[auto-format]')
@@ -145,20 +145,20 @@ jobs:
     - uses: actions/checkout@v4
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        
+
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
-        
+
     - name: Install dependencies
       run: pip install -e ".[dev]"
-      
+
     - name: Run formatting
       run: |
         black verskyt tests
         isort verskyt tests
-        
+
     - name: Commit formatting changes
       run: |
         git config --local user.email "action@github.com"
@@ -175,7 +175,7 @@ jobs:
 ### Pre-Development Checklist
 Before writing code, always:
 1. **Review specifications**: Check docs/requirements/tnn-specification.md for mathematical requirements
-2. **Understand testing strategy**: Review docs/implementation/plan.md for testing approach  
+2. **Understand testing strategy**: Review docs/implementation/plan.md for testing approach
 3. **Set up environment**: Run `pip install -e ".[dev]" && pre-commit install`
 4. **Validate setup**: Run `pre-commit run --all-files && pytest`
 5. **Plan documentation**: Identify what API docs and examples will need updates [NEW]
@@ -188,7 +188,7 @@ Before writing code, always:
 ### Google Style Docstrings
 All public functions and classes must include comprehensive docstrings:
 - **Args**: All parameters with types and descriptions
-- **Returns**: Return type and description  
+- **Returns**: Return type and description
 - **Raises**: Exceptions that may be raised
 - **Note**: Implementation details, mathematical context
 - **Example**: Usage example for complex functions
@@ -226,7 +226,7 @@ pre-commit run --all-files
 # Safe commit (formats then commits)
 git add . && pre-commit run --all-files && git commit -m "feat: your message"
 
-# Safe push (validates formatting before push)  
+# Safe push (validates formatting before push)
 pre-commit run --all-files && git push
 ```
 
@@ -243,7 +243,7 @@ pre-commit run --all-files && git push
 2. Add documentation checklist to development workflow
 3. Create examples for current intervention API following new standards
 
-#### Phase 2: Enhance Formatting Automation  
+#### Phase 2: Enhance Formatting Automation
 1. Create enhanced setup script with pre-push hooks
 2. Add git aliases for safe operations
 3. Update CLAUDE.md with zero-tolerance formatting policy

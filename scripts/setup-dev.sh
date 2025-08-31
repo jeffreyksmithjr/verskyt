@@ -79,7 +79,7 @@ fi
 EOF
 chmod +x safe-commit.sh
 
-# Safe push script  
+# Safe push script
 cat > safe-push.sh << 'EOF'
 #!/bin/bash
 echo "🔍 Running final checks before push..."
