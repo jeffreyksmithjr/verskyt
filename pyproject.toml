@@ -1,6 +1,6 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "verskyt"
@@ -64,31 +64,13 @@ benchmarks = [
 "Documentation" = "https://verskyt.readthedocs.io"
 "Source" = "https://github.com/jeffreyksmithjr/verskyt"
 
-# Hatch configuration
-[tool.hatch.build.targets.wheel]
-packages = ["verskyt"]
+# Setuptools configuration
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["verskyt*"]
 
-[tool.hatch.build.targets.sdist]
-include = [
-  "/verskyt",
-  "/tests",
-  "/docs",
-  "/scripts",
-  "*.md",
-  "*.toml",
-  "*.txt",
-]
-
-# Development scripts
-[tool.hatch.scripts]
-test = "pytest {args}"
-test-cov = "pytest --cov=verskyt --cov-report=term-missing {args}"
-lint = "pre-commit run --all-files"
-lint-fix = "black verskyt tests && isort verskyt tests"
-docs = "cd docs && make html"
-docs-serve = "python -m http.server 8000 -d docs/_build/html"
-benchmark-fast = "python scripts/run_xor_fast_benchmark.py"
-benchmark-full = "python scripts/run_xor_full_replication.py"
+[tool.setuptools.package-data]
+verskyt = ["py.typed"]
 
 [tool.black]
 line-length = 88
