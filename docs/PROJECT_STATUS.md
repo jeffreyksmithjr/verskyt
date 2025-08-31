@@ -16,7 +16,7 @@
 
 **Core Similarity Module (`verskyt/core/similarity.py`)**
 - ✅ Complete Tversky similarity computation with all reduction methods
-- ✅ Intersection reductions: `product`, `min`, `mean` (3/6 from spec)
+- ✅ Intersection reductions: `product`, `min`, `max`, `mean`, `gmean`, `softmin` (6/6 from spec)
 - ✅ Difference reductions: `substractmatch`, `ignorematch` (2/2 from spec)
 - ✅ Feature membership computation: `x·fₖ > 0` logic
 - ✅ Salience computation (Equation 2 from paper)
@@ -50,7 +50,7 @@
 |-------------|--------|-------|
 | Dual object representation | ✅ Complete | Vector + set forms implemented |
 | Tversky similarity (Eq. 6) | ✅ Complete | All parameters learnable |
-| Intersection measures | 🟡 Partial | 3/6 methods (product, min, mean) |
+| Intersection measures | ✅ Complete | 6/6 methods (product, min, max, mean, gmean, softmin) |
 | Difference measures | ✅ Complete | Both ignorematch & substractmatch |
 | Gradient computation | ✅ Complete | All operations differentiable |
 | Parameter initialization | ✅ Complete | Uniform distribution as recommended |
@@ -206,10 +206,10 @@
    - Must reproduce paper's Figure 1 results
    - Validates single-layer non-linearity claims
 
-2. **Missing Intersection Methods** (Week 2)
-   - Complete the specification requirements
-   - Essential for full paper compliance
-   - Includes numerical stability fixes
+2. **Intersection Methods Testing** (Week 2)
+   - ✅ All 6 intersection methods implemented and working
+   - Enhance test coverage for comprehensive validation
+   - Numerical stability validated
 
 3. **Intervention Manager** (Week 2)
    - Core differentiator from standard neural networks
@@ -220,7 +220,7 @@
 
 **Phase 2 Completion Criteria:**
 - [ ] XOR problem solved with >90% success rate
-- [ ] All 6 intersection methods implemented and tested
+- ✅ All 6 intersection methods implemented and tested
 - [ ] Intervention API functional with prototype editing
 - [ ] Visualization tools produce interpretable plots
 - [ ] MNIST baseline achieved (>95% accuracy)
@@ -295,7 +295,7 @@ main (stable, merged PRs)
 
 ### Paper Compliance
 - **Core equations**: 100% implemented ✅
-- **Reduction methods**: 83% complete (5/6)
+- **Reduction methods**: 100% complete (6/6)
 - **Validation tests**: 100% of implemented features ✅
 
 ### Research Readiness

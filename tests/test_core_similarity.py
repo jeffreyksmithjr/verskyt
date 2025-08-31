@@ -180,6 +180,50 @@ class TestIntersectionReductions:
         assert similarity.shape == (1, 1)
         assert similarity[0, 0] > 0
 
+    def test_max_reduction(self):
+        """Test maximum intersection reduction."""
+        similarity = tversky_similarity(
+            self.x,
+            self.prototypes,
+            self.features,
+            alpha=0.5,
+            beta=0.5,
+            theta=1e-7,
+            intersection_reduction="max",
+        )
+        assert similarity.shape == (1, 1)
+        assert similarity[0, 0] > 0
+
+    def test_gmean_reduction(self):
+        """Test geometric mean intersection reduction."""
+        similarity = tversky_similarity(
+            self.x,
+            self.prototypes,
+            self.features,
+            alpha=0.5,
+            beta=0.5,
+            theta=1e-7,
+            intersection_reduction="gmean",
+        )
+        assert similarity.shape == (1, 1)
+        assert similarity[0, 0] > 0
+        assert not torch.isnan(similarity).any()
+
+    def test_softmin_reduction(self):
+        """Test softmin intersection reduction."""
+        similarity = tversky_similarity(
+            self.x,
+            self.prototypes,
+            self.features,
+            alpha=0.5,
+            beta=0.5,
+            theta=1e-7,
+            intersection_reduction="softmin",
+        )
+        assert similarity.shape == (1, 1)
+        assert similarity[0, 0] > 0
+        assert not torch.isnan(similarity).any()
+
 
 class TestDifferenceReductions:
     """Test different difference reduction methods."""
