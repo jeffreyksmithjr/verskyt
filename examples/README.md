@@ -24,7 +24,11 @@ from verskyt import TverskyProjectionLayer
 import torch
 
 # Drop-in replacement for nn.Linear
-layer = TverskyProjectionLayer(128, 10, 256)
+layer = TverskyProjectionLayer(
+    in_features=128,      # Dimensionality of the input vector
+    num_prototypes=10,    # Output classes
+    num_features=256      # Dimensionality of the internal learned feature space (Ω)
+)
 x = torch.randn(32, 128)
 output = layer(x)  # [32, 10]
 ```

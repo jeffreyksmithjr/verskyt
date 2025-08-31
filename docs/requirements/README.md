@@ -1,11 +1,11 @@
 # Requirements Documentation
 
-This section contains comprehensive specifications and analysis for implementing Tversky Neural Networks.
+This section contains complete specifications and analysis for implementing Tversky Neural Networks.
 
 ## Documents
 
 ### [TNN Specification](tnn-specification.md)
-**The definitive implementation guide** - Complete mathematical formulations, architectural patterns, hyperparameter guidance, and performance benchmarks extracted from the original paper.
+**The definitive implementation guide** - Mathematical formulations, architectural patterns, hyperparameter guidance, and performance benchmarks extracted from the original paper.
 
 **Key sections:**
 - Core mathematical formulations (Tversky similarity, feature intersections/differences)
@@ -14,7 +14,7 @@ This section contains comprehensive specifications and analysis for implementing
 - Performance expectations and validation criteria
 
 **Use this document for:**
-- Understanding the complete mathematical framework
+- Understanding the mathematical framework
 - Implementation specifications and constraints
 - Hyperparameter recommendations based on paper experiments
 - Performance benchmarks and validation criteria

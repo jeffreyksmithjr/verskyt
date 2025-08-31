@@ -1,13 +1,15 @@
 # Verskyt
 *A versatile toolkyt for Tversky Neural Networks*
 
+*Pronounced "ver-SKIT"*
+
 [![CI](https://github.com/jeffreyksmithjr/verskyt/workflows/CI/badge.svg)](https://github.com/jeffreyksmithjr/verskyt/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/jeffreyksmithjr/verskyt/branch/main/graph/badge.svg)](https://codecov.io/gh/jeffreyksmithjr/verskyt) [![PyPI version](https://badge.fury.io/py/verskyt.svg)](https://badge.fury.io/py/verskyt)
 
 **Verskyt** is a Python library that implements Tversky Neural Networks (TNNs) with advanced research and analysis capabilities. Beyond providing faithful PyTorch-compatible TNN layers, Verskyt offers a complete toolkit for model introspection, causal intervention, and prototype analysis, making it a foundational platform for researchers exploring interpretable deep learning.
 
 ## What are Tversky Neural Networks?
 
-Tversky Neural Networks represent a novel paradigm in deep learning, introduced by Doumbouya et al. (2025). TNNs replace traditional linear transformations with **similarity-based computations** grounded in cognitive science, specifically Tversky's feature-based similarity theory.
+Tversky Neural Networks represent a novel paradigm in deep learning, introduced by Doumbouya et al. (2025). TNNs replace traditional linear transformations with **similarity-based computations** grounded in cognitive science, specifically Tversky's feature-based similarity theory. TNNs operate by projecting inputs into a learned feature space (Ω), where similarity to explicit prototypes (Π) is computed.
 
 **Key TNN Properties:**
 - **Psychologically Plausible**: Based on established cognitive models of human similarity perception
@@ -60,9 +62,9 @@ from verskyt.layers import TverskyProjectionLayer
 
 # A TNN layer that can replace nn.Linear(in_features=128, out_features=10)
 layer = TverskyProjectionLayer(
-    in_features=128,
+    in_features=128,      # Dimensionality of the input vector
     num_prototypes=10,    # Corresponds to output classes
-    num_features=256,     # Size of the internal feature space
+    num_features=256,     # Dimensionality of the internal learned feature space (Ω)
 )
 
 # It works just like a standard PyTorch layer
@@ -138,7 +140,9 @@ Contributions are welcome! Please see our development and contribution guideline
 
 ## Citation
 
-To cite the foundational TNN paper:
+If you use Verskyt in your research, please cite both the original Tversky Neural Network paper and this library.
+
+### 1. Foundational Paper:
 
 ```bibtex
 @article{doumbouya2025tversky,
@@ -149,5 +153,21 @@ To cite the foundational TNN paper:
 }
 ```
 
-To cite this library:
-(BibTeX citation for `verskyt` to be added upon first archival release)
+### 2. This Library (Verskyt):
+
+We recommend citing the specific version of the software you used. You can get a persistent DOI for each version from [Zenodo](https://zenodo.org).
+
+```bibtex
+@software{smith_jr_2025_verskyt,
+  author       = {Smith Jr., Jeffrey K.},
+  title        = {{Verskyt: A versatile toolkyt for Tversky Neural Networks}},
+  month        = jan,
+  year         = 2025,
+  publisher    = {Zenodo},
+  version      = {v0.1.1},
+  doi          = {10.5281/zenodo.PENDING},
+  url          = {https://doi.org/10.5281/zenodo.PENDING}
+}
+```
+
+*Note: DOI will be updated upon the next release. For now, you can cite the current version using the GitHub repository URL.*

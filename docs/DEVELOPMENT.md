@@ -83,7 +83,7 @@ git commit --no-verify
 - **Equation references**: Link to paper equations where applicable
 
 #### CI/CD Integration
-- **GitHub Actions**: Fast feedback on PRs, comprehensive validation on main
+- **GitHub Actions**: Fast feedback on PRs, full validation on main
 - **PR checks**: Quality gates (formatting, linting, import validation), basic testing, fast integration
 - **Main branch**: Full test matrix (Python 3.8-3.11), extended integration tests, coverage reporting
 - **Cost optimized**: Light CI on PRs (~2-3 min), full validation on main branch only
@@ -260,7 +260,7 @@ pytest tests/test_failing.py -vvs --pdb
 - Multi-Python matrix (3.8, 3.9, 3.10, 3.11) testing
 - Extended integration: parameter learning verification
 - Full dev environment with all dependencies
-- Runtime: ~8-12 minutes for comprehensive validation
+- Runtime: ~8-12 minutes for full validation
 
 **Benefits:**
 - ⚡ **85% faster PR feedback**: Reduced from ~12min to ~2-3min per PR
