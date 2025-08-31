@@ -6,7 +6,7 @@ This directory contains practical examples demonstrating Verskyt's research-focu
 
 **[research_tutorial.py](research_tutorial.py)** - Comprehensive demonstration of:
 - **Modularity**: Experimenting with 12 similarity variants
-- **Introspection**: Analyzing learned prototypes, features, and parameters  
+- **Introspection**: Analyzing learned prototypes, features, and parameters
 - **Extensibility**: Intervention studies and custom similarity functions
 - **Validation**: Research-grade benchmarking and reproducibility
 
@@ -51,7 +51,7 @@ modified_output = layer(x)
 layer.set_prototype(0, original)
 ```
 
-### Custom Similarity Experiments  
+### Custom Similarity Experiments
 ```python
 from verskyt.core import tversky_similarity
 

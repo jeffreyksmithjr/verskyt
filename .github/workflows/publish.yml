@@ -31,33 +31,33 @@ jobs:
       run: |
         # Extract version from tag (remove 'v' prefix)
         TAG_VERSION=${GITHUB_REF#refs/tags/v}
-        
+
         # Extract version from pyproject.toml
         TOML_VERSION=$(grep -Po 'version = "\K[^"]*' pyproject.toml)
-        
+
         echo "Tag version: $TAG_VERSION"
         echo "TOML version: $TOML_VERSION"
-        
+
         if [ "$TAG_VERSION" != "$TOML_VERSION" ]; then
           echo "❌ Version mismatch: tag $TAG_VERSION != pyproject.toml $TOML_VERSION"
           exit 1
         fi
-        
+
         echo "✅ Version check passed"
 
     - name: Build package
       run: |
         python -m build
-        
+
         # Verify build succeeded
         ls -la dist/
-        
+
         # Basic check that we have both wheel and source dist
         if [ ! -f dist/*.whl ] || [ ! -f dist/*.tar.gz ]; then
           echo "❌ Build failed: missing wheel or source distribution"
           exit 1
         fi
-        
+
         echo "✅ Package built successfully"
 
     - name: Check package metadata
@@ -70,7 +70,7 @@ jobs:
       uses: pypa/gh-action-pypi-publish@v1.8.11
       with:
         print-hash: true
-        
+
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
@@ -80,21 +80,21 @@ jobs:
         generate_release_notes: true
         body: |
           ## Changes in ${{ github.ref_name }}
-          
+
           This release includes the built distributions for easy installation:
-          
+
           ```bash
           pip install verskyt==${{ github.ref_name }}
           ```
-          
+
           See the [CHANGELOG](CHANGELOG.md) for detailed changes.
-          
+
           ## Verification
           - ✅ All tests pass
-          - ✅ Pre-commit hooks pass  
+          - ✅ Pre-commit hooks pass
           - ✅ Package builds successfully
           - ✅ Version matches tag
-          
+
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -105,32 +105,32 @@ jobs:
     strategy:
       matrix:
         python-version: ['3.8', '3.9', '3.10', '3.11']
-        
+
     steps:
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
-        
+
     - name: Test installation from PyPI
       run: |
         # Wait a bit for PyPI propagation
         sleep 60
-        
+
         # Install from PyPI
         TAG_VERSION=${GITHUB_REF#refs/tags/v}
         pip install verskyt==$TAG_VERSION
-        
+
         # Test basic functionality
         python -c "
         import torch
         from verskyt import TverskyProjectionLayer
-        
+
         # Basic smoke test
         layer = TverskyProjectionLayer(4, 2, 8)
         x = torch.randn(3, 4)
         output = layer(x)
-        
+
         print(f'✅ Python {python-version}: Installation and basic test successful')
         print(f'   Input shape: {x.shape}, Output shape: {output.shape}')
         "

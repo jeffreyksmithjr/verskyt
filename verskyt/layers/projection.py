@@ -174,8 +174,10 @@ class TverskyProjectionLayer(nn.Module):
             [num_prototypes, in_features].
         feature_bank (nn.Parameter): Learnable feature bank of shape
             [num_features, in_features].
-        alpha (nn.Parameter or torch.Tensor): Tversky weight for input-distinctive features.
-        beta (nn.Parameter or torch.Tensor): Tversky weight for prototype-distinctive features.
+        alpha (nn.Parameter or torch.Tensor): Tversky weight for input-distinctive
+            features.
+        beta (nn.Parameter or torch.Tensor): Tversky weight for prototype-distinctive
+            features.
         bias (nn.Parameter or None): Optional bias term of shape [num_prototypes].
     """
 
@@ -332,7 +334,8 @@ class TverskyProjectionLayer(nn.Module):
             x (torch.Tensor): Input tensor of shape [batch_size, in_features].
 
         Returns:
-            torch.Tensor: Tversky similarity scores of shape [batch_size, num_prototypes].
+            torch.Tensor: Tversky similarity scores of shape
+                [batch_size, num_prototypes].
                 Values are in [0, 1] range for standard Tversky Index formulation,
                 representing similarity to each prototype.
 

@@ -23,9 +23,9 @@ extensions = [
     "sphinx.ext.napoleon",  # Support for NumPy and Google style docstrings
     "sphinx.ext.viewcode",  # Add links to highlighted source code
     "sphinx.ext.intersphinx",  # Link to other project documentation
-    # 'myst_parser',                  # Parse Markdown files - commented out due to compatibility issues
-    # 'myst_nb',                      # Parse Jupyter notebooks - commented out due to compatibility issues
-    # 'sphinx_autodoc_typehints',     # Better type hint handling - commented out due to compatibility issues
+    # 'myst_parser',  # Parse Markdown files - commented due to compatibility issues
+    # 'myst_nb',      # Parse Jupyter notebooks - commented due to compatibility issues
+    # 'sphinx_autodoc_typehints',  # Better type hints - commented due to compatibility
 ]
 
 # MyST parser configuration

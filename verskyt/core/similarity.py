@@ -43,7 +43,8 @@ class DifferenceReduction(str, Enum):
 
     Attributes:
         IGNOREMATCH: Only count features present in A but not in B (Equation 4).
-        SUBSTRACTMATCH: Account for magnitude differences in shared features (Equation 5).
+        SUBSTRACTMATCH: Account for magnitude differences in shared features
+            (Equation 5).
     """
 
     IGNOREMATCH = "ignorematch"  # Only features in A but not in B
@@ -223,15 +224,18 @@ def tversky_similarity(
 
     Args:
         x (torch.Tensor): Input tensor of shape [batch_size, in_features].
-        prototypes (torch.Tensor): Prototype tensor of shape [num_prototypes, in_features].
-        feature_bank (torch.Tensor): Feature bank tensor of shape [num_features, in_features].
+        prototypes (torch.Tensor): Prototype tensor of shape
+            [num_prototypes, in_features].
+        feature_bank (torch.Tensor): Feature bank tensor of shape
+            [num_features, in_features].
         alpha (Union[torch.Tensor, float]): Weight for x's distinctive features.
             Higher values make the similarity more sensitive to features in x
             but not in prototypes. Must be ≥ 0.
-        beta (Union[torch.Tensor, float]): Weight for prototype's distinctive features.
-            Higher values make the similarity more sensitive to features in
-            prototypes but not in x. Must be ≥ 0.
-        theta (float, optional): Small constant for numerical stability. Defaults to 1e-7.
+        beta (Union[torch.Tensor, float]): Weight for prototype's distinctive
+            features. Higher values make the similarity more sensitive to features
+            in prototypes but not in x. Must be ≥ 0.
+        theta (float, optional): Small constant for numerical stability.
+            Defaults to 1e-7.
         intersection_reduction (Union[IntersectionReduction, str], optional):
             Method for computing feature intersections. Defaults to "product".
         difference_reduction (Union[DifferenceReduction, str], optional):
@@ -324,8 +328,10 @@ def tversky_contrast_similarity(
 
     Args:
         x (torch.Tensor): Input tensor of shape [batch_size, in_features].
-        prototypes (torch.Tensor): Prototype tensor of shape [num_prototypes, in_features].
-        feature_bank (torch.Tensor): Feature bank tensor of shape [num_features, in_features].
+        prototypes (torch.Tensor): Prototype tensor of shape
+            [num_prototypes, in_features].
+        feature_bank (torch.Tensor): Feature bank tensor of shape
+            [num_features, in_features].
         alpha (Union[torch.Tensor, float]): Weight for x's distinctive features.
         beta (Union[torch.Tensor, float]): Weight for prototype's distinctive features.
         theta (Union[torch.Tensor, float], optional): Weight for common features.
