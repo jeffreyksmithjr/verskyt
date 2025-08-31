@@ -114,6 +114,7 @@ Based on capabilities demonstrated in "Tversky Neural Networks" (Doumbouya et al
 - **[API Reference](docs/api/)** - Complete function and class documentation
 - **[Mathematical Specifications](docs/requirements/tnn-specification.md)** - Paper equations and implementations
 - **[Development Guide](docs/implementation/plan.md)** - Testing strategy and contribution guidelines
+- **[Deployment Guide](docs/DEPLOYMENT.md)** - Documentation and package publishing
 - **[Benchmarks](docs/research/)** - Validation studies and reproduction results
 
 ## Contributing

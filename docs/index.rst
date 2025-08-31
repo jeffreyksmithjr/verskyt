@@ -55,6 +55,7 @@ Contents
    :caption: Development
 
    DEVELOPMENT
+   DEPLOYMENT
    PROJECT_STATUS
    FUTURE_WORK
 
