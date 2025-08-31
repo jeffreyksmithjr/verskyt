@@ -1,13 +1,13 @@
 # Verskyt Documentation
 
-A comprehensive implementation of Tversky Neural Networks (TNNs) with full PyTorch integration.
+A complete implementation of Tversky Neural Networks (TNNs) with full PyTorch integration.
 
 ## Documentation Overview
 
 ### 📋 [Requirements](requirements/)
 Complete specifications and analysis of TNNs based on the original paper.
 
-- **[TNN Specification](requirements/tnn-specification.md)** - Comprehensive implementation requirements
+- **[TNN Specification](requirements/tnn-specification.md)** - Complete implementation requirements
 - **[Paper Analysis](requirements/)** - Analysis of core concepts and mathematical formulations
 
 ### 🏗️ [Implementation](implementation/)
@@ -15,7 +15,7 @@ Detailed implementation guides and architectural decisions.
 
 - **[Implementation Plan](implementation/plan.md)** - Phased development approach with validation criteria
 - **[Architecture Overview](implementation/)** - System design and component relationships
-- **[Testing Strategy](implementation/)** - Comprehensive testing approach
+- **[Testing Strategy](implementation/)** - Complete testing approach
 
 ### 📚 [Tutorials](tutorials/)
 Step-by-step guides for using Verskyt.

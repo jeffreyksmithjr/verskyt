@@ -100,11 +100,11 @@ The library is organized into modular components:
 
 ## Documentation Standards (Mandatory for All Features)
 
-### Comprehensive Documentation Requirements
+### Complete Documentation Requirements
 Every feature must include complete documentation before merging:
 
 #### Google Style Docstrings (Required)
-- **All public functions and classes** must have comprehensive docstrings
+- **All public functions and classes** must have complete docstrings
 - **Args**: All parameters with types and tensor shapes where applicable
 - **Returns**: Return type and description with shapes for tensors
 - **Raises**: Exceptions that may be raised
