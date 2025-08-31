@@ -32,8 +32,8 @@ jobs:
         # Extract version from tag (remove 'v' prefix)
         TAG_VERSION=${GITHUB_REF#refs/tags/v}
 
-        # Extract version from pyproject.toml (first match only, which is the package version)
-        TOML_VERSION=$(grep -Po '^version = "\K[^"]*' pyproject.toml | head -1)
+        # Extract version from pyproject.toml using sed (more portable than grep -P)
+        TOML_VERSION=$(sed -n 's/^version = "\([^"]*\)".*/\1/p' pyproject.toml | head -1)
 
         echo "Tag version: $TAG_VERSION"
         echo "TOML version: $TOML_VERSION"
@@ -57,6 +57,25 @@ jobs:
           echo "❌ Build failed: missing wheel or source distribution"
           exit 1
         fi
+
+        # Debug: Check wheel metadata
+        echo "🔍 Inspecting wheel metadata..."
+        python -c "
+        import zipfile
+        import glob
+        wheel_files = glob.glob('dist/*.whl')
+        if wheel_files:
+            with zipfile.ZipFile(wheel_files[0], 'r') as z:
+                for name in z.namelist():
+                    if name.endswith('METADATA'):
+                        print(f'=== {name} ===')
+                        content = z.read(name).decode('utf-8')
+                        # Print first 20 lines to see metadata structure
+                        lines = content.split('\n')[:20]
+                        for line in lines:
+                            print(line)
+                        break
+        "
 
         echo "✅ Package built successfully"
 
