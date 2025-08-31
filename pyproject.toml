@@ -59,10 +59,10 @@ benchmarks = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/verskyt/verskyt"
-"Bug Tracker" = "https://github.com/verskyt/verskyt/issues"
+"Homepage" = "https://github.com/jeffreyksmithjr/verskyt"
+"Bug Tracker" = "https://github.com/jeffreyksmithjr/verskyt/issues"
 "Documentation" = "https://verskyt.readthedocs.io"
-"Source" = "https://github.com/verskyt/verskyt"
+"Source" = "https://github.com/jeffreyksmithjr/verskyt"
 
 # Hatch configuration
 [tool.hatch.build.targets.wheel]
