@@ -151,13 +151,34 @@ class TverskySimilarityLayer(nn.Module):
 
 
 class TverskyProjectionLayer(nn.Module):
-    """
-    Tversky Projection Layer (Equation 7 from paper).
+    """A projection layer based on Tversky similarity (Equation 7 from paper).
 
-    Non-linear projection that computes similarity of input to learned prototypes.
-    Can model XOR and other non-linear functions with a single layer.
+    This layer replaces standard linear projections by computing Tversky similarity
+    between inputs and learned prototype vectors. Unlike linear layers, it can
+    model non-linear functions like XOR with a single layer, making it suitable
+    for complex pattern recognition tasks.
 
-    P_Ω,α,β,θ,Π(a): ℝ^d → ℝ^p
+    The layer implements: P_Ω,α,β,θ,Π(a): ℝ^d → ℝ^p
+
+    Where:
+    - Ω: Learnable feature bank of shape [num_features, in_features]
+    - Π: Learnable prototype vectors of shape [num_prototypes, in_features]
+    - α, β: Asymmetry parameters controlling feature distinctiveness weights
+    - θ: Numerical stability constant
+
+    This layer can serve as a drop-in replacement for nn.Linear in many architectures,
+    offering improved interpretability and non-linear modeling capabilities.
+
+    Attributes:
+        prototypes (nn.Parameter): Learnable prototype vectors of shape
+            [num_prototypes, in_features].
+        feature_bank (nn.Parameter): Learnable feature bank of shape
+            [num_features, in_features].
+        alpha (nn.Parameter or torch.Tensor): Tversky weight for input-distinctive
+            features.
+        beta (nn.Parameter or torch.Tensor): Tversky weight for prototype-distinctive
+            features.
+        bias (nn.Parameter or None): Optional bias term of shape [num_prototypes].
     """
 
     def __init__(
@@ -182,25 +203,55 @@ class TverskyProjectionLayer(nn.Module):
         shared_feature_bank: Optional[nn.Parameter] = None,
         bias: bool = False,
     ):
-        """
-        Initialize Tversky Projection Layer.
+        """Initialize Tversky Projection Layer.
 
         Args:
-            in_features: Dimension of input vectors
-            num_prototypes: Number of prototypes (output dimension)
-            num_features: Number of features in feature bank (|Ω|)
-            alpha: Initial value for α parameter
-            beta: Initial value for β parameter
-            learnable_ab: Whether α and β are learnable
-            theta: Constant for numerical stability
-            intersection_reduction: Method for feature intersections
-            difference_reduction: Method for feature differences
-            normalize_features: Whether to normalize feature vectors
-            normalize_prototypes: Whether to normalize prototype and input vectors
-            prototype_init: Initialization method for prototypes
-            feature_init: Initialization method for feature bank
-            shared_feature_bank: Optional shared feature bank from another layer
-            bias: Whether to add a learnable bias term
+            in_features (int): Size of each input sample's embedding dimension.
+            num_prototypes (int): Number of prototype vectors to learn. This typically
+                corresponds to the output dimension or number of classes.
+            num_features (int): Size of the shared feature bank (|Ω|). This is a key
+                hyperparameter controlling the expressiveness of the feature space.
+            alpha (float, optional): Initial Tversky weight for input-distinctive
+                features (x \\ π). Higher values increase sensitivity to features
+                present in input but not in prototypes. Defaults to 0.5.
+            beta (float, optional): Initial Tversky weight for prototype-distinctive
+                features (π \\ x). Higher values increase sensitivity to features
+                present in prototypes but not in input. Defaults to 0.5.
+            learnable_ab (bool, optional): Whether α and β are learnable parameters.
+                If False, they remain fixed at initial values. Defaults to True.
+            theta (float, optional): Small constant for numerical stability in
+                similarity computation. Defaults to 1e-7.
+            intersection_reduction (Union[IntersectionReduction, str], optional):
+                Method for aggregating feature intersections. Options: "product",
+                "min", "max", "mean", "gmean", "softmin". Defaults to "product".
+            difference_reduction (Union[DifferenceReduction, str], optional):
+                Method for computing feature differences. Options: "ignorematch",
+                "substractmatch". Defaults to "substractmatch".
+            normalize_features (bool, optional): Whether to L2-normalize feature
+                bank vectors during forward pass. Defaults to False.
+            normalize_prototypes (bool, optional): Whether to L2-normalize input
+                and prototype vectors during forward pass. Defaults to False.
+            prototype_init (Literal, optional): Initialization method for prototype
+                vectors. Options: "uniform", "normal", "xavier_uniform",
+                "xavier_normal". Defaults to "xavier_uniform".
+            feature_init (Literal, optional): Initialization method for feature bank.
+                Same options as prototype_init. Defaults to "xavier_uniform".
+            shared_feature_bank (Optional[nn.Parameter], optional): Pre-existing
+                feature bank to share across layers. If provided, feature_init
+                is ignored. Defaults to None.
+            bias (bool, optional): Whether to include a learnable bias term of
+                shape [num_prototypes]. Defaults to False.
+
+        Example:
+            >>> # Create a projection layer as drop-in replacement for nn.Linear
+            >>> layer = TverskyProjectionLayer(
+            ...     in_features=128,
+            ...     num_prototypes=10,  # like nn.Linear(128, 10)
+            ...     num_features=64,    # internal feature space size
+            ...     learnable_ab=True
+            ... )
+            >>> x = torch.randn(32, 128)  # batch of 32 samples
+            >>> output = layer(x)         # shape: [32, 10]
         """
         super().__init__()
 
@@ -274,14 +325,23 @@ class TverskyProjectionLayer(nn.Module):
             nn.init.zeros_(self.bias)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """
-        Project input to prototype similarity space.
+        """Compute forward pass through the Tversky projection layer.
+
+        Projects the input to prototype similarity space by computing Tversky
+        similarity between each input and all learned prototype vectors.
 
         Args:
-            x: Input tensor of shape [batch_size, in_features]
+            x (torch.Tensor): Input tensor of shape [batch_size, in_features].
 
         Returns:
-            Similarity scores of shape [batch_size, num_prototypes]
+            torch.Tensor: Tversky similarity scores of shape
+                [batch_size, num_prototypes].
+                Values are in [0, 1] range for standard Tversky Index formulation,
+                representing similarity to each prototype.
+
+        Note:
+            This layer can serve as a drop-in replacement for nn.Linear, but
+            produces similarity-based rather than linear projections.
         """
         # Compute Tversky similarity to all prototypes
         similarity = tversky_similarity(
