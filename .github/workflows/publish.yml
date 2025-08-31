@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write  # Required for trusted publishing
+      contents: write  # Required for creating GitHub releases
 
     steps:
     - uses: actions/checkout@v4
@@ -25,15 +26,15 @@ jobs:
     - name: Install build dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install build twine
+        pip install build twine wheel setuptools>=64
 
     - name: Verify tag matches version
       run: |
         # Extract version from tag (remove 'v' prefix)
         TAG_VERSION=${GITHUB_REF#refs/tags/v}
 
-        # Extract version from pyproject.toml
-        TOML_VERSION=$(grep -Po 'version = "\K[^"]*' pyproject.toml)
+        # Extract version from pyproject.toml using sed (more portable than grep -P)
+        TOML_VERSION=$(sed -n 's/^version = "\([^"]*\)".*/\1/p' pyproject.toml | head -1)
 
         echo "Tag version: $TAG_VERSION"
         echo "TOML version: $TOML_VERSION"
@@ -47,9 +48,25 @@ jobs:
 
     - name: Build package
       run: |
-        python -m build
+        # Clean any existing build artifacts
+        rm -rf dist/ build/ *.egg-info/
+
+        # Show environment info
+        echo "🔍 Environment info:"
+        python --version
+        pip --version
+        pip list | grep -E "(setuptools|build|wheel)"
+
+        # Show pyproject.toml content
+        echo "🔍 pyproject.toml content:"
+        cat pyproject.toml
+
+        # Build with explicit setuptools backend
+        echo "🔧 Building with python -m build..."
+        python -m build --wheel --sdist --no-isolation
 
         # Verify build succeeded
+        echo "📦 Build artifacts:"
         ls -la dist/
 
         # Basic check that we have both wheel and source dist
@@ -57,6 +74,43 @@ jobs:
           echo "❌ Build failed: missing wheel or source distribution"
           exit 1
         fi
+
+        # Debug: Check wheel metadata in detail
+        echo "🔍 Detailed wheel inspection:"
+        python -c "
+        import zipfile
+        import glob
+        import sys
+
+        wheel_files = glob.glob('dist/*.whl')
+        if not wheel_files:
+            print('❌ No wheel files found')
+            sys.exit(1)
+
+        wheel_path = wheel_files[0]
+        print(f'📦 Inspecting: {wheel_path}')
+
+        with zipfile.ZipFile(wheel_path, 'r') as z:
+            print('📁 All files in wheel:')
+            for name in sorted(z.namelist()):
+                print(f'  {name}')
+
+            print()
+            for name in z.namelist():
+                if name.endswith('METADATA'):
+                    print(f'=== {name} ===')
+                    content = z.read(name).decode('utf-8')
+                    print(content[:1000])  # First 1000 chars
+                    if 'Name:' not in content or 'Version:' not in content:
+                        print('❌ METADATA missing Name or Version!')
+                        sys.exit(1)
+                    else:
+                        print('✅ METADATA contains Name and Version')
+                    break
+            else:
+                print('❌ No METADATA file found in wheel!')
+                sys.exit(1)
+        "
 
         echo "✅ Package built successfully"
 

@@ -1,10 +1,10 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "verskyt"
-version = "0.1.0"
+version = "0.1.1"
 description = "A library for Tversky Neural Networks - psychologically plausible deep learning"
 readme = "README.md"
 authors = [{name = "Verskyt Contributors"}]
@@ -12,7 +12,6 @@ license = {text = "MIT"}
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
@@ -59,36 +58,18 @@ benchmarks = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/verskyt/verskyt"
-"Bug Tracker" = "https://github.com/verskyt/verskyt/issues"
+"Homepage" = "https://github.com/jeffreyksmithjr/verskyt"
+"Bug Tracker" = "https://github.com/jeffreyksmithjr/verskyt/issues"
 "Documentation" = "https://verskyt.readthedocs.io"
-"Source" = "https://github.com/verskyt/verskyt"
+"Source" = "https://github.com/jeffreyksmithjr/verskyt"
 
-# Hatch configuration
-[tool.hatch.build.targets.wheel]
-packages = ["verskyt"]
+# Setuptools configuration
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["verskyt*"]
 
-[tool.hatch.build.targets.sdist]
-include = [
-  "/verskyt",
-  "/tests",
-  "/docs",
-  "/scripts",
-  "*.md",
-  "*.toml",
-  "*.txt",
-]
-
-# Development scripts
-[tool.hatch.scripts]
-test = "pytest {args}"
-test-cov = "pytest --cov=verskyt --cov-report=term-missing {args}"
-lint = "pre-commit run --all-files"
-lint-fix = "black verskyt tests && isort verskyt tests"
-docs = "cd docs && make html"
-docs-serve = "python -m http.server 8000 -d docs/_build/html"
-benchmark-fast = "python scripts/run_xor_fast_benchmark.py"
-benchmark-full = "python scripts/run_xor_full_replication.py"
+[tool.setuptools.package-data]
+verskyt = ["py.typed"]
 
 [tool.black]
 line-length = 88
