@@ -83,7 +83,7 @@ This library provides a comprehensive implementation of Tversky Neural Networks,
 | :--- | :--- | :--- |
 | **Core TNN Layers** | `TverskyProjectionLayer` | ✅ **Complete** |
 | | `TverskySimilarityLayer` | ✅ **Complete** |
-| **Similarity Functions** | Intersection Reductions | 🟡 **Partial** (3/6 implemented: `product`, `min`, `mean`) |
+| **Similarity Functions** | Intersection Reductions | ✅ **Complete** (All 6 implemented: `product`, `min`, `max`, `mean`, `gmean`, `softmin`) |
 | | Difference Reductions | ✅ **Complete** (Both `substractmatch` & `ignorematch`) |
 | **Validation** | XOR Non-Linear Benchmark | ✅ **Complete** (Convergence verified) |
 | **Research Toolkit**| `InterventionManager` API | ✅ **Complete** (Inspect, Edit, Simulate) |
@@ -95,7 +95,7 @@ This library provides a comprehensive implementation of Tversky Neural Networks,
 
 `verskyt` is under active development. Key priorities for upcoming releases include:
 
-  * [ ] **Complete Specification Compliance**: Implement the remaining intersection reduction methods (`max`, `gmean`, `softmin`) for full compliance with the original paper.
+  * [x] **Complete Specification Compliance**: All intersection reduction methods (`max`, `gmean`, `softmin`) now implemented for full compliance with the original paper.
   * [ ] **Visualization Suite**: Add powerful tools for visualizing prototypes in the data domain, plotting decision boundaries, and analyzing the impact of interventions.
   * [ ] **Expanded Model Zoo**: Provide pre-built `TverskyResNet` and other architectures to benchmark performance on standard vision datasets like MNIST and CIFAR-10.
   * [ ] **Performance Optimizations**: Profile and optimize the core similarity computations for large-scale training.
