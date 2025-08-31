@@ -19,12 +19,12 @@ class IntersectionReduction(str, Enum):
     computing the intersection between two objects in the feature space.
 
     Attributes:
-        PRODUCT: Element-wise product of membership scores (default in paper).
+        PRODUCT: Element-wise product of membership scores (default/best performing).
         MIN: Element-wise minimum of membership scores.
-        MAX: Element-wise maximum of membership scores.
+        MAX: Element-wise maximum of membership scores.  
         MEAN: Element-wise arithmetic mean of membership scores.
         GMEAN: Element-wise geometric mean of membership scores.
-        SOFTMIN: Differentiable soft minimum using LogSumExp.
+        SOFTMIN: Differentiable soft minimum using LogSumExp trick.
     """
 
     PRODUCT = "product"
@@ -240,7 +240,8 @@ def tversky_similarity(
         theta (float, optional): Small constant for numerical stability.
             Defaults to 1e-7.
         intersection_reduction (Union[IntersectionReduction, str], optional):
-            Method for computing feature intersections. Defaults to "product".
+            Method for computing feature intersections. Options: "product" (default/best 
+            performing), "min", "max", "mean", "gmean", "softmin". Defaults to "product".
         difference_reduction (Union[DifferenceReduction, str], optional):
             Method for computing feature differences. Defaults to "substractmatch".
         normalize_features (bool, optional): Whether to L2-normalize feature vectors.
