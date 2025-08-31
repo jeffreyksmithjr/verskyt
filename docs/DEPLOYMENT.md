@@ -15,7 +15,7 @@ This affects deployment options significantly:
 
 ### Requires Public Repository
 - ❌ **Read the Docs** (free tier requires public repos)
-- ❌ **Public documentation hosting** 
+- ❌ **Public documentation hosting**
 - ❌ **Community discovery** (PyPI package won't be discoverable via GitHub)
 
 ### Pre-Publication Setup
@@ -37,7 +37,7 @@ Before making the repository public, several URLs need updating in `pyproject.to
      - Find `docs/conf.py`
      - Install dependencies from `pyproject.toml[dev]`
      - Build the documentation on every push to `main`
-   
+
 3. **Access**:
    - Your docs will be available at: https://verskyt.readthedocs.io/
    - Updates automatically on every push to main branch
@@ -148,7 +148,7 @@ Before creating a release tag:
 - **Missing pages**: Ensure all `.md`/`.rst` files are in `toctree` directives
 - **Broken links**: Run `make linkcheck` in docs directory
 
-### Package Issues  
+### Package Issues
 - **PyPI upload fails**: Check trusted publishing configuration
 - **Import fails**: Verify `__init__.py` exports are correct
 - **Version mismatch**: Ensure tag matches `pyproject.toml` version
