@@ -90,7 +90,7 @@ We recommend citing the specific version of the software you used. You can get a
      month        = jan,
      year         = 2025,
      publisher    = {Zenodo},
-     version      = {v0.1.1},
+     version      = {v0.1.2},
      doi          = {10.5281/zenodo.PENDING},
      url          = {https://doi.org/10.5281/zenodo.PENDING}
    }
