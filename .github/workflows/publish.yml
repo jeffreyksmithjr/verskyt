@@ -47,9 +47,25 @@ jobs:
 
     - name: Build package
       run: |
-        python -m build
-
+        # Clean any existing build artifacts
+        rm -rf dist/ build/ *.egg-info/
+        
+        # Show environment info
+        echo "🔍 Environment info:"
+        python --version
+        pip --version
+        pip list | grep -E "(setuptools|build|wheel)"
+        
+        # Show pyproject.toml content
+        echo "🔍 pyproject.toml content:"
+        cat pyproject.toml
+        
+        # Build with explicit setuptools backend
+        echo "🔧 Building with python -m build..."
+        python -m build --wheel --sdist --no-isolation
+        
         # Verify build succeeded
+        echo "📦 Build artifacts:"
         ls -la dist/
 
         # Basic check that we have both wheel and source dist
@@ -58,23 +74,41 @@ jobs:
           exit 1
         fi
 
-        # Debug: Check wheel metadata
-        echo "🔍 Inspecting wheel metadata..."
+        # Debug: Check wheel metadata in detail
+        echo "🔍 Detailed wheel inspection:"
         python -c "
         import zipfile
         import glob
+        import sys
+        
         wheel_files = glob.glob('dist/*.whl')
-        if wheel_files:
-            with zipfile.ZipFile(wheel_files[0], 'r') as z:
-                for name in z.namelist():
-                    if name.endswith('METADATA'):
-                        print(f'=== {name} ===')
-                        content = z.read(name).decode('utf-8')
-                        # Print first 20 lines to see metadata structure
-                        lines = content.split('\n')[:20]
-                        for line in lines:
-                            print(line)
-                        break
+        if not wheel_files:
+            print('❌ No wheel files found')
+            sys.exit(1)
+            
+        wheel_path = wheel_files[0]
+        print(f'📦 Inspecting: {wheel_path}')
+        
+        with zipfile.ZipFile(wheel_path, 'r') as z:
+            print('📁 All files in wheel:')
+            for name in sorted(z.namelist()):
+                print(f'  {name}')
+            
+            print()
+            for name in z.namelist():
+                if name.endswith('METADATA'):
+                    print(f'=== {name} ===')
+                    content = z.read(name).decode('utf-8')
+                    print(content[:1000])  # First 1000 chars
+                    if 'Name:' not in content or 'Version:' not in content:
+                        print('❌ METADATA missing Name or Version!')
+                        sys.exit(1)
+                    else:
+                        print('✅ METADATA contains Name and Version')
+                    break
+            else:
+                print('❌ No METADATA file found in wheel!')
+                sys.exit(1)
         "
 
         echo "✅ Package built successfully"
