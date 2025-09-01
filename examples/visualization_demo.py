@@ -178,18 +178,18 @@ with torch.no_grad():
     all_embeddings = []
     all_data = []
     all_labels = []
-    
+
     for batch_x, batch_y in DataLoader(dataset, batch_size=32, shuffle=False):
         encoded = model.encoder(batch_x)
         tnn_out = model.tnn_layer(encoded)  # This gives similarity to prototypes
         all_embeddings.append(encoded)
         all_data.append(batch_x)
         all_labels.append(batch_y)
-    
+
     all_embeddings = torch.cat(all_embeddings)
     all_data = torch.cat(all_data)
     all_labels = torch.cat(all_labels)
-    
+
     # Find which prototype each data point is most similar to
     # Use the TNN layer output (similarity to prototypes)
     similarities = model.tnn_layer(all_embeddings)
@@ -197,22 +197,29 @@ with torch.no_grad():
 
 # Create scatter plot colored by most similar prototype
 plt.figure(figsize=(10, 8))
-colors = ['red', 'blue', 'green', 'orange']
+colors = ["red", "blue", "green", "orange"]
 for i in range(len(prototype_labels)):
     mask = most_similar_prototypes == i
     if mask.sum() > 0:
-        plt.scatter(all_data[mask, 0], all_data[mask, 1], 
-                   c=colors[i], label=f'Most similar to {prototype_labels[i]}',
-                   alpha=0.6, s=50)
+        plt.scatter(
+            all_data[mask, 0],
+            all_data[mask, 1],
+            c=colors[i],
+            label=f"Most similar to {prototype_labels[i]}",
+            alpha=0.6,
+            s=50,
+        )
 
-plt.xlabel('Feature 1')
-plt.ylabel('Feature 2') 
-plt.title('Data Points Colored by Most Similar Prototype')
+plt.xlabel("Feature 1")
+plt.ylabel("Feature 2")
+plt.title("Data Points Colored by Most Similar Prototype")
 plt.legend()
 plt.grid(True, alpha=0.3)
 plt.show()
 
-print("📊 This visualization shows how data points cluster around different prototypes,")
+print(
+    "📊 This visualization shows how data points cluster around different prototypes,"
+)
 print("   revealing the decision boundaries learned by the TNN.")
 
 # =============================================================================
