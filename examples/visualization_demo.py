@@ -245,6 +245,7 @@ print("Running XOR benchmark and visualizing learned prototypes...")
 
 # Run a quick XOR benchmark using the standalone function
 from verskyt.benchmarks import run_fast_xor_benchmark
+
 results, analysis = run_fast_xor_benchmark()
 
 print(f"XOR Benchmark Results:")
@@ -260,7 +261,7 @@ try:
     xor_model = TverskyProjectionLayer(
         in_features=2,
         num_prototypes=2,  # XOR has 2 output classes
-        num_features=4,    # Small feature bank for XOR
+        num_features=4,  # Small feature bank for XOR
         alpha=0.5,
         beta=0.5,
     )

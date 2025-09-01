@@ -250,9 +250,15 @@ def visualize_prototypes_as_data(
                 # 1D data - display as text or scatter plot
                 if image.dim() == 1 and len(image) <= 10:
                     # Small vector - display as text
-                    ax.text(0.5, 0.5, f"{image.numpy()}", 
-                           ha='center', va='center', fontsize=8,
-                           transform=ax.transAxes)
+                    ax.text(
+                        0.5,
+                        0.5,
+                        f"{image.numpy()}",
+                        ha="center",
+                        va="center",
+                        fontsize=8,
+                        transform=ax.transAxes,
+                    )
                     ax.set_xlim(0, 1)
                     ax.set_ylim(0, 1)
                 else:
