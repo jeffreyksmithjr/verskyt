@@ -12,7 +12,7 @@ TNNs are psychologically plausible deep learning models based on differentiable 
 **Design Principles:**
 
 * 🔧 **Modularity**: Clean, composable components that integrate with PyTorch
-* 🔍 **Introspection**: Tools for examining model internals and decision processes  
+* 🔍 **Introspection**: Tools for examining model internals and decision processes
 * 🚀 **Extensibility**: Built for researchers to modify and develop TNN architectures
 
 **Key Features:**
