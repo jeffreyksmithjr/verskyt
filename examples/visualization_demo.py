@@ -12,10 +12,10 @@ Note: This example requires visualization dependencies:
     pip install verskyt[visualization]
 """
 
+import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader, TensorDataset
 
 # Import Verskyt components
@@ -24,7 +24,11 @@ from verskyt.benchmarks import XORBenchmark
 
 # Import visualization functions (requires optional dependencies)
 try:
-    from verskyt.visualizations import plot_prototype_space, visualize_prototypes_as_data
+    from verskyt.visualizations import (
+        plot_prototype_space,
+        visualize_prototypes_as_data,
+    )
+
     visualization_available = True
 except ImportError:
     print("⚠️  Visualization dependencies not available.")
@@ -41,40 +45,42 @@ print("=" * 70)
 print("\n🔧 SETUP: Training a Simple TNN Model")
 print("-" * 40)
 
+
 # Create a simple TNN model for demonstration
 class SimpleTNN(nn.Module):
     """Simple TNN model with encoder and TverskyProjectionLayer."""
-    
+
     def __init__(self, input_dim=2, hidden_dim=8, output_dim=2, num_prototypes=4):
         super().__init__()
         # Encoder part (the part before TverskyProjectionLayer)
         self.encoder = nn.Sequential(
             nn.Linear(input_dim, hidden_dim),
             nn.ReLU(),
-            nn.Linear(hidden_dim, hidden_dim)
+            nn.Linear(hidden_dim, hidden_dim),
         )
-        
+
         # TNN layer
         self.tnn_layer = TverskyProjectionLayer(
             in_features=hidden_dim,
             out_features=output_dim,
             num_prototypes=num_prototypes,
             alpha=1.0,
-            beta=1.0
+            beta=1.0,
         )
-    
+
     def forward(self, x):
         encoded = self.encoder(x)
         return self.tnn_layer(encoded)
+
 
 # Create synthetic data for demonstration
 torch.manual_seed(42)
 n_samples = 200
 X = torch.randn(n_samples, 2)
 # Create two clusters for binary classification
-X[:n_samples//2] += torch.tensor([2.0, 2.0])
-X[n_samples//2:] += torch.tensor([-2.0, -2.0])
-y = torch.cat([torch.zeros(n_samples//2), torch.ones(n_samples//2)]).long()
+X[: n_samples // 2] += torch.tensor([2.0, 2.0])
+X[n_samples // 2 :] += torch.tensor([-2.0, -2.0])
+y = torch.cat([torch.zeros(n_samples // 2), torch.ones(n_samples // 2)]).long()
 
 # Create data loader
 dataset = TensorDataset(X, y)
@@ -96,7 +102,7 @@ for epoch in range(50):  # Quick training for demo
         loss.backward()
         optimizer.step()
         total_loss += loss.item()
-    
+
     if (epoch + 1) % 10 == 0:
         print(f"  Epoch {epoch+1}/50, Loss: {total_loss/len(dataloader):.4f}")
 
@@ -122,9 +128,9 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
 plot_prototype_space(
     prototypes=prototypes,
     prototype_labels=prototype_labels,
-    reduction_method='pca',
+    reduction_method="pca",
     title="Prototype Space (PCA)",
-    ax=ax1
+    ax=ax1,
 )
 
 # t-SNE visualization (if enough prototypes)
@@ -132,13 +138,19 @@ if prototypes.shape[0] >= 3:
     plot_prototype_space(
         prototypes=prototypes,
         prototype_labels=prototype_labels,
-        reduction_method='tsne',
+        reduction_method="tsne",
         title="Prototype Space (t-SNE)",
-        ax=ax2
+        ax=ax2,
     )
 else:
-    ax2.text(0.5, 0.5, "t-SNE requires more prototypes", 
-             ha='center', va='center', transform=ax2.transAxes)
+    ax2.text(
+        0.5,
+        0.5,
+        "t-SNE requires more prototypes",
+        ha="center",
+        va="center",
+        transform=ax2.transAxes,
+    )
     ax2.set_title("Prototype Space (t-SNE)")
 
 plt.tight_layout()
@@ -164,7 +176,7 @@ fig = visualize_prototypes_as_data(
     prototypes=prototypes,
     prototype_labels=prototype_labels,
     dataloader=clean_dataloader,
-    top_k=5
+    top_k=5,
 )
 
 plt.show()
@@ -193,7 +205,7 @@ plot_prototype_space(
     features=synthetic_features,
     feature_labels=feature_labels,
     title="Prototype-Feature Relationship Analysis",
-    reduction_method='pca'
+    reduction_method="pca",
 )
 plt.show()
 
@@ -236,22 +248,24 @@ print(f"• Final Accuracy: {results['final_accuracy']:.2%}")
 print(f"• Training Time: {results['training_time']:.2f}s")
 
 # If the benchmark model has accessible prototypes, visualize them
-if hasattr(benchmark, 'model') and hasattr(benchmark.model, 'prototype_layer'):
+if hasattr(benchmark, "model") and hasattr(benchmark.model, "prototype_layer"):
     try:
         xor_prototypes = benchmark.model.prototype_layer.prototypes.data
         xor_labels = [f"XOR_P{i+1}" for i in range(xor_prototypes.shape[0])]
-        
+
         plt.figure(figsize=(10, 6))
         plot_prototype_space(
             prototypes=xor_prototypes,
             prototype_labels=xor_labels,
-            title="XOR Problem: Learned Prototype Space"
+            title="XOR Problem: Learned Prototype Space",
         )
         plt.show()
-        
+
         print("🎯 XOR prototypes show how TNNs learn logical relationships!")
     except Exception as e:
-        print(f"   Note: XOR prototype visualization not available ({type(e).__name__})")
+        print(
+            f"   Note: XOR prototype visualization not available ({type(e).__name__})"
+        )
 
 print("\n🎉 Visualization demo completed!")
 print("   Try modifying the parameters to explore different visualizations.")

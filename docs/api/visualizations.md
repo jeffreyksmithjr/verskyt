@@ -73,5 +73,5 @@ pip install verskyt[visualization]
 Dependencies include:
 
 - matplotlib>=3.5.0
-- seaborn>=0.12.0  
+- seaborn>=0.12.0
 - scikit-learn>=1.1.0
