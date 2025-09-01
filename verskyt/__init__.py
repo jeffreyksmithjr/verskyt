@@ -22,6 +22,17 @@ from verskyt.interventions import (
 )
 from verskyt.layers import TverskyProjectionLayer, TverskySimilarityLayer
 
+# Optional visualization imports
+try:
+    from verskyt.visualizations import (  # noqa: F401
+        plot_prototype_space,
+        visualize_prototypes_as_data,
+    )
+
+    _visualization_available = True
+except ImportError:
+    _visualization_available = False
+
 __all__ = [
     "tversky_similarity",
     "TverskyProjectionLayer",
@@ -36,3 +47,12 @@ __all__ = [
     "ConceptGrounding",
     "ConceptLibrary",
 ]
+
+# Add visualization functions to __all__ if available
+if _visualization_available:
+    __all__.extend(
+        [
+            "plot_prototype_space",
+            "visualize_prototypes_as_data",
+        ]
+    )
