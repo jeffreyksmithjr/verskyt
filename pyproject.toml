@@ -5,19 +5,23 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "verskyt"
 version = "0.1.3"
-description = "A library for Tversky Neural Networks - psychologically plausible deep learning"
+description = "Python library for Tversky Neural Networks with research tools for model introspection and prototype analysis"
 readme = "README.md"
-authors = [{name = "Verskyt Contributors"}]
+authors = [{name = "Jeff Smith"}]
+keywords = ["deep-learning", "neural-networks", "tversky", "similarity", "pytorch", "research", "interpretability"]
 license = {text = "MIT"}
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 requires-python = ">=3.8"
 dependencies = [
