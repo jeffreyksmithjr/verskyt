@@ -6,46 +6,50 @@
 - PyTorch 1.10.0 or higher
 - NumPy 1.19.0 or higher
 
-## Install from Source (Recommended)
+## Install from PyPI (Recommended)
 
-Currently, Verskyt is best installed from source for development and early access:
+The easiest way to install Verskyt is via pip from PyPI:
 
 ```bash
-git clone https://github.com/verskyt/verskyt.git
+pip install verskyt
+```
+
+## Install from Source (Development)
+
+For development or to get the latest features:
+
+```bash
+git clone https://github.com/jeffreyksmithjr/verskyt.git
 cd verskyt
 pip install -e ".[dev]"
 ```
 
 This installs the package in development mode with all dependencies needed for development, testing, and documentation generation.
 
-## Install for Basic Usage
-
-If you only need the core functionality:
-
-```bash
-git clone https://github.com/verskyt/verskyt.git
-cd verskyt
-pip install -e .
-```
-
 ## Optional Dependencies
 
 ### Visualization
 For enhanced plotting and visualization capabilities:
 ```bash
-pip install -e ".[visualization]"
+pip install "verskyt[visualization]"
 ```
 
 ### Benchmarks
 For running paper benchmarks and comparisons:
 ```bash
-pip install -e ".[benchmarks]"
+pip install "verskyt[benchmarks]"
+```
+
+### Development Dependencies
+For development, testing, and documentation:
+```bash
+pip install "verskyt[dev]"
 ```
 
 ### All Dependencies
 To install everything:
 ```bash
-pip install -e ".[dev,visualization,benchmarks]"
+pip install "verskyt[dev,visualization,benchmarks]"
 ```
 
 ## Verify Installation
@@ -77,7 +81,7 @@ For contributors and researchers who want to run tests and contribute:
 
 ```bash
 # Clone and install
-git clone https://github.com/verskyt/verskyt.git
+git clone https://github.com/jeffreyksmithjr/verskyt.git
 cd verskyt
 pip install -e ".[dev]"
 
@@ -106,5 +110,5 @@ print(sys.path)  # Should include the path to verskyt
 ### Development Dependencies
 If development commands fail, ensure you installed with dev dependencies:
 ```bash
-pip install -e ".[dev]"
+pip install "verskyt[dev]"
 ```

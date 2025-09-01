@@ -1,11 +1,19 @@
 Verskyt: Tversky Neural Networks
 ==================================
 
-*Pronounced "ver-SKIT"*
 
-A Python library implementing Tversky Neural Networks (TNNs) -
-psychologically plausible deep learning models based on differentiable Tversky similarity.
-TNNs operate by projecting inputs into a learned feature space (Ω), where similarity to explicit prototypes (Π) is computed.
+.. image:: https://zenodo.org/badge/1047467589.svg
+   :target: https://doi.org/10.5281/zenodo.17014431
+
+Verskyt (pronounced "ver-SKIT") is a premier research toolkit for Tversky Neural Networks (TNNs) built on three core design principles: **Modularity**, **Introspection**, and **Extensibility**. Designed from the ground up as a comprehensive platform for researchers, Verskyt enables you to inspect, modify, and integrate Tversky-based layers into novel architectures.
+
+TNNs are psychologically plausible deep learning models based on differentiable Tversky similarity that operate by projecting inputs into a learned feature space (Ω), where similarity to explicit prototypes (Π) is computed.
+
+**Design Principles:**
+
+* 🔧 **Modularity**: Clean, composable components that integrate seamlessly with PyTorch
+* 🔍 **Introspection**: Unprecedented visibility into model internals and decision processes  
+* 🚀 **Extensibility**: Built for researchers to modify and develop novel TNN architectures
 
 **Key Features:**
 
@@ -13,7 +21,6 @@ TNNs operate by projecting inputs into a learned feature space (Ω), where simil
 * 🔥 **Non-linear Capability**: Single layer can solve XOR (impossible for linear layers)
 * 📈 **Performance Gains**: Up to 24.7% accuracy improvement on complex datasets
 * ⚡ **Parameter Efficiency**: Fewer parameters with better performance
-* 🔍 **Interpretability**: Learned prototypes and features are human-recognizable
 * 🔌 **Drop-in Compatibility**: Easy replacement for ``nn.Linear`` layers
 
 Quick Start
@@ -40,9 +47,7 @@ Installation
 
 .. code-block:: bash
 
-   git clone https://github.com/verskyt/verskyt.git
-   cd verskyt
-   pip install -e ".[dev]"
+   pip install verskyt
 
 Contents
 ========
@@ -84,18 +89,17 @@ We recommend citing the specific version of the software you used. You can get a
 
 .. code-block:: bibtex
 
-   @software{smith_jr_2025_verskyt,
-     author       = {Smith Jr., Jeffrey K.},
+   @software{smith_2025_verskyt,
+     author       = {Smith, Jeff},
      title        = {{Verskyt: A versatile toolkyt for Tversky Neural Networks}},
-     month        = jan,
+     month        = aug,
      year         = 2025,
      publisher    = {Zenodo},
      version      = {v0.1.2},
-     doi          = {10.5281/zenodo.PENDING},
-     url          = {https://doi.org/10.5281/zenodo.PENDING}
+     doi          = {10.5281/zenodo.17014431},
+     url          = {https://doi.org/10.5281/zenodo.17014431}
    }
 
-*Note: DOI will be updated upon the next release. For now, you can cite the current version using the GitHub repository URL.*
 
 * :ref:`genindex`
 * :ref:`modindex`

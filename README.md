@@ -1,11 +1,10 @@
 # Verskyt
 *A versatile toolkyt for Tversky Neural Networks*
 
-*Pronounced "ver-SKIT"*
 
-[![CI](https://github.com/jeffreyksmithjr/verskyt/workflows/CI/badge.svg)](https://github.com/jeffreyksmithjr/verskyt/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/jeffreyksmithjr/verskyt/branch/main/graph/badge.svg)](https://codecov.io/gh/jeffreyksmithjr/verskyt) [![PyPI version](https://badge.fury.io/py/verskyt.svg)](https://badge.fury.io/py/verskyt)
+[![CI](https://github.com/jeffreyksmithjr/verskyt/workflows/CI/badge.svg)](https://github.com/jeffreyksmithjr/verskyt/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/jeffreyksmithjr/verskyt/branch/main/graph/badge.svg)](https://codecov.io/gh/jeffreyksmithjr/verskyt) [![PyPI version](https://badge.fury.io/py/verskyt.svg)](https://badge.fury.io/py/verskyt) [![DOI](https://zenodo.org/badge/1047467589.svg)](https://doi.org/10.5281/zenodo.17014431)
 
-**Verskyt** is a Python library that implements Tversky Neural Networks (TNNs) with advanced research and analysis capabilities. Beyond providing faithful PyTorch-compatible TNN layers, Verskyt offers a complete toolkit for model introspection, causal intervention, and prototype analysis, making it a foundational platform for researchers exploring interpretable deep learning.
+**Verskyt** (pronounced "ver-SKIT") is a premier research toolkit for Tversky Neural Networks (TNNs) built on three core design principles: **Modularity**, **Introspection**, and **Extensibility**. Designed from the ground up as a comprehensive platform for researchers, Verskyt enables you to inspect, modify, and integrate Tversky-based layers into novel architectures while providing unprecedented visibility into model behavior through advanced research and analysis capabilities.
 
 ## What are Tversky Neural Networks?
 
@@ -19,7 +18,13 @@ Tversky Neural Networks represent a novel paradigm in deep learning, introduced 
 
 ## What Verskyt Provides
 
-While TNNs define the mathematical framework, **Verskyt delivers the implementation plus advanced research capabilities** that go far beyond basic TNN functionality:
+Verskyt is **the premier research toolkit for Tversky Neural Networks**, uniquely designed for researchers who need to understand, modify, and extend TNN architectures. Our three core design principles set Verskyt apart:
+
+**🔧 Modularity**: Clean, composable components that integrate seamlessly with existing PyTorch workflows  
+**🔍 Introspection**: Unprecedented visibility into model internals, learned prototypes, and decision processes  
+**🚀 Extensibility**: Built for researchers to modify, experiment, and develop novel TNN-based architectures  
+
+While other TNN implementations focus on basic functionality, **Verskyt provides the complete research infrastructure** needed for serious TNN development:
 
 ### 🧠 Complete TNN Implementation
 
@@ -31,7 +36,7 @@ While TNNs define the mathematical framework, **Verskyt delivers the implementat
 
 ### 🔬 Advanced Research Toolkit
 
-**Verskyt's unique contribution** is a suite of analysis tools not available elsewhere:
+**Verskyt's unique contribution** is a comprehensive suite of research tools designed specifically for TNN exploration and development. These capabilities are unavailable in other TNN implementations:
 
 **Model Introspection:**
 - **Prototype Analysis**: Examine learned prototype vectors and their semantic meanings
@@ -158,16 +163,15 @@ If you use Verskyt in your research, please cite both the original Tversky Neura
 We recommend citing the specific version of the software you used. You can get a persistent DOI for each version from [Zenodo](https://zenodo.org).
 
 ```bibtex
-@software{smith_jr_2025_verskyt,
-  author       = {Smith Jr., Jeffrey K.},
+@software{smith_2025_verskyt,
+  author       = {Smith, Jeff},
   title        = {{Verskyt: A versatile toolkyt for Tversky Neural Networks}},
-  month        = jan,
+  month        = aug,
   year         = 2025,
   publisher    = {Zenodo},
   version      = {v0.1.2},
-  doi          = {10.5281/zenodo.PENDING},
-  url          = {https://doi.org/10.5281/zenodo.PENDING}
+  doi          = {10.5281/zenodo.17014431},
+  url          = {https://doi.org/10.5281/zenodo.17014431}
 }
 ```
 
-*Note: DOI will be updated upon the next release. For now, you can cite the current version using the GitHub repository URL.*
