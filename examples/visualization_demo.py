@@ -164,29 +164,56 @@ print("📊 Prototype space visualization shows the conceptual relationships")
 print("   learned by the TNN in reduced dimensionality.")
 
 # =============================================================================
-# Visualization 2: Data-Based Prototype Interpretation
+# Visualization 2: Data Points Colored by Prototype Similarity
 # =============================================================================
-print("\n🔍 VISUALIZATION 2: Data-Based Prototype Interpretation")
+print("\n🔍 VISUALIZATION 2: Data Points Colored by Prototype Similarity")
 print("-" * 55)
 
-print("Finding data samples most similar to each prototype...")
+print("Coloring data points by their most similar prototype...")
 
-# Create a clean dataloader without shuffling for consistent visualization
-clean_dataloader = DataLoader(dataset, batch_size=32, shuffle=False)
+# Encode all data points and find most similar prototypes
+model.eval()
+with torch.no_grad():
+    # Get all data points
+    all_embeddings = []
+    all_data = []
+    all_labels = []
+    
+    for batch_x, batch_y in DataLoader(dataset, batch_size=32, shuffle=False):
+        encoded = model.encoder(batch_x)
+        tnn_out = model.tnn_layer(encoded)  # This gives similarity to prototypes
+        all_embeddings.append(encoded)
+        all_data.append(batch_x)
+        all_labels.append(batch_y)
+    
+    all_embeddings = torch.cat(all_embeddings)
+    all_data = torch.cat(all_data)
+    all_labels = torch.cat(all_labels)
+    
+    # Find which prototype each data point is most similar to
+    # Use the TNN layer output (similarity to prototypes)
+    similarities = model.tnn_layer(all_embeddings)
+    most_similar_prototypes = torch.argmax(similarities, dim=1)
 
-# Generate prototype interpretation visualization
-fig = visualize_prototypes_as_data(
-    encoder=model.encoder,
-    prototypes=prototypes,
-    prototype_labels=prototype_labels,
-    dataloader=clean_dataloader,
-    top_k=5,
-)
+# Create scatter plot colored by most similar prototype
+plt.figure(figsize=(10, 8))
+colors = ['red', 'blue', 'green', 'orange']
+for i in range(len(prototype_labels)):
+    mask = most_similar_prototypes == i
+    if mask.sum() > 0:
+        plt.scatter(all_data[mask, 0], all_data[mask, 1], 
+                   c=colors[i], label=f'Most similar to {prototype_labels[i]}',
+                   alpha=0.6, s=50)
 
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 2') 
+plt.title('Data Points Colored by Most Similar Prototype')
+plt.legend()
+plt.grid(True, alpha=0.3)
 plt.show()
 
-print("📋 This visualization shows the actual data points that are most")
-print("   similar to each learned prototype, providing intuitive interpretation.")
+print("📊 This visualization shows how data points cluster around different prototypes,")
+print("   revealing the decision boundaries learned by the TNN.")
 
 # =============================================================================
 # Advanced Analysis: Prototype-Feature Relationships
@@ -201,9 +228,8 @@ feature_dim = prototypes.shape[1]
 synthetic_features = torch.randn(6, feature_dim)
 feature_labels = [f"Feature_{chr(65+i)}" for i in range(6)]  # A, B, C, D, E, F
 
-# Visualize prototypes with features
-plt.figure(figsize=(12, 8))
-plot_prototype_space(
+# Visualize prototypes with features (function creates its own figure)
+ax = plot_prototype_space(
     prototypes=prototypes,
     prototype_labels=prototype_labels,
     features=synthetic_features,
@@ -285,7 +311,7 @@ try:
     xor_prototypes = xor_model.prototypes.data
     xor_labels = [f"XOR_Class_{i}" for i in range(xor_prototypes.shape[0])]
 
-    plt.figure(figsize=(10, 6))
+    # Function creates its own figure - no need for plt.figure()
     plot_prototype_space(
         prototypes=xor_prototypes,
         prototype_labels=xor_labels,
