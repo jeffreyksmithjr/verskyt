@@ -5,15 +5,15 @@ Verskyt: Tversky Neural Networks
 .. image:: https://zenodo.org/badge/1047467589.svg
    :target: https://doi.org/10.5281/zenodo.17014431
 
-Verskyt (pronounced "ver-SKIT") is a premier research toolkit for Tversky Neural Networks (TNNs) built on three core design principles: **Modularity**, **Introspection**, and **Extensibility**. Designed from the ground up as a comprehensive platform for researchers, Verskyt enables you to inspect, modify, and integrate Tversky-based layers into novel architectures.
+Verskyt (pronounced "ver-SKIT") is a Python library for Tversky Neural Networks (TNNs) built on three design principles: **Modularity**, **Introspection**, and **Extensibility**. Verskyt provides PyTorch-compatible TNN implementations alongside tools for model introspection and prototype analysis.
 
 TNNs are psychologically plausible deep learning models based on differentiable Tversky similarity that operate by projecting inputs into a learned feature space (Ω), where similarity to explicit prototypes (Π) is computed.
 
 **Design Principles:**
 
-* 🔧 **Modularity**: Clean, composable components that integrate seamlessly with PyTorch
-* 🔍 **Introspection**: Unprecedented visibility into model internals and decision processes  
-* 🚀 **Extensibility**: Built for researchers to modify and develop novel TNN architectures
+* 🔧 **Modularity**: Clean, composable components that integrate with PyTorch
+* 🔍 **Introspection**: Tools for examining model internals and decision processes  
+* 🚀 **Extensibility**: Built for researchers to modify and develop TNN architectures
 
 **Key Features:**
 
@@ -95,7 +95,7 @@ We recommend citing the specific version of the software you used. You can get a
      month        = aug,
      year         = 2025,
      publisher    = {Zenodo},
-     version      = {v0.1.2},
+     version      = {v0.1.3},
      doi          = {10.5281/zenodo.17014431},
      url          = {https://doi.org/10.5281/zenodo.17014431}
    }

@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/jeffreyksmithjr/verskyt/workflows/CI/badge.svg)](https://github.com/jeffreyksmithjr/verskyt/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/jeffreyksmithjr/verskyt/branch/main/graph/badge.svg)](https://codecov.io/gh/jeffreyksmithjr/verskyt) [![PyPI version](https://badge.fury.io/py/verskyt.svg)](https://badge.fury.io/py/verskyt) [![DOI](https://zenodo.org/badge/1047467589.svg)](https://doi.org/10.5281/zenodo.17014431)
 
-**Verskyt** (pronounced "ver-SKIT") is a premier research toolkit for Tversky Neural Networks (TNNs) built on three core design principles: **Modularity**, **Introspection**, and **Extensibility**. Designed from the ground up as a comprehensive platform for researchers, Verskyt enables you to inspect, modify, and integrate Tversky-based layers into novel architectures while providing unprecedented visibility into model behavior through advanced research and analysis capabilities.
+**Verskyt** (pronounced "ver-SKIT") is a Python library for Tversky Neural Networks (TNNs) built on three design principles: **Modularity**, **Introspection**, and **Extensibility**. Verskyt provides PyTorch-compatible TNN implementations alongside tools for model introspection, prototype analysis, and causal interventions.
 
 ## What are Tversky Neural Networks?
 
@@ -18,25 +18,23 @@ Tversky Neural Networks represent a novel paradigm in deep learning, introduced 
 
 ## What Verskyt Provides
 
-Verskyt is **the premier research toolkit for Tversky Neural Networks**, uniquely designed for researchers who need to understand, modify, and extend TNN architectures. Our three core design principles set Verskyt apart:
+**Design Principles:**
 
-**🔧 Modularity**: Clean, composable components that integrate seamlessly with existing PyTorch workflows  
-**🔍 Introspection**: Unprecedented visibility into model internals, learned prototypes, and decision processes  
-**🚀 Extensibility**: Built for researchers to modify, experiment, and develop novel TNN-based architectures  
+**🔧 Modularity**: Clean, composable components that integrate with existing PyTorch workflows  
+**🔍 Introspection**: Tools for examining model internals, learned prototypes, and decision processes  
+**🚀 Extensibility**: Built for researchers to modify and develop novel TNN-based architectures
 
-While other TNN implementations focus on basic functionality, **Verskyt provides the complete research infrastructure** needed for serious TNN development:
+### 🧠 TNN Implementation
 
-### 🧠 Complete TNN Implementation
-
-**Production-Ready PyTorch Integration:**
+**PyTorch Integration:**
 - **Drop-in Compatibility**: Replace `torch.nn.Linear` layers with `verskyt.TverskyProjectionLayer` in existing models
 - **Full Parameter Control**: All TNN components (prototypes (Π), features (Ω), and asymmetry parameters (α, β)) are learnable and accessible
-- **Complete Specification**: All 6 intersection reduction methods and 2 difference methods from the original paper
-- **Validated Implementation**: Passes all mathematical correctness tests, including the XOR non-linearity benchmark
+- **Full Specification**: All 6 intersection reduction methods and 2 difference methods from the original paper
+- **Tested Implementation**: Passes mathematical correctness tests, including the XOR non-linearity benchmark
 
-### 🔬 Advanced Research Toolkit
+### 🔬 Research Tools
 
-**Verskyt's unique contribution** is a comprehensive suite of research tools designed specifically for TNN exploration and development. These capabilities are unavailable in other TNN implementations:
+Verskyt includes research tools for TNN exploration and development:
 
 **Model Introspection:**
 - **Prototype Analysis**: Examine learned prototype vectors and their semantic meanings
@@ -79,7 +77,7 @@ output = layer(x)  # shape: [32, 10]
 
 ### Advanced Usage: Introspection & Intervention
 
-Go beyond prediction and start interrogating your model's logic with the built-in intervention toolkit.
+Inspect and modify model internals using the intervention toolkit:
 
 ```python
 from verskyt.interventions import InterventionManager
@@ -169,7 +167,7 @@ We recommend citing the specific version of the software you used. You can get a
   month        = aug,
   year         = 2025,
   publisher    = {Zenodo},
-  version      = {v0.1.2},
+  version      = {v0.1.3},
   doi          = {10.5281/zenodo.17014431},
   url          = {https://doi.org/10.5281/zenodo.17014431}
 }
