@@ -245,11 +245,11 @@ print("Running XOR benchmark and visualizing learned prototypes...")
 
 # Run a quick XOR benchmark using the standalone function
 from verskyt.benchmarks import run_fast_xor_benchmark
-results = run_fast_xor_benchmark()
+results, analysis = run_fast_xor_benchmark()
 
 print(f"XOR Benchmark Results:")
-print(f"• Final Accuracy: {results['final_accuracy']:.2%}")
-print(f"• Training Time: {results['training_time']:.2f}s")
+print(f"• Overall Convergence Rate: {analysis['overall_convergence_rate']:.2%}")
+print(f"• Total Experimental Runs: {len(results)}")
 
 # Note: XOR benchmark doesn't store the trained model for visualization
 # But we can create a simple XOR TNN model for demonstration
