@@ -320,16 +320,22 @@ def research_validation():
     print("1. Fast benchmark (48 configurations):")
     try:
         from verskyt.benchmarks import run_fast_xor_benchmark
+
         results, analysis = run_fast_xor_benchmark(verbose=False)
 
-        convergence_rate = analysis['overall_convergence_rate']
+        convergence_rate = analysis["overall_convergence_rate"]
         total_runs = len(results)
-        
+
         print(f"   Overall convergence rate: {convergence_rate:.1%}")
         print(f"   Total configurations: {total_runs}")
-        
+
         # Show some key method combinations if available
-        key_methods = ["product_substractmatch", "mean_substractmatch", "max_ignorematch", "gmean_ignorematch"]
+        key_methods = [
+            "product_substractmatch",
+            "mean_substractmatch",
+            "max_ignorematch",
+            "gmean_ignorematch",
+        ]
         print("\n   Key method combinations:")
         for method in key_methods:
             conv_key = f"convergence_rate_{method}"
