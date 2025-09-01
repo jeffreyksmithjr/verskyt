@@ -20,8 +20,8 @@ Tversky Neural Networks represent a novel paradigm in deep learning, introduced 
 
 **Design Principles:**
 
-**🔧 Modularity**: Clean, composable components that integrate with existing PyTorch workflows  
-**🔍 Introspection**: Tools for examining model internals, learned prototypes, and decision processes  
+**🔧 Modularity**: Clean, composable components that integrate with existing PyTorch workflows
+**🔍 Introspection**: Tools for examining model internals, learned prototypes, and decision processes
 **🚀 Extensibility**: Built for researchers to modify and develop novel TNN-based architectures
 
 ### 🧠 TNN Implementation
@@ -172,4 +172,3 @@ We recommend citing the specific version of the software you used. You can get a
   url          = {https://doi.org/10.5281/zenodo.17014431}
 }
 ```
-
