@@ -243,10 +243,9 @@ print("-" * 40)
 
 print("Running XOR benchmark and visualizing learned prototypes...")
 
-# Run a quick XOR benchmark
-from verskyt.benchmarks.xor_suite import FAST_BENCHMARK_CONFIG
-benchmark = XORBenchmark(config=FAST_BENCHMARK_CONFIG)
-results = benchmark.run_fast_benchmark()
+# Run a quick XOR benchmark using the standalone function
+from verskyt.benchmarks import run_fast_xor_benchmark
+results = run_fast_xor_benchmark()
 
 print(f"XOR Benchmark Results:")
 print(f"• Final Accuracy: {results['final_accuracy']:.2%}")
