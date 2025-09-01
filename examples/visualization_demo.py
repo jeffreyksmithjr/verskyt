@@ -62,15 +62,19 @@ class SimpleTNN(nn.Module):
         # TNN layer
         self.tnn_layer = TverskyProjectionLayer(
             in_features=hidden_dim,
-            out_features=output_dim,
             num_prototypes=num_prototypes,
+            num_features=16,  # Feature bank size
             alpha=1.0,
             beta=1.0,
         )
 
+        # Output projection layer
+        self.output_layer = nn.Linear(num_prototypes, output_dim)
+
     def forward(self, x):
         encoded = self.encoder(x)
-        return self.tnn_layer(encoded)
+        tnn_out = self.tnn_layer(encoded)
+        return self.output_layer(tnn_out)
 
 
 # Create synthetic data for demonstration
@@ -240,32 +244,61 @@ print("-" * 40)
 print("Running XOR benchmark and visualizing learned prototypes...")
 
 # Run a quick XOR benchmark
-benchmark = XORBenchmark()
+from verskyt.benchmarks.xor_suite import FAST_BENCHMARK_CONFIG
+benchmark = XORBenchmark(config=FAST_BENCHMARK_CONFIG)
 results = benchmark.run_fast_benchmark()
 
 print(f"XOR Benchmark Results:")
 print(f"• Final Accuracy: {results['final_accuracy']:.2%}")
 print(f"• Training Time: {results['training_time']:.2f}s")
 
-# If the benchmark model has accessible prototypes, visualize them
-if hasattr(benchmark, "model") and hasattr(benchmark.model, "prototype_layer"):
-    try:
-        xor_prototypes = benchmark.model.prototype_layer.prototypes.data
-        xor_labels = [f"XOR_P{i+1}" for i in range(xor_prototypes.shape[0])]
+# Note: XOR benchmark doesn't store the trained model for visualization
+# But we can create a simple XOR TNN model for demonstration
+print("Creating simple XOR model for prototype visualization...")
 
-        plt.figure(figsize=(10, 6))
-        plot_prototype_space(
-            prototypes=xor_prototypes,
-            prototype_labels=xor_labels,
-            title="XOR Problem: Learned Prototype Space",
-        )
-        plt.show()
+try:
+    # Create a simple XOR model using TverskyProjectionLayer
+    xor_model = TverskyProjectionLayer(
+        in_features=2,
+        num_prototypes=2,  # XOR has 2 output classes
+        num_features=4,    # Small feature bank for XOR
+        alpha=0.5,
+        beta=0.5,
+    )
 
-        print("🎯 XOR prototypes show how TNNs learn logical relationships!")
-    except Exception as e:
-        print(
-            f"   Note: XOR prototype visualization not available ({type(e).__name__})"
-        )
+    # Quick training on XOR data
+    xor_inputs = torch.tensor([[0.0, 0.0], [0.0, 1.0], [1.0, 0.0], [1.0, 1.0]])
+    xor_targets = torch.tensor([0, 1, 1, 0]).float()
+
+    optimizer = torch.optim.Adam(xor_model.parameters(), lr=0.1)
+
+    for epoch in range(100):  # Quick training
+        optimizer.zero_grad()
+        outputs = xor_model(xor_inputs)
+        # Convert to binary classification loss
+        predictions = torch.softmax(outputs, dim=1)[:, 1]  # Take class 1 probabilities
+        loss = torch.nn.functional.binary_cross_entropy(predictions, xor_targets)
+        loss.backward()
+        optimizer.step()
+
+    # Visualize learned XOR prototypes
+    xor_prototypes = xor_model.prototypes.data
+    xor_labels = [f"XOR_Class_{i}" for i in range(xor_prototypes.shape[0])]
+
+    plt.figure(figsize=(10, 6))
+    plot_prototype_space(
+        prototypes=xor_prototypes,
+        prototype_labels=xor_labels,
+        title="XOR Problem: Learned Prototype Space",
+    )
+    plt.show()
+
+    print("🎯 XOR prototypes show how TNNs learn logical relationships!")
+
+except Exception as e:
+    print(
+        f"   Note: XOR prototype visualization not available ({type(e).__name__}: {e})"
+    )
 
 print("\n🎉 Visualization demo completed!")
 print("   Try modifying the parameters to explore different visualizations.")
