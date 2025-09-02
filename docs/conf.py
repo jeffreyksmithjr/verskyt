@@ -14,8 +14,8 @@ sys.path.insert(0, os.path.abspath(".."))
 project = "Verskyt"
 copyright = "2025, Verskyt Contributors"
 author = "Verskyt Contributors"
-release = "0.2.3"
-version = "0.2.3"
+release = "0.2.4"
+version = "0.2.4"
 
 # -- General configuration ---------------------------------------------------
 extensions = [
