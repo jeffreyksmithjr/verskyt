@@ -1,4 +1,4 @@
-name: Enforce Formatting
+name: Auto-Fix Formatting
 
 on:
   push:
@@ -11,14 +11,13 @@ permissions:
   pull-requests: write
 
 jobs:
-  enforce-formatting:
-    name: Enforce Code Formatting
+  auto-fix-formatting:
+    name: Auto-Fix Code Formatting
     runs-on: ubuntu-latest
-
+    
     steps:
     - uses: actions/checkout@v4
       with:
-        # Use a PAT to allow pushing back to the branch
         token: ${{ secrets.GITHUB_TOKEN }}
         fetch-depth: 0
 
@@ -32,46 +31,40 @@ jobs:
         python -m pip install --upgrade pip
         pip install -e ".[dev]"
 
-    - name: Check if formatting is needed
-      id: check-formatting
+    - name: Check and fix formatting
+      id: format
       run: |
-        # Run pre-commit and capture exit code
-        pre-commit run --all-files || echo "formatting_needed=true" >> $GITHUB_OUTPUT
-
-        # Check if there are any changes after running pre-commit
+        # Run pre-commit to fix issues
+        pre-commit run --all-files || true
+        
+        # Check if there are changes
         if [[ -n $(git status --porcelain) ]]; then
-          echo "formatting_needed=true" >> $GITHUB_OUTPUT
-          echo "Changes needed:"
+          echo "changes_made=true" >> $GITHUB_OUTPUT
+          echo "Formatting fixes applied:"
           git status --porcelain
         else
-          echo "formatting_needed=false" >> $GITHUB_OUTPUT
+          echo "changes_made=false" >> $GITHUB_OUTPUT
+          echo "✅ No formatting changes needed"
         fi
 
-    - name: Auto-fix formatting and push back
-      if: steps.check-formatting.outputs.formatting_needed == 'true'
+    - name: Commit and push fixes
+      if: steps.format.outputs.changes_made == 'true'
       run: |
-        # Configure git
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-
-        # Add all changes made by pre-commit
+        
         git add -A
+        # Remove [skip ci] to allow CI to run on fixed code
+        git commit -m "style: auto-fix formatting violations"
+        git push
+        
+        echo "✅ Formatting fixes pushed - CI will re-run automatically"
 
-        # Only commit if there are staged changes
-        if [[ -n $(git diff --staged --name-only) ]]; then
-          git commit -m "style: auto-fix formatting violations [skip ci]"
-
-          # Push the formatting fixes back to the branch
-          git push
-
-          # Fail the job to force a re-run with clean code
-          echo "❌ Formatting violations were found and auto-fixed."
-          echo "The formatting fixes have been pushed to your branch."
-          echo "Please pull the latest changes and re-run your workflow."
-          exit 1
-        fi
-
-    - name: Formatting validation passed
-      if: steps.check-formatting.outputs.formatting_needed == 'false'
+    - name: Success message
       run: |
-        echo "✅ All formatting checks passed!"
+        if [[ "${{ steps.format.outputs.changes_made }}" == "true" ]]; then
+          echo "✅ Formatting violations auto-fixed and pushed"
+          echo "CI will now run on the properly formatted code"
+        else
+          echo "✅ All formatting checks passed"
+        fi

@@ -46,6 +46,25 @@ ax = plot_prototype_space(prototypes, labels)
 plt.show()
 ```
 
+### Advanced Prototype-Feature Analysis
+
+```python
+# Visualize both prototypes and features together
+prototypes = model.tnn_layer.prototypes.data
+features = model.tnn_layer.feature_bank.data
+prototype_labels = [f"Prototype {i+1}" for i in range(prototypes.shape[0])]
+feature_labels = [f"Feature_{chr(65+i)}" for i in range(features.shape[0])]
+
+plot_prototype_space(
+    prototypes=prototypes,
+    prototype_labels=prototype_labels,
+    features=features,
+    feature_labels=feature_labels,
+    reduction_method="pca",
+    title="Prototype-Feature Relationship Analysis"
+)
+```
+
 ### Data-Based Prototype Interpretation
 
 ```python
@@ -61,6 +80,27 @@ fig = visualize_prototypes_as_data(
 )
 plt.show()
 ```
+
+## Example Visualizations
+
+The visualization functions produce high-quality plots for research analysis:
+
+![Prototype Space Analysis](../images/examples/visualization_demo_prototype_space.png)
+*PCA and t-SNE visualizations of learned prototype space*
+
+![Data Clustering](../images/examples/visualization_demo_data_clustering.png)
+*Data points colored by their most similar prototype*
+
+![Prototype-Feature Analysis](../images/examples/visualization_demo_prototype_features.png)
+*Advanced analysis showing prototype-feature relationships*
+
+## Complete Examples
+
+For comprehensive usage examples, see:
+
+- **[Visualization Demo](../../examples/visualization_demo.py)** - Complete demonstration with model training and all visualization types
+- **[Visualization Guide](../tutorials/visualization-guide.md)** - Step-by-step tutorial with detailed explanations
+- **[Research Tutorial](../../examples/research_tutorial.py)** - Advanced research workflow integration
 
 ## Requirements
 

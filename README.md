@@ -41,6 +41,12 @@ Verskyt includes research tools for TNN exploration and development:
 - **Feature Bank Inspection**: Understand which features the model has discovered
 - **Similarity Landscape Mapping**: Visualize how the model perceives relationships between concepts
 
+**Visualization Suite:**
+- **Prototype Space Visualization**: PCA and t-SNE plots of learned prototype distributions
+- **Data Clustering Analysis**: See how input data clusters around different prototypes
+- **Feature-Prototype Relationships**: Advanced analysis of internal similarity computations
+- **Interactive Research Tools**: High-quality plots for papers and presentations
+
 **Causal Intervention Framework:**
 - **Prototype Surgery**: Directly edit model concepts and observe behavioral changes
 - **Counterfactual Analysis**: Simulate "what if" scenarios by modifying internal representations
@@ -117,6 +123,7 @@ Verskyt provides a complete, production-ready implementation of TNNs with resear
 | **Research Tools** | `InterventionManager` | ✅ **Complete** - Prototype surgery & analysis |
 | | `FeatureGrounder` | ✅ **Complete** - Concept mapping framework |
 | | Prototype Analysis | ✅ **Complete** - Introspection APIs |
+| | Visualization Suite | ✅ **Complete** - PCA/t-SNE prototype analysis |
 | **Development** | Comprehensive Testing | ✅ **Complete** - 60+ tests, 75% coverage |
 | | CI/CD Pipeline | ✅ **Complete** - Automated quality & releases |
 | | Documentation Site | ✅ **Complete** - Automated docs building and publishing |
@@ -125,7 +132,7 @@ Verskyt provides a complete, production-ready implementation of TNNs with resear
 
 Verskyt continues expanding its research toolkit capabilities:
 
-  * [ ] **Interactive Visualization Suite**: Tools for prototype visualization, similarity landscapes, and intervention impact analysis
+  * [x] **Interactive Visualization Suite**: ✅ **Complete** - Tools for prototype visualization, similarity landscapes, and intervention impact analysis
   * [ ] **Extended Benchmark Suite**: Evaluation across more datasets and TNN configurations
   * [ ] **Performance Profiling**: Optimization for large-scale models and training efficiency
   * [ ] **TverskyResNet Implementation**: Pre-built architecture demonstrating TNN integration in complex models
@@ -133,9 +140,36 @@ Verskyt continues expanding its research toolkit capabilities:
   * [ ] **Uncertainty Quantification**: Tools for measuring confidence in TNN predictions and prototype assignments
   * [ ] **Multi-Modal Extensions**: Extend TNN concepts to handle different data modalities simultaneously
 
+## Examples & Visualizations
+
+Verskyt includes comprehensive examples demonstrating all capabilities:
+
+### 🎨 Visualization Demo
+**[`examples/visualization_demo.py`](examples/visualization_demo.py)** - Complete visualization showcase:
+- Prototype space analysis with PCA and t-SNE
+- Data clustering by prototype similarity
+- Advanced prototype-feature relationship analysis  
+- XOR problem demonstration
+
+![Prototype Space Analysis](docs/images/examples/visualization_demo_prototype_space.png)
+*Learned prototype space visualized with PCA and t-SNE*
+
+### 🔬 Research Examples
+- **[Research Tutorial](examples/research_tutorial.py)** - Advanced TNN research workflows
+- **[Intervention Demo](examples/intervention_demo.py)** - Prototype surgery and causal analysis
+
+**Installation for visualizations:**
+```bash
+pip install verskyt[visualization]
+```
+
 ## Documentation
 
 For complete usage guides, tutorials, and the API reference, please see the **[Full Documentation Website](https://verskyt.readthedocs.io)**.
+
+- **[Examples Directory](examples/README.md)** - All example scripts with comprehensive documentation
+- **[Visualization Guide](docs/tutorials/visualization-guide.md)** - Step-by-step tutorial for using the visualization suite
+- **[API Reference](https://verskyt.readthedocs.io/en/latest/api/)** - Complete function documentation
 
 ## Contributing
 

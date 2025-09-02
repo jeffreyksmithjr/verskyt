@@ -18,6 +18,14 @@ tutorials/index
 
 ```{toctree}
 :maxdepth: 2
+:caption: Examples & Demos
+
+../examples/README
+tutorials/visualization-guide
+```
+
+```{toctree}
+:maxdepth: 2
 :caption: API Reference
 
 api/index
