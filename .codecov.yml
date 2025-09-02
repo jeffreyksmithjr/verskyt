@@ -1,0 +1,29 @@
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 1%  # Allow up to 1% coverage drop
+        base: auto
+    patch:
+      default:
+        target: 70%  # New code should have reasonable coverage
+        threshold: 1%  # Allow up to 1% coverage drop for patches
+
+comment:
+  layout: "reach,diff,flags,tree"
+  behavior: default
+  require_changes: false
+  require_base: no
+  require_head: yes
+
+ignore:
+  - "tests/"
+  - "examples/"
+  - "docs/"
+  - "scripts/"
+  - "venv/"
+  - "*.md"
+  - "*.rst"
+  - "*.txt"
+  - ".github/"
