@@ -6,7 +6,7 @@ including prototype space visualization and data-based prototype interpretation.
 """
 
 try:
-    from verskyt.visualizations.plotting import (
+    from verskyt.visualizations.plotting import (  # noqa: F401
         plot_prototype_space,
         visualize_prototypes_as_data,
     )

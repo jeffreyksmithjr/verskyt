@@ -15,7 +15,6 @@ import torch.optim as optim
 
 # Import Verskyt components
 from verskyt import TverskyProjectionLayer
-from verskyt.benchmarks import XORBenchmark
 from verskyt.core import tversky_similarity
 
 print("🔬 Verskyt Research Tutorial: Modularity, Introspection, and Extensibility")

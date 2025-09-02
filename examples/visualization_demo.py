@@ -20,14 +20,11 @@ from torch.utils.data import DataLoader, TensorDataset
 
 # Import Verskyt components
 from verskyt import TverskyProjectionLayer
-from verskyt.benchmarks import XORBenchmark
+from verskyt.benchmarks import run_fast_xor_benchmark
 
 # Import visualization functions (requires optional dependencies)
 try:
-    from verskyt.visualizations import (
-        plot_prototype_space,
-        visualize_prototypes_as_data,
-    )
+    from verskyt.visualizations import plot_prototype_space
 
     visualization_available = True
 except ImportError:
@@ -277,11 +274,10 @@ print("-" * 40)
 print("Running XOR benchmark and visualizing learned prototypes...")
 
 # Run a quick XOR benchmark using the standalone function
-from verskyt.benchmarks import run_fast_xor_benchmark
 
 results, analysis = run_fast_xor_benchmark()
 
-print(f"XOR Benchmark Results:")
+print("XOR Benchmark Results:")
 print(f"• Overall Convergence Rate: {analysis['overall_convergence_rate']:.2%}")
 print(f"• Total Experimental Runs: {len(results)}")
 

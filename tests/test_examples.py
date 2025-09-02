@@ -9,7 +9,7 @@ import subprocess
 import sys
 import time
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import List, Optional, Tuple
 
 import pytest
 
@@ -48,8 +48,8 @@ def check_example_requirements(example_name: str) -> Tuple[bool, Optional[str]]:
         if requirement == "visualization":
             try:
                 import matplotlib
-                import seaborn
-                import sklearn
+                import seaborn  # noqa: F401
+                import sklearn  # noqa: F401
 
                 matplotlib.use("Agg")  # Use non-interactive backend
             except ImportError as e:
@@ -139,7 +139,8 @@ Timeout: {timeout}s
                 and "error" not in example_name.lower()
             ):
                 pytest.fail(
-                    f"Example {example_name} output contains error indicator: {indicator}"
+                    f"Example {example_name} output contains error indicator: "
+                    f"{indicator}"
                 )
 
 
