@@ -177,6 +177,7 @@ jobs:
 
         # Test basic functionality
         python -c "
+        import sys
         import torch
         from verskyt import TverskyProjectionLayer
 
@@ -185,8 +186,7 @@ jobs:
         x = torch.randn(3, 4)
         output = layer(x)
 
-        print(f'✅ Python {python-version}: Installation and basic test successful')
+        python_version = f'{sys.version_info.major}.{sys.version_info.minor}'
+        print(f'✅ Python {python_version}: Installation and basic test successful')
         print(f'   Input shape: {x.shape}, Output shape: {output.shape}')
         "
-      env:
-        python-version: ${{ matrix.python-version }}
