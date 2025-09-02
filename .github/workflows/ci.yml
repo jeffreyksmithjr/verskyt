@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main, visualizations ]  # Add visualizations branch
+    branches: [ main ]
   pull_request:
-    branches: [ main, init ]  # Include init branch for current development
+    branches: [ main ]
 
 jobs:
   quality-checks:
