@@ -6,7 +6,7 @@ This directory contains practical examples demonstrating Verskyt's research-focu
 
 **[visualization_demo.py](visualization_demo.py)** - Complete visualization showcase featuring:
 - **Prototype Space Analysis**: PCA and t-SNE visualizations of learned prototypes
-- **Data Clustering Visualization**: See how data points cluster by prototype similarity  
+- **Data Clustering Visualization**: See how data points cluster by prototype similarity
 - **Prototype-Feature Relationships**: Advanced analysis of prototype-feature interactions
 - **XOR Problem Visualization**: Classic non-linearity demonstration
 
@@ -17,7 +17,7 @@ The visualization demo produces high-quality plots saved to `docs/images/example
 ![Prototype Space Analysis](../docs/images/examples/visualization_demo_prototype_space.png)
 *Prototype space visualized using PCA and t-SNE dimensionality reduction*
 
-![Data Clustering](../docs/images/examples/visualization_demo_data_clustering.png)  
+![Data Clustering](../docs/images/examples/visualization_demo_data_clustering.png)
 *Data points colored by their most similar prototype*
 
 ![Prototype-Feature Analysis](../docs/images/examples/visualization_demo_prototype_features.png)

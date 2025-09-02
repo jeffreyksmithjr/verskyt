@@ -124,12 +124,12 @@ colors = ['red', 'blue', 'green', 'orange']
 for i in range(len(prototype_labels)):
     mask = most_similar_prototypes == i
     if mask.sum() > 0:
-        plt.scatter(X_test[mask, 0], X_test[mask, 1], 
+        plt.scatter(X_test[mask, 0], X_test[mask, 1],
                    c=colors[i], label=f'Most similar to {prototype_labels[i]}',
                    alpha=0.6, s=50)
 
 plt.xlabel('Feature 1')
-plt.ylabel('Feature 2') 
+plt.ylabel('Feature 2')
 plt.title('Data Points Colored by Most Similar Prototype')
 plt.legend()
 plt.grid(True, alpha=0.3)
@@ -237,7 +237,7 @@ plt.show()
 For a comprehensive example that combines all these concepts, see [`examples/visualization_demo.py`](../../examples/visualization_demo.py). This script demonstrates:
 
 1. **Model Training**: Complete TNN training pipeline
-2. **Prototype Analysis**: PCA and t-SNE visualizations  
+2. **Prototype Analysis**: PCA and t-SNE visualizations
 3. **Data Clustering**: How data points relate to prototypes
 4. **Feature Relationships**: Advanced prototype-feature analysis
 5. **XOR Demonstration**: Classic non-linearity test case
@@ -253,7 +253,7 @@ python visualization_demo.py
 These visualization tools integrate seamlessly with Verskyt's research capabilities:
 
 - **Intervention Studies**: Visualize prototype changes before/after interventions
-- **Hyperparameter Analysis**: Compare prototype spaces across different α, β values  
+- **Hyperparameter Analysis**: Compare prototype spaces across different α, β values
 - **Architecture Studies**: Analyze how different TNN configurations affect learned representations
 - **Similarity Method Comparison**: Visualize differences between intersection/difference reduction methods
 

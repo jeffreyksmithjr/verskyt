@@ -20,7 +20,7 @@ visualization-guide
 ## Coming Soon
 
 - **XOR Tutorial**: Step-by-step guide to solving XOR with a single Tversky layer
-- **Classification Tutorial**: Building complete classifiers with Tversky layers  
+- **Classification Tutorial**: Building complete classifiers with Tversky layers
 - **Research Workflows**: Advanced intervention studies and concept analysis
 - **Custom Architecture Tutorial**: Multi-layer Tversky networks and custom similarity functions
 

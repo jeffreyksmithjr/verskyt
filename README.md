@@ -148,7 +148,7 @@ Verskyt includes comprehensive examples demonstrating all capabilities:
 **[`examples/visualization_demo.py`](examples/visualization_demo.py)** - Complete visualization showcase:
 - Prototype space analysis with PCA and t-SNE
 - Data clustering by prototype similarity
-- Advanced prototype-feature relationship analysis  
+- Advanced prototype-feature relationship analysis
 - XOR problem demonstration
 
 ![Prototype Space Analysis](docs/images/examples/visualization_demo_prototype_space.png)

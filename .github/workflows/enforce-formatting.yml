@@ -14,7 +14,7 @@ jobs:
   auto-fix-formatting:
     name: Auto-Fix Code Formatting
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v4
       with:
@@ -36,7 +36,7 @@ jobs:
       run: |
         # Run pre-commit to fix issues
         pre-commit run --all-files || true
-        
+
         # Check if there are changes
         if [[ -n $(git status --porcelain) ]]; then
           echo "changes_made=true" >> $GITHUB_OUTPUT
@@ -52,12 +52,12 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        
+
         git add -A
         # Remove [skip ci] to allow CI to run on fixed code
         git commit -m "style: auto-fix formatting violations"
         git push
-        
+
         echo "✅ Formatting fixes pushed - CI will re-run automatically"
 
     - name: Success message

@@ -110,7 +110,7 @@ print(f"Beta: {layer.beta.item()}")
 For comprehensive usage examples in realistic scenarios, see:
 
 - **[Visualization Demo](../../examples/visualization_demo.py)** - Complete TNN model with visualization analysis
-- **[Research Tutorial](../../examples/research_tutorial.py)** - Advanced usage patterns and intervention studies  
+- **[Research Tutorial](../../examples/research_tutorial.py)** - Advanced usage patterns and intervention studies
 - **[Intervention Demo](../../examples/intervention_demo.py)** - Prototype manipulation and causal analysis
 
 ### XOR Problem Demonstration
@@ -160,9 +160,9 @@ class OriginalNet(nn.Module):
     def __init__(self):
         super().__init__()
         self.layer1 = nn.Linear(784, 128)
-        self.layer2 = nn.Linear(128, 64) 
+        self.layer2 = nn.Linear(128, 64)
         self.classifier = nn.Linear(64, 10)  # ← Replace this
-        
+
 # Enhanced with TNN
 class TNNNet(nn.Module):
     def __init__(self):
