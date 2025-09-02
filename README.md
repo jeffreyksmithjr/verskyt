@@ -201,7 +201,7 @@ We recommend citing the specific version of the software you used. You can get a
   month        = aug,
   year         = 2025,
   publisher    = {Zenodo},
-  version      = {v0.2.2},
+  version      = {v0.2.3},
   doi          = {10.5281/zenodo.17014431},
   url          = {https://doi.org/10.5281/zenodo.17014431}
 }

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "verskyt"
-version = "0.2.2"
+version = "0.2.3"
 description = "Python library for Tversky Neural Networks with research tools for model introspection and prototype analysis"
 readme = "README.md"
 authors = [{name = "Jeff Smith"}]
