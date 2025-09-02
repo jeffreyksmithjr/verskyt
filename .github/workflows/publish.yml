@@ -168,12 +168,39 @@ jobs:
 
     - name: Test installation from PyPI
       run: |
-        # Wait a bit for PyPI propagation
-        sleep 60
-
-        # Install from PyPI
+        # Extract version from tag
         TAG_VERSION=${GITHUB_REF#refs/tags/v}
-        pip install verskyt==$TAG_VERSION
+        echo "Testing installation of verskyt==$TAG_VERSION"
+
+        # Wait for PyPI propagation with retry logic
+        echo "⏳ Waiting for PyPI propagation..."
+        max_attempts=20
+        attempt=1
+        sleep_time=30
+
+        while [ $attempt -le $max_attempts ]; do
+          echo "Attempt $attempt/$max_attempts: Checking if verskyt==$TAG_VERSION is available on PyPI..."
+          
+          if pip install --dry-run verskyt==$TAG_VERSION > /dev/null 2>&1; then
+            echo "✅ Package found on PyPI! Installing..."
+            pip install verskyt==$TAG_VERSION
+            break
+          else
+            if [ $attempt -eq $max_attempts ]; then
+              echo "❌ Package not available after $max_attempts attempts"
+              echo "Available versions:"
+              pip index versions verskyt || echo "Could not fetch available versions"
+              exit 1
+            fi
+            
+            echo "Package not yet available. Waiting ${sleep_time}s before retry..."
+            sleep $sleep_time
+            
+            # Exponential backoff with jitter
+            sleep_time=$((sleep_time + 10))
+            attempt=$((attempt + 1))
+          fi
+        done
 
         # Test basic functionality
         python -c "
