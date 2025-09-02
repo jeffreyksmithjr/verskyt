@@ -12,6 +12,7 @@ layers
 interventions
 utils
 benchmarks
+visualizations
 ```
 
 ## Quick Reference
@@ -26,6 +27,11 @@ benchmarks
 - {func}`verskyt.core.tversky_similarity` - Core Tversky similarity computation
 - {func}`verskyt.core.compute_feature_membership` - Feature membership scores
 - {func}`verskyt.core.compute_salience` - Object salience computation
+
+### Visualization Functions
+
+- {func}`verskyt.visualizations.plot_prototype_space` - Visualize prototypes in 2D space
+- {func}`verskyt.visualizations.visualize_prototypes_as_data` - Show data samples most similar to prototypes
 
 ### Enums
 
@@ -56,4 +62,9 @@ from verskyt.core.similarity import (
 ### Benchmarks
 ```python
 from verskyt.benchmarks import XORBenchmark
+```
+
+### Visualizations
+```python
+from verskyt.visualizations import plot_prototype_space, visualize_prototypes_as_data
 ```

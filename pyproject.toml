@@ -27,7 +27,7 @@ requires-python = ">=3.8"
 dependencies = [
     "torch>=1.10.0",
     "numpy>=1.19.0",
-    "matplotlib>=3.3.0",
+    "matplotlib>=3.5.0",
     "tqdm>=4.62.0",
 ]
 
@@ -48,16 +48,19 @@ dev = [
     "myst-parser>=0.18.0",
     "myst-nb>=0.17.0",
     "sphinx-autodoc-typehints>=1.19.0",
+    # Visualization dependencies
+    "verskyt[visualization]",
 ]
 
 visualization = [
-    "seaborn>=0.11.0",
-    "plotly>=5.0.0",
+    "matplotlib>=3.5.0",
+    "seaborn>=0.12.0",
+    "scikit-learn>=1.1.0",
 ]
 
 benchmarks = [
     "torchvision>=0.11.0",
-    "scikit-learn>=1.0.0",
+    "scikit-learn>=1.1.0",
     "pandas>=1.3.0",
 ]
 
@@ -101,4 +104,6 @@ addopts = "-v --cov=verskyt --cov-report=term-missing"
 markers = [
     "slow: marks tests as slow (training-intensive, excluded from CI)",
     "benchmark: marks tests related to benchmark functionality",
+    "examples: marks tests that validate example scripts",
+    "visualization: marks tests requiring visualization dependencies",
 ]

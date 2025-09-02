@@ -70,6 +70,15 @@ pytest tests/test_basic_functionality.py::TestBasicSimilarity::test_similarity_s
 
 # Debug test failures
 pytest tests/failing_test.py -vvs --pdb
+
+# Test example scripts (validates all examples work correctly)
+pytest -v -m "examples"
+
+# Test example scripts with coverage (useful for development)
+pytest tests/test_examples.py -v
+
+# Run specific example validation
+python tests/test_examples.py
 ```
 
 ### Pre-commit Validation

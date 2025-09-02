@@ -15,7 +15,6 @@ import torch.optim as optim
 
 # Import Verskyt components
 from verskyt import TverskyProjectionLayer
-from verskyt.benchmarks import XORBenchmark
 from verskyt.core import tversky_similarity
 
 print("🔬 Verskyt Research Tutorial: Modularity, Introspection, and Extensibility")
@@ -316,22 +315,31 @@ def research_validation():
 
     print("Running research-grade XOR benchmark...")
 
-    # Use the built-in benchmark suite
-    benchmark = XORBenchmark()
-
     # Run fast benchmark (representative sample)
     print("1. Fast benchmark (48 configurations):")
     try:
-        results = benchmark.run_fast_benchmark()
+        from verskyt.benchmarks import run_fast_xor_benchmark
 
-        print(f"   Success rate: {results['success_rate']:.1%}")
-        print(f"   Mean convergence epochs: {results['mean_epochs']:.1f}")
-        print(f"   Convergence std: {results['std_epochs']:.1f}")
-        print(f"   Configurations tested: {results['total_runs']}")
+        results, analysis = run_fast_xor_benchmark(verbose=False)
 
-        print("\n   Method success rates:")
-        for method, rate in results["method_success_rates"].items():
-            print(f"     {method}: {rate:.1%}")
+        convergence_rate = analysis["overall_convergence_rate"]
+        total_runs = len(results)
+
+        print(f"   Overall convergence rate: {convergence_rate:.1%}")
+        print(f"   Total configurations: {total_runs}")
+
+        # Show some key method combinations if available
+        key_methods = [
+            "product_substractmatch",
+            "mean_substractmatch",
+            "max_ignorematch",
+            "gmean_ignorematch",
+        ]
+        print("\n   Key method combinations:")
+        for method in key_methods:
+            conv_key = f"convergence_rate_{method}"
+            if conv_key in analysis:
+                print(f"     {method.replace('_', ' + ')}: {analysis[conv_key]:.1%}")
 
         print("\n✅ Benchmark validation completed")
         print("    → Results validate implementation correctness")

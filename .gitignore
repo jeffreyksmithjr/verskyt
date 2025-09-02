@@ -217,3 +217,12 @@ test_new_*.py
 *_scratch.py
 tmp_*.py
 temp_*.py
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

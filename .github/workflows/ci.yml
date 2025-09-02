@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main, init ]  # Include init branch for current development
+    branches: [ main ]
 
 jobs:
   quality-checks:

@@ -27,7 +27,9 @@ repos:
     rev: v6.0.0
     hooks:
       - id: trailing-whitespace
+        exclude: ^\.github/workflows/
       - id: end-of-file-fixer
+        exclude: ^\.github/workflows/
       - id: check-yaml
       - id: check-toml
       - id: check-merge-conflict
