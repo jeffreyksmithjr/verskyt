@@ -4,7 +4,7 @@ Verskyt: A library for Tversky Neural Networks.
 Psychologically plausible deep learning with differentiable Tversky similarity.
 """
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 from verskyt.benchmarks import (
     XORBenchmark,
